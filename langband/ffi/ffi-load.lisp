@@ -32,6 +32,7 @@ the Free Software Foundation; either version 2 of the License, or
 					   (namestring (lb-engine:lbsys/get-current-directory)))
 				  "zterm/")))
 
+    #|
     #+unix
     (progn
       #-(or cmu sbcl)
@@ -47,6 +48,8 @@ the Free Software Foundation; either version 2 of the License, or
     #+win32
     (progn
       (load-shared-lib :key :lang-ffi :lib (concatenate 'string lib-path "lbui.dll"))
+
+|#
       
-    )))
+    ))
 
