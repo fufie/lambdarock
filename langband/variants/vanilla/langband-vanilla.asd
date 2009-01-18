@@ -27,7 +27,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 (in-package :langband-vanilla-system)
 
-(asdf:defsystem :langband-vanilla
+(asdf:defsystem "langband-vanilla"
     :version "0.1.7"
     :components ((:file "package")
 		 (:file "constants" :depends-on ("package"))
@@ -50,10 +50,10 @@ the Free Software Foundation; either version 2 of the License, or
 		 (:file "keys" :depends-on ("wizard" "combat" "spells" "ego" "monsters"))
 		 (:file "verify" :depends-on ("various"))
 	       )
-  :depends-on (langband-engine))
+  :depends-on ("langband-engine"))
 
 #+sbcl
-(asdf:defsystem :langband-vanilla-data
+(asdf:defsystem "langband-vanilla-data"
     :version "0.1.7"
     :components ((:module "config"
 			  :components ((:file "defines")
@@ -92,7 +92,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 				       (:file "rooms")
 				       )))
-    :depends-on (langband-vanilla))
+    :depends-on ("langband-vanilla"))
 
 #-enough-support-for-langband
 (warn "Langband-Vanilla has not been tested with '~a ~a', skips compilation."

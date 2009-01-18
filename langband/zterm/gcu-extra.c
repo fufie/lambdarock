@@ -39,9 +39,14 @@
 /*
  * POSIX stuff
  */
-#ifdef USE_TPOSIX
+#if defined(USE_TPOSIX) 
 # include <sys/ioctl.h>
 # include <termios.h>
+#endif
+
+#ifdef __APPLE__
+# include <term.h>
+#undef USE_TCHARS
 #endif
 
 /*

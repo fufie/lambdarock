@@ -9,4 +9,9 @@ syntax: glob
 *.dylib
 *.so
 *.log
+*.fasl
+*.fas
+.libs
+.deps
+config.status
 

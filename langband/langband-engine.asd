@@ -29,7 +29,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 (in-package :langband-engine-system)
  
-(asdf:defsystem :langband-engine
+(asdf:defsystem "langband-engine"
     :name "Langband Engine"
     :author "Stig E Sandoe"
     :version "0.1.7"
