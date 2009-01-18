@@ -1,0 +1,11 @@
+Various bits of Contraband code policy
+======================================
+
+- The preferred prefix for contraband classes and functions is 'con/' 
+- The numeric-ids for objects will follow this pattern:
+
+  0-999 reserved
+  1000-1999 weapons
+  2000-2999 armours and clothing
+  3000-3999 everyday items (lanterns, ladders, ..)
+    

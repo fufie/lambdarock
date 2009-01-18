@@ -1,0 +1,9 @@
+*.dll
+*.a
+*.obj
+*.o
+*.so
+lbsd
+bar
+Makefile
+semantic.cache

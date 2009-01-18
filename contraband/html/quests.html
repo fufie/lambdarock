@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Example quests and quest ideas</title>
+</head>
+
+<body>
+<!--
+<p>Quests are marked with COPIA if they're for the Copian player and
+ATRO for the atrocitan player.  Either BOTH or no info means that both
+versions apply.</p>
+-->
+
+<h1>Faction: Atrocitas Foreign Office</h1>
+
+<b>Deliver Letter to Tepesco:</b><br>
+<ul>
+  <li> Who: [foreign office]
+  <li> When: At start for atrocitan player
+  <li> Job: Deliver sealed letter to Consul Tepesco.  Move from bottom
+  right corner to upper left corner in Bartertown where the consulate
+  lies. 
+</ul>
+
+<b>Fix paperwork for a caravan:</b><br>
+<ul>
+  <li> Who: Consul Tepesco
+  <li> When: delivered letter (MTF)
+  <li> Job: A caravan will be coming to Bartertown from Atrocitas, but
+  needs paperwork done at the southern bridge to let it pass.  The
+  officers at the souther bridge are mostly interested in bribes.  One
+  can do things by the book and be lucky, but the chance is better if
+  you do the paperwork and bribe the officers with booze.  [The player
+  will learn how things work around here quickly]  Return to consul
+  for an update. 
+</ul>
+
+<b>Help arrested traders:</b><br>
+<ul>
+  <li> Who: Consul Tepesco
+  <li> When: paperwork mission done (MTF)
+  <li> Job: Some traders have been arrested for smuggling and are
+  locked up in Mont Renuo.  Investigate what happened, and if they're
+  innocent do what is possible to get them released, possibly with
+  their goods and caravan.  The men were trying to bring leather
+  armours across the southern bridge.. and the Mereo wanted to stop
+  trading of armour.  This can be solved in two manners.. go by the
+  book and find the trade deal which allows sale of leather products
+  and then piss off captain perpetro.. or it can be solved by bribing
+  the prison guards into releasing them because they have starving
+  family at home.
+</ul>
+
+<b>Meet traders' guild:</b><br>
+<ul>
+  <li> Who: Consul Tepesco
+  <li> When: paperwork mission done (MTF)
+  <li> Job: Get list of incoming and outgoing caravans for the next
+  week from the leader of the traders' guild, Antonio, and ask where they need help.
+  Basically meet Antonio and get info from him which
+  should be returned to Tepesco.  Opens up Antonio for further
+  missions and assignments.
+</ul>
+
+<h1>Faction: Imperial Agency</h1>
+
+<b>Deliver letter to Ulydes:</b><br>
+
+<ul>
+  <li> Who: [agency]
+  <li> When: At start for copian player
+  <li> Deliver sealed letter to Mereo Ulydes in Bartertown.  Copia
+  player starts in upper left part of town so this will be
+  quick. Guard at house that may be easily persuaded. 
+</ul>
+
+<b>Deliver letter to Junifer:</b><br>
+<ul>
+  <li> Who: [agency]
+  <li> When: At start for copian player
+  <li> Deliver sealed letter to Mereo Junifer in Mont Renuo.  Copia
+  player starts in upper left part of town so this might not happen
+  right away. 
+</ul>
+
+<b>Get silk dress for Captain Perpetro:</b><br>
+<ul>
+  <li> Who: Captain Perpetro
+  <li> When: delivered letter to junifer
+  <li> Wants player to get hold of a green silk dress made by the
+  elves.  this dress is for Mereo Junifer.  This is misuse of a good
+  agent, but the legions don't care much about agents. 
+</ul>
+
+<!--
+<h3> Ride shotgun on caravan (ATRO)</h3>
+
+<p>Player gets mission from Consul Tepesco, and it is a bad mission
+because the player is there as clerk not as guard.  Can't argue.. gets
+opportunity (and 30 florentins) to buy equipment and when reporting
+back there is a caravan that needs to get safely to the border to
+Atrocitas.  Before the bridge some thieves will attack from the
+forest.  Guards should be able to kill them, but help from player is
+good.  On bridge there is a customs check.. player can talk the
+caravan through, otherwise it must pay 200 florentins.  If the player
+talks it through he gets 50 florentins from the caravan owner.  Then
+near the border some Salveus priests will attack the caravan which is
+filled with Imperial Wine.. they will use fire-arrows and the caravan
+will blow up.  Three ways to do this.. talk to the priests and convince
+them not to do it (hard, bribing does not help), or convince the
+caravan owner to go back and use another border crossing, or if you
+support the priests, help to blow up the caravan.  Afterwards
+player must go back to the consul, where reward is given depending on
+outcome. </p>
+-->
+
+<!--
+
+#||
+
+example scenarios:
+
+Quest DELIVER_LETTER_01
+game start: player gets starting quest
+ - must deliver package to person
+ - on delivery to person, quest ends
+
+so we have:
+AVAILABLE?
+ - game start only
+INIT
+ - add package to player inventory
+ACTIVE?
+ - package not delivered
+COMPLETE?
+ - gives package to person
+
+Quest RIDING_SHOTGUN:
+ riding shotgun.. described in texts/quests.html
+
+AVAILABLE?
+ - if DELIVER_LETTER_01 complete
+ - if player.level > 2
+INIT
+ - describe mission to player
+ - start subquest RIDING_SHOTGUN_A
+ACTIVE?
+ - until subquest RIDING_SHOTGUN_F is finished
+ - while consul is alive
+COMPLETE?
+ - when subquest RIDING_SHOTGUN_F is not finished
+ - when any subquests return failure
+
+RIDING_SHOTGUN_A
+
+AVAILABLE?
+ - when started by RIDING_SHOTGUN quest
+INIT
+ - add 30 florentin to player inventory
+ACTIVE?
+ - until player returns to consul
+COMPLETE?
+ - when player returns to consul
+
+RIDING_SH
+
+
+||#
+-->
+
+<hr>
+<address>stig@langband.org</address>
+<!-- hhmts start --> Last modified: Mon Feb 17 19:05:55 CET 2003 <!-- hhmts end -->
+</body> </html>

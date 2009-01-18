@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Combat</title>
+</head>
+
+<body>
+<h1>Combat</h1>
+
+
+<h3>Attack-strength</h3>
+
+<p>Every combatant has a combat-strength with a given weapon.  This
+combat-strength is an integer from 1 and up.  Values above 200
+unlikely.  To calculate combat-strength this is the formula:</p>
+<pre>
+2 * ((weapon-skill * 5) + (ability * 2) + (to-hit bonus * 5) + modifiers)
+-------------------------------------------------------------------------
+                             25
+</pre>
+
+<p>The weapon-skill depends on which weapon is used, e.g a long sword
+uses the <tt>long-blades</tt> skill.  The ability used depends on the weapon as
+well, e.g for a short-sword it is <tt>agility</tt>.  To-hit bonuses
+include craftsmanship bonuses on a weapon or magical enchantments or
+even bonuses depending on target.  Some modifiers depending e.g on
+spells might also be added. </p>
+
+<b>Example:</b>
+<p>As an example we have the agent Athos who has just started the
+game and have chosen fairly combat-oriented skills.  He has the
+following values:</b>
+<pre>
+strength: 20
+agility: 15
+long-blades: 25
+evasion: 10
+shield: 10
+light-armour: 20
+heavy-armour: 20
+</pre>
+
+<p>His attack-strength with a rapier (uses agility) is:</b>
+<pre>
+2 * ( (25*5) + (15*2) + 0 + 0) / 25 = 2*155/25 = 12
+</pre>
+
+<h3>Defense-strength</h3>
+
+<p>In Contraband armours are very valuable, and metal armour and a
+shield may very well protect you against most attacks.  For a stealthy
+character wearing no armour might also be a useful solution, but for
+real combat a metal armour will be better.  Body-armour may also soak
+some of the damage from an attack.  The formula to calculate the
+defense-strength is:</p>
+<pre>
+(defense-skill * armour-rating)  + (shield-skill * shield-armour-rating) 
+------------------------------------------------------------------------
+                                25
+
+   +       ((2 * evasion) + agility)
+        ------------------------------
+         6 + armour-bulk + shield-bulk
+</pre>
+
+<p>Evasive abilities are reduced by wearing bulky armour and using a
+bulky/heavy shield.  Every armour and shield has an armour rating
+indicating the defense-capabilities of it.  This is multiplied with
+the skill to use the armour or the skill as seen above. </p>
+
+<b>Example</b>
+Athos wearing clothing (rating: 2, bulk: 0, skill: light-armour), no shield
+<pre> (20*2 + 0)/25  + (10*2+15)/6 = 6</pre>
+
+Athos wearing leather armour (rating: 10, bulk: 4, skill:
+light-armour), leather+wood-shield (rating: 4, bulk: 4)
+<pre> (20*10 + 10*4)/25  + (10*2+15)/14 = 11</pre>
+
+Athos wearing chain armour (rating: 25, bulk: 15, skill:
+heavy-armour), heavy wood-shield (rating: 10, bulk: 8)
+<pre> (20*25 + 10*10)/25  + (10*2+15)/24 = 24 + 1 = 25</pre>
+
+Athos wearing plate armour (rating: 35, bulk: 25, skill:
+heavy-armour), heavy wood-shield (rating: 10, bulk: 8)
+<pre> (20*35 + 10*10)/25  + (10*2+15)/34 = 32 + 1 = 33</pre>
+
+<p>As we can see the defense-strength increases rapidly with metal armour
+and a decent shield.  The bulk will also affect movement, other
+agility rolls, fatigue and energy-use.</p>
+
+<h3>To-hit</h3>
+
+<p>To find out how much of a chance someone has to hit another you use
+the attack-strength vs the defense-strength with the formula:</p>
+
+<pre>
+% Chance to hit = 50% + ( 3% * (attack-strength - defense-strength))
+</pre>
+
+<p>There is always a 5% chance minimum chance to hit and a 5% minimum
+chance to miss.</p>
+
+<b>Example:</b>
+
+<p>We'll pit Athos against his twin-brother armed with the
+armour-combinations above:</p>
+
+<pre>
+Unarmed:  50% + (3% * (12 -  6)) = 50% + 18% = 68%
+Leather:  50% + (3% * (12 - 11)) = 50% +  3% = 53%
+Chain:    50% + (3% * (12 - 25)) = 50% - 39% = 11%
+Plate:    50% + (3% * (12 - 33)) = 50% - 63% =  5% (minimum)
+</pre>
+
+<p>A more skilled Athos would have a bigger chance against better
+armour.</p> 
+
+<h3>Doing damage</h3>
+
+<p>Provided that it was a succesful hit, we need to figure out the
+damage.  This is another area where protective armour will help, as
+protective body-armour (not shields) might soak some of the damage.
+Each weapon does some base-damage, e.g a long-sword will do
+<tt>1d8</tt> damage to a humanoid.  Base damage is calculated as:</p>
+
+<pre>
+damage-roll * ((2 * weapon-skill) + strength) 
+---------------------------------------------  + weapon-bonuses + modifiers
+                3 * 25
+</pre>
+
+<p>Weapon-bonuses might be craftsmanship bonuses to damage or even
+magical bonuses.  Any extra modifiers might be backstab-damage,
+higher-ground, etc.</p>
+
+<p>The soak of an armour is relatively easy, the armour rating
+indicates the ability to soak damage as:</p>
+<pre>% chance for damage soak = armour-rating / 100</pre>
+
+<p>So a brand new chain-armour with 25 armour rating will soak roughly
+25% of the damage.  However, any soak will damage the armour with the
+same amount as was soaked, thereby reducing the armour rating of the
+armour and possibly destroying the armour.</p>
+
+
+<b>Example</b>
+
+<p>Athos attacks with a long-sword (1d8) but has no extra bonuses.</p>
+<pre>
+max: (8*(2*25 + 20))/(3*25) = 560 / 75 = 7
+min: (1*(2*25 + 20))/(3*25) =  70 / 75 = 0 -> 1 (1 is the minimum)
+</pre>
+
+
+<hr>
+<address></address>
+<!-- hhmts start --> Last modified: Sat Mar 29 12:26:31 CET 2003 <!-- hhmts end -->
+</body> </html>

@@ -1,0 +1,44 @@
+(define-map-symbol #\# "perm-solid" "solid outer wall"
+   :text-sym (text-paint-value attr +term-white+ #\#)
+   :gfx-sym (tile-paint-value 29 1)
+   :flags #.(logior +floor-flag-wall+
+	      	   +floor-flag-permanent+)
+   )
+
+(define-map-symbol #\% "town-door" "a building door"
+   :text-sym (text-paint-value +term-l-umber+ #\+)
+   :flags +floor-flag-wall+
+   :gfx-sym (tile-paint-value 28 31)
+   )
+
+
+(define-map-symbol #\p "broken-town-door" "a broken building door"
+   :text-sym (text-paint-value +term-l-dark+ #\+)
+   :flags +floor-flag-floor+
+   :gfx-sym (tile-paint-value 28 33)
+   )
+
+(define-map-symbol #\. "floor" "floor"
+   :text-sym (text-paint-value +term-l-umber+ #\.)
+   :flags #.(logior +floor-flag-floor+ +floor-flag-use-light-effect+
+                    +floor-flag-allow-items+ +floor-flag-allow-creatures+)
+   :gfx-sym (tile-paint-value 26 8) ;; (tile-paint-value 41 356)
+   )
+
+
+(map "
+########
+#......#
+#......#
+#......%
+#......%
+#......p
+#......p
+#......#
+#......#
+#......#
+#......#
+#......#
+#......#
+########
+")

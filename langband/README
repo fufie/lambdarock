@@ -1,0 +1,111 @@
+[This file will be updated]
+
+Currently Langband is not anywhere close to being to finished and it
+is barely working.  It can be loaded and you may attempt to move
+around somewhat and you might be killed by over-aggressive monsters. 
+
+You need:
+
+  - A decent computer and system
+    Linux, fast enough and with a decent amount of memory
+    
+  - CMU Common Lisp
+    There exists a decent package for Debian
+
+Might be used:
+
+  - Allegro Common Lisp
+    is not active dev-platform anymore due to license
+
+  - Lispworks on Linux
+    Should work fairly well.
+
+  - Lispworks on Win32
+    May have problems, and has not been tested recently.  See FAQ for
+    more info on the Win32 port.
+
+  - SBCL (on Linux)
+    Should work fairly well, make sure you get v0.7.7 or newer.
+
+  - CLISP
+    is a bit tricky to get working, see the FAQ for more info
+    
+How to start it:
+
+  - run ./configure
+    You might want to check ./configure --help for options on Unix.
+    Windows/Cygwin-users can just use ./configure
+
+  - run 'make'
+    Where make is GNU Make
+    
+  - start your lisp and get a prompt for the two following commands:
+  
+  - (load "vanilla")
+    loads/compiles the core engine and the vanilla variant
+
+  - (langband)
+    runs vanilla variant in SDL, 800x600 resolution and in windowed mode
+
+  The full signature of the function is:
+
+  (langband :ui "sdl" :window-width 800 :window-height 600 :full-screen nil)
+
+  To do 1024x768 in full-screen try:
+
+  (langband :size :window-width 1024 :window-height 768 :full-screen t)
+
+  Development is mainly done in 800x600 so other resolutions may not be optimal.
+
+  - Use (quit) in CMUCL/SBCL/LW/CLISP or (exit) in ACL to quit afterwards.
+
+  [If you use the Langband Debian-packages, see README.Debian
+   for starting-details.]
+
+How to play:
+
+  Create a character, the details do not matter at this stage so
+  anything will do.  You will eventually find yourself (the @) in a
+  town, but currently no shops work and silly messages are printed now
+  and then.  Move around the character with the arrowkeys or the
+  numpad. Other keys:
+  
+    > - go down a stair
+    < - go up a stair
+    C - show the character facts
+    d - drop an item to the ground
+    e - show worn equipment
+    E - eat something
+    f - fire a missile
+    g - get an item from the ground
+    i - show backpack equipment
+    o - open all surrounding doors
+    p - invoke a spell (not working)
+    q - quaff a potion
+    Q - quit the game (will kill the character and any savefile)
+    r - read a scroll
+    s - search area
+    S - save the game (save-file in ~/.angband/langband/ will be used on restart)
+    u - use an item
+    w - wear an item from backpack
+   ^X - Save and exit the game. 
+
+  See also docs/help/keys.txt and the actual code in variants/vanilla/config/keys.lisp
+  
+What to do on crash or bugs:
+
+  See the docs in the web/ directory.  An undocumented feature is the
+  GAME-LOOP& function which might in some cases be called if an
+  already working game has given you the lisp-prompt and you have
+  fixed any problems.  This is mainly of use to me at this stage
+  though. 
+
+Known bugs:
+  - Windows port does not support TTF-fonts
+  - Windows port does not use sounds/audio
+  - See also list on Sourfeforge
+
+Docs:
+
+  See the docs/-directory.  
+

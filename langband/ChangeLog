@@ -1,0 +1,935 @@
+2003-05-08  Stig E Sandø <stig@users.sourceforge.net>
+	* Moved to ogg-format for sound-effects
+	* Added external (ie not in Lisp) sound-daemon
+	* Made simple strategy-system for monsters, including a primitive
+	attacker and a peaceful mover
+	* Improved checking of variant-data
+	* Revamped settings-system to use simple hashtable-inheritance
+	instead of classes.  Easier to maintain and change for users.
+	* Upgraded theme-code to do more sophisticated calculations of
+	positioning based on other windows' sizes.
+	* Added bigscreen-support to curses/gcu
+	* Added system to show visual states graphically in SDL-version
+	* Split engine and variants into separate Common Lisp packages,
+	and added necessary exports.
+	* Added hunger
+	* Fixed several TTF-issues and overall font-code
+	* Made sure that all parts of lbui.so/lbui.dll use common prefixes
+	to avoid namespace collisions.
+	* Made select-item reduce flashing windows
+	* Fixed targeting bugs
+	* Many other small improvements, bug-fixes and issues. 
+	
+	
+2003-03-09  Stig E Sandø <stig@users.sourceforge.net>
+	* Added FFI-definitions for OpenMCL (very unstable and not
+	recommended for people not familiar with lisp)
+	* Added GCU/Curses support back into zterm.  The code seems to
+	work but has not been extensively tested.
+	* added preference files for user in ~user/.angband/langband where
+	user can control various game-settings, including the use of
+	roguelike keys.
+	* roguelike keyset hook added to engine, and actual keys added to
+	vanilla variant by Andreas Fuchs 
+	* added 'D'estroy item command to engine
+	* tweaked sound-code to use string identifiers independent of
+	engine constants.
+	* added code to 't'hrow items to engine
+	* unified the allocation code (objects, monsters, ..) to one
+	common function 
+	* made character-class init two-step instead of the old one-step.
+	this allows overriding in variant
+	* moved much of the death-code to vanilla as it was fairly
+	vanilla-specific
+	* fixed some pesky details in dungeon drawing
+	* made an upper-bound to piles when stacking (99)
+	* improved saving/loading of player and variant object to be
+	controlled by the variant instead of engine.
+	* added no-cons FORMAT that writes directly to a window instead of
+	making a temporary string.  Mostly useful for simple code.
+	* added some hooks for monster- and object-knowledge
+	* added handy functions to apply effects to circles and
+	rectangular areas of the dungeon.. useful for e.g spells
+	* fixed several issues relating to stores, store-maintenance and
+	activation. 
+	* rearranged dialogue/conversation code to be put in an
+	engine-module that a variant may choose to load.
+	* other minor fixes and tweaks.
+	
+2003-02-18  Stig E Sandø <stig@users.sourceforge.net>
+	* Mostly updated the engine to accomodate contraband needs, most
+	of which are not relevant to the vanilla game.  Most work has also
+	been on contraband.
+	* Split up and cleaned some of the birth-query code
+	* Started to use produce/init protocol for classes, races and
+	monsters
+	* Removed most skill-related code from the engine.
+	* Added 'R'est command
+	* Added rudimentary disturb code to stop resting and running
+	* Removed mana constants from engine
+	* Hopefully improved the DRAW-TO-MAP function to be a bit faster
+	* Tweaked game-loading
+	* Reorganised debian-packaging to put the data/ directory in a
+	langband-data/ package.  The new data/ directory has constant
+	binary data now.
+	* Added support for 1024x768 and 1280x1024 resolution.
+	* Experimental change to avoid callbacks to lisp-code.. all is run
+	from lisp now.
+	* Updated a lot of the print.lisp code and even fixed a bug or two
+	* Now support inline calculations in theme.lisp
+	* Added OpenAL support.. still some sound-problems though.
+	* Several minor bugfixes and internal code improvements.
+	
+	
+2003-01-18  Stig E Sandø <stig@users.sourceforge.net>
+	* Ripped out the zterm backend in C with all the Term_* functions
+	and wrappers and replaced it with window.lisp and some helpers in
+	global.lisp.  The new system uses multilayer graphics, is in lisp,
+	has no questionable license, is less than one tenth in codesize
+	and seems to work well.  Some issues and slowdowns may appear and
+	should be reported so they can be fixed.  This has affected
+	zterm/*.c and zterm/*.h and many places in the lisp-code that used
+	the old functions.  Bugs may still be frequent in untested parts
+	of the code.
+	* Disabled GCU in this release, if it is requested it will be
+	included in future releases.
+	* Tweaked targeting and added crosshair cursor.  Also allows
+	targeting with right mouse-button.
+	* Fixed the game-loop to use a priority-queue based on monster
+	energy instead of the complicated old system.
+	* Removed much of the ffi aparatus for strings, as it isn't needed
+	anymore.  The code now does not rely on string-passing over FFI in
+	the inner loop.
+	* Renaming of many functions, esp those with C- prefix, due to the
+	drastic changes in the FFI-related code.
+	* Replaced the x-attr/x-char and text-attr/text-char system in the
+	active code with GFX-SYM and TEXT-SYM which are precalculated
+	integers specifying the graphics/ascii to use.  Declarative
+	structures can still use x-attr/... but active code will only use
+	gfx-sym and text-sym in the future.
+	* Improved handling of visual effects for missiles and spells.
+	Need more tweaking and is unstable.  Similar changes will happen
+	to sound-effects as well.
+	* Improved the code considerably to do input-events with more
+	ease.  Only supports mouse-events and keyclicks, but this is
+	handled in a much more transparent way now.
+	* Improved missile-shooting and missile damage code
+	* Removed MAP-INFO and instead added DRAW-TO-MAP which uses
+	multilayer graphics.
+	* Improved mouse-handling which now has a separate generic and it
+	is calculated which subwindow is clicked before a variant will
+	handle a click.
+	* Improved keyboard handling with support for shift/alt/ctrl keys
+	and direct specifications of these in key triggers
+	* Several other minor changes
+		
+2002-12-07  Stig E Sandø <stig@users.sourceforge.net>
+	* Removed dead zterm/defines.h
+	* Removed unnecessary linuxism from zterm/sdl-extra.c
+	* Added cleanup for SDL to allow the game to be restarted from the
+	same lisp (zterm/main-sdl.c)
+	* Fixed some Makefile issues on freebsd (thnaks to vrak)
+	* Uses new savefile-format derived from ARFC002, penned by Andrew
+	Sidwell.  some modifications done to make it more useful and
+	appropriate for langband. (load.lisp and save.lisp)
+	* Added file that describes the save-format (web/savefile.html)
+	* Added age/status/height/weight of player characters, also saved.
+	* Added angband-style save-and-exit on ^X and 'Q'uit will now kill
+	the savefile as well.
+	* Added variant selection system (loop.lisp)
+	* Added savefile selection system (loop.lisp)
+	* Added numeric versioning of variants and engine.
+	* Made alternative selection more useful for other stuff, not just
+	birth. (util.lisp)
+	* Other minor tweaks.
+	
+2002-11-28  Stig E Sandø <stig@users.sourceforge.net>
+	* Split debian packaging.  Static data files are now put in a
+	separate langband-data package.  This will reduce the size of the
+	packages that are most frequently updates.
+	* New floor-system installed where all floors are dynamically
+	installed (no constants).  Doors are now decor. (many files)
+	* Fixed keyhandling issues with SDL port (sdl-extra.c)
+	* Fixed minor paint-bug in SDL (main-sdl.c)
+	* Added status, height, weight and age info to characters
+	* Added information-system to handle information that handles
+	state in a variant and a game, but that does not need a lot of
+	global variables. (global.lisp)
+	* Added creation of multiple items (arrows, ammo, ..) when
+	initially created.
+	* Fixed several save/load problems (save.lisp and load.lisp)
+	* Added conservative running-code which works ok in
+	corridors, but has some problems with disturbance and rooms
+	still.  But better than nothing. (util.lisp)
+	* Other minor fixes
+	
+2002-11-11  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.1.1
+	* Major upgrade of (G)UI and UI-handling.  New SDL-support while GTK,
+	Win and X11 backends have been removed.  Full subwindow-system
+	replaces plain x,y tile-system
+	* Sound added as default for SDL-ports.  Buggy in Debian CMUCL.
+	* Added graphics by Claudio Pozas
+	* Made birth and char-display output depend on settings and is not
+	hardcoded anymore
+	* Added theming-support, see config/theme.lisp
+	* Many many other small changes.  Very little gameplay added.
+	this is mostly an interface-upgrade.
+	
+2002-09-16  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.1.0
+	
+2002-09-16  Stig E Sandø <stig@users.sourceforge.net>
+	* Added confusion effect on player
+	* Added cursed items
+	* Added 'bash door'
+	* Added 'disarm' for traps
+	* Added simple home to store items in
+	* Added more exotic melee attacks by monsters
+	* Added code to do bigtile graphics (X11 only)
+	* Added code to show bmp images in window (X11 only)
+	* Now storing messages (needs later tweaking)
+	* Fixed save/load code to work pretty well (missing features, but
+	does not crash)
+	* Added temporary attributes to monsters (largely unused still)
+	* Now does flavouring with real objects
+	* Updated much store-code, also added images to store-code
+	* Many other bugfixes and smaller changes
+
+2002-07-29  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.0.21
+
+2002-07-29  Stig E Sandø <stig@users.sourceforge.net>
+	* Endless amount of tweaks, modifications, function-renaming,
+	variable-renaming, removing dead code and moving code between
+	files.  Will not list all such changes here.  Just the major ones
+	since last release. 
+	* Improved item-functions to use a selection-function to select
+	only relevant objects.
+	* Fixed door-code (open/close door)
+	* stat-sustains now supported
+	* stat-reductions possible
+	* worn-items code revamped and improved
+	* callback support in lispworks now
+	* moved much object-code to variant and reduced dependencies
+	* upgraded some of the obj-description code
+	* removed obj-type from object-kinds
+	* moved ego-code to variant (still disabled)
+	* improved handling of resizes, also added mouse-click hook
+	* upgraded asdf
+	* upgraded some main-*.c to 3.0.x
+	
+2002-05-19  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.0.20
+	
+2002-05-19  Stig E Sandø <stig@users.sourceforge.net>
+	* These changes have been done gradually the last two weeks but
+	are summarised here.
+	* Upgraded parts of the c-code to Angband v3.0, including support
+	for bigscreen.
+	* Added traps in dungeon as 'decor', plus updated the
+	dungeon-related code to handle it.  Decor can have
+	effect-functions that can be triggered.
+	* Renamed cave-feature to cave-floor, and similar change to all
+	constants.
+	* Updated lisp-side to use variables, not constants for
+	screen-size to accomodate resizing.  Also updated all
+	panel-related code.
+	* Added system to add magic to objects in the game.  This is
+	called in the dungeon-generation, in stores and during birth.
+	Still has a lot to implement to make it complete but the skeleton
+	plus examples are there now.
+	* Updated 'w'ear command to be more intelligent and now it allows
+	player to wear several rings.
+	* Made callback-code slightly safer by making a GC-hook.  Now SBCL
+	should also use callbacks.
+	* Updated the player-update/calculations considerably, including
+	mana and stat-code
+	* Started on the ego-item code, but it has not been integrated
+	yet.
+	* Updated some printouts of the player (the 'C' command)
+	* Added normalised-random function (in util.lisp) for normalised
+	random values.
+	* Started to add the possibility of loading vanilla saves in
+	lib/compat/savefiles.lisp 
+	* Many many other tweaks, bug-fixes and slight changes.  Please
+	use diff when appropriate. 
+	
+2002-02-22  Stig E Sandø <stig@users.sourceforge.net>
+	* Did some real work to add the project() family of functions to
+	langband.  Took real motivation, but basics seem to work now.  I
+	need to find a good protocol for applying effects in a
+	variant-specific and clean way.  Added simple generics for it to
+	generics.lisp 
+	* Added hack to spell-casting for testing project(), will be
+	removed
+	* removed dead code from base.lisp and moved some dynamic
+	variables to base.lisp from constants.lisp
+	* added panel-check to dungeon.lisp
+	* added ASDF-support to game.lisp, plus langband-engine.asd and
+	langband-vanilla.asd and tools/asdf.lisp  This is cleaner than
+	mk:defsystem.  sbcl, cmucl, lispworks and acl now uses ASDF, but
+	clisp has problems with it so it'll wait.  debian-packages also
+	use ASDF
+	* added a few predicates to player.lisp and monster.lisp, makes
+	code cleaner
+	* added PROJECTABLE? to project.lisp plus all the PROJECT*
+	functions
+	* other minor tweaks
+	
+2002-02-17  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.0.19
+
+2002-02-16  Stig E Sandø <stig@users.sourceforge.net>
+	* More reorganisation of files, and some files were removed.
+	* All references to sex changed to gender
+	* Some renamed classes, e.g race -> character-race
+	* Stats moved into variant, and has got it's own class
+	character-stat
+	* Reorganised how to do player-calculations, moved much of it into
+	variant
+	* A few generics renamed to make them more comprehensible.  Some
+	new generics to ensure a neat player-update protocol
+	* Added extensible system with player-attributes
+	* Added infravision and see-invisible
+	* Other minor changes
+	
+2002-02-12  Stig E Sandø <stig@users.sourceforge.net>
+	* More updates for SBCL, need SBCL 0.7.1
+	* Improved monster-capabilities/features and made things more like
+	regular angband to speed things up slightly.
+	* Rearranged a lot of code, renamed files, and removed small
+	files.  Most classes should now be in classes.lisp
+	* Improved MAP-INFO for monsters
+	* Made the protocol for update of player-bonuses, still need to
+	fill in values
+	* Started work on saving info on the player in a reasonable way,
+	but not quite happy yet.
+	* Improved names of some monster-abilities and made a web-page to
+	track updates of monster-capabilities
+	* Updated defsystem to the latest in clocc
+	* Many other small tweaks, plus new look on the Web. 
+	
+2002-01-22  Stig E Sandø <stig@users.sourceforge.net>
+	* Started work on porting langband to SBCL, sent many bugreports
+	to SBCL-developers.  SBCL is nice and quite picky but needs more
+	apps to get ported to it so they're able to make it produce useful
+	notes and warnings.  It makes CMUCL seem quiet.
+	* Changed many DEFCONSTANTs to DEFVARs to make the code more
+	palatable to ANSI CL.  SBCL was picky here, and with strict
+	interpretation of the standard it is right so I alter things.
+	* Extended C-side to accept more lisp-types
+	* Added code for object-kinds to describe effects as part of the
+	DEFINE-OBJECT-KIND form, and removed the old hack for
+	object-effects.  
+	* Added generics for methods that lacked them. SBCL helped to
+	identify them
+	* More tweaking
+	
+2002-01-19  Stig E Sandø <stig@users.sourceforge.net>
+	* Moved some function from c-side to lisp-side, mainly
+	message-code.  Also removed unused C-code in zterm.
+	* Moved gold-creation to variant, generates successfully gold
+	according to vanilla formula.
+	* Added monster-groups, plus a formula for vanilla that is fairly
+	reasonable.
+	* Made variants register a constructor, to ensure that a variant
+	can be safely restarted.
+	* Minor tweaking
+	
+2002-01-18  Stig E Sandø <stig@users.sourceforge.net>
+	* Removed settings.lisp and moved settings into variant-object and
+	updated all code that use it.
+	* Added unique-monster class, and added code to use it for unique
+	monsters.  Ensured that a unique can only be killed once, and
+	added this to save/load
+	* Made printing and update-code depend on variant
+	* Other minor tweaks
+	
+2002-01-15  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.0.18
+	
+2002-01-14  Stig E Sandø <stig@users.sourceforge.net>
+	* Improved OK-OBJECT? and verify.lisp considerably.  Is now
+	useful.
+	* Updated most code related to flavours, including save/load of
+	flavours.  Flavours are now distributed at birth.  The
+	flavours-object is now (cons desc colour) instead of (list desc
+	colour).  Much improved!
+	* Started to add resists-fields to class/race/player.. temporary
+	* Rearrangaed variant-object to have full tables of monsters and
+	objects in variant.monsters and variant.objects, old
+	level-organised tables are now in variant.*-by-level.
+	* Extended player-object and added future help-classes for
+	player-information (calculated-attributes, temporary-attributes,
+	misc-player-info, player-abilities) and updated code to use this.
+	* Added calculation of burden
+	* Updated save/load code for flavours and for object-kinds
+	* Updated xp-tests to work with code again!
+	* Upgraded main-gtk to 2.9.3 version, also made it use x11-keys
+	and a long time bug can be closed at release!
+	* Many many other small tweaks, hacks and bug-fixes
+	
+2002-01-06  Stig E Sandø <stig@users.sourceforge.net>
+	* Added treasure-drop class and a thoroughly checking-system to
+	make that code stay within strict invariants.
+	* Added monster-drops for items that uses treasure-drop system
+	* Added drop-near-location function, ensured that it does not drop
+	atop stairs.  Made drop-command use this one as well
+	* Some tweaks in dungeon.lisp to make it more lenient to mistakes
+	* Tweaked save/load process slightly and renamed DO-LOAD to
+	LOAD-A-SAVED-GAME which does just that and do not attempt to be a
+	general solution ==> simpler code.
+	* Added game-values info to readable save/load for objects
+	* Several minor tweaks
+	
+2002-01-05  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.0.17
+	
+2002-01-05  Stig E Sandø <stig@users.sourceforge.net>
+	* Renamed slots in the game-values object to be more precise and
+	then updated all places these are used.
+	* Made all creation of game-values go via an error-checking
+	function.
+	* Added message when you stand atop items in dungeons after a
+	move.
+	* Altered player stat-system to be slightly simpler and more
+	logical
+	* Tweaked more effect and element-code and fixed bugs that were
+	found for elements.  Made game-values use bit-fields for elements.
+	* Renamed high-score file
+	* Added copy-function for active-object
+	* Added code to display to-hit vs armour in the game
+	* Simplified update of player slightly.. does not cons anymore
+	* Altered some stat-keywords
+	* Fixed some bugs in the store
+	* Made a new splash-screen
+	* Tried to update compat-code slightly.. it is fairly broken
+	* Other minor tweaks
+	
+	
+2001-12-16  Stig E Sandø <stig@users.sourceforge.net>
+	* Started to add code for effects and elements (core.lisp)
+	* Updated more of the tests to work with current source-base
+	* Minor tweaks
+	
+2001-12-15  Stig E Sandø <stig@users.sourceforge.net>
+	* Removed parts of the C-code and moved simpler C-functions to
+	lisp-side.
+	* Added search-code, hackish but it works
+	* Added improved activation info for dungeon/level
+	* Several minor tweaks
+	
+2001-12-09  Stig E Sandø <stig@users.sourceforge.net>
+	* Added verify-id to base.lisp
+	* Made monster.lisp verify ids during define-*, also made it more
+	picky and added a few keywords.
+	* Better combat-message for misses
+	* Quitters do not enter the high-score
+	* Started on the help-code (core.lisp,print.lisp)
+	* Minor tweaks
+
+2001-12-08  Stig E Sandø <stig@users.sourceforge.net>
+	* Enforced id-policy, ie all savable objects should have a
+	lowercase string as id, not a symbol.  
+	* Made sex a struct and a sexes-entry in the variant object for
+	the variant to tailour the alternatives. Removed old +sexes+
+	constant.  Edited all code that depended on this.
+	* Updated id/symbol policy for class and race and altered the
+	classes and helper-functions slightly to do things gracefully.
+	The classes and races tables in variants are indexed both by
+	symbol and string, so any attempts to get all entries should
+	remove-duplicates.
+	* Fixed several save/load issues that has been problematic and
+	hidden, and now the saved code should not differ between
+	lowercase/upcase and lisp-system.  Also needed to tune some parts
+	to factories.
+	* Updated id/symbol policy wrt levels
+	* Updated some docs about id/policy
+	* Fixed crash which prevented people from selling to shops.
+	* Several small fixes
+	
+2001-12-07  Stig E Sandø <stig@users.sourceforge.net>
+	* Improved repainting-code through active flag-use, borrowed
+	heavily from angband.  Should give speedup. (may still have bugs)
+	* Optimised dungeon-accesses and internal code in update-view
+	through macros and inlining.  Seems to help a lot on ACL.
+	* Updated several paint/update flags in constants.lisp
+	* Fixed save/load of variant, and redid save/load of player-object
+	to use factory on load and giving up binary-types.
+	* Made variant-registration use strings for ids
+	* Changed object.level to object.depth and monster.level to
+	monster.depth, also affected vanilla-variant.
+	* Added more deps to .system
+	* Split update-player! into more separate functions.  The split is
+	only half-done and there might be bugs
+	* Fixed missile-selection repaint-bug
+	* Other minor fixes.
+
+2001-12-05  Stig E Sandø <stig@users.sourceforge.net>
+	* Added to-hit, damage and killing to missile-combat. (project.lisp)
+	* Added message on item-pickup (action.lisp)
+	* Minor fixes
+		
+2001-12-04  Stig E Sandø <stig@users.sourceforge.net>
+	* Updated debian/rules file to reflect changes in vanilla-variant
+	file-organisation.
+	* Split ChangeLog in two.. this one now reflects changes in engine
+	and how things are organised.  The one in variants/vanilla/
+	reflects changes to the vanilla variant.
+	* Improved store-code with selling-list/restocking list and
+	mass-production code.
+	* Moved player struct/class to core.lisp to ease compilation in
+	other files.
+	* Added deduction of torch-charges if the object is not an
+	artifact.
+	* Can now display multihued monsters correctly, as well as not
+	displaying see-htrough monsters.
+	* Removed sorting-values from variant-code and variant-object,
+	belonged in compatibility-code and is now in
+	lib/compat/object.lisp
+	* Added summon-monster hack to key-set for maintainer-use.
+	* Improved safety in production of active-monsters (monsters.lisp)
+	* Reinstated code to generate gold in dungeon (only copper with
+	the hack now used though).
+	* Several minor fixes and tweaks
+		
+2001-12-01  Stig E Sandø <stig@users.sourceforge.net>
+	* Updated signatures to CREATE-AOBJ-* in object.lisp
+	* Added simplifying PARSE-AND-ROLL-DICE in base.lisp
+	* Extended syntax to specify starting equipment and improved
+	birth.lisp to reflect this.  starting-equipment for vanilla also
+	affected.
+	* Added generics for arrow-shooting and missile-shooting.  Also
+	added preliminary/non-functional code for shooting arrows in
+	project.lisp
+	* Updated GET-ITEM-TABLE method to take coordinates for :floor
+	* Extended DEF-OBJ-TYPE macro with possibility to add slots
+	* Added multipliers to bows
+	* Added and improved some code for selecting items
+	* Added key to fire arrows ('f')
+	* Added some ids to the objects in var/van/config/objects.lisp
+	* Fixed minor bugs 
+	
+2001-11-26  Stig E Sandø <stig@users.sourceforge.net>
+	* Updated TODO-list and some web-docs
+	* More reorganisation of code and changing of arguments.  More
+	stable now I hope.
+	* Moved all generics into generic.lisp
+	* Simplified light-spot! and added print-relative!
+	* Started to add dependencies to the .system file
+	* Cleaned up death a bit and moved some of it from loop.lisp to
+	death.lisp
+	* Updated many objects in vanilla-variant to use proper
+	identification call.
+	* Added project.lisp for projection code and sys.lisp for
+	system-dependent code.
+	* Now saves highscores to ~/.langband/ when possible
+	* Split up monster-file for variants into monsters, uniques and
+	town-monsters.
+	* Other minor fixes
+		
+2001-11-24  Stig E Sandø <stig@users.sourceforge.net>
+	* Major reorganisation of function-names and generics.  Much more
+	dependent and overridable by a variant.
+	* Added birth re-roll and name-entering
+	* Minor fixes
+	
+2001-11-22  Stig E Sandø <stig@users.sourceforge.net>
+	* Added random name-generator (variants/vanilla/*lisp)
+	* Added possibility to enter a player-name (or any string),
+	currently in birth.lisp
+	* Made birth-process use random name generator as default.
+	* Improved death and high-score handling (death.lisp)
+	* Various small fixes, added assertions and some bug-fixing
+		
+2001-10-29  Stig E Sandø <stig@users.sourceforge.net>
+	* Improved 'use'-code in actions.lisp
+	* Fixed repaint when wielding objects
+	* Added queue-code to base.lisp (used by room-lightning code)
+	* Added symbol-handling used by object-macros
+	* Added inheritance of object-types and active-objects, works via
+	an object-macro.  See object.lisp
+	* Added dmg-bonus from weapon in combat
+	* Added beginning of high-score code in death.lisp
+	* Started to add magicification of objects
+	* Improved object-identify/try/aware code greatly, uses generics
+	* Lets active-objects use game-values as they should, removed old
+	hack
+	* Improved object-description-code in object.lisp but it is hardly
+	finished.
+	* Moved creation of object-kinds and active-objects into produce-*
+	factories.
+	* Revamped much of the code for object-effects
+	* Added several scroll-effects
+	* Start to add enchant, light and teleport spells
+	* Added types to the objects in the vanilla-variant
+	* Many many bug-fixes
+		
+2001-08-06  Stig E Sandø <stig@users.sourceforge.net>
+	* Fixed a bug reported by Tijs about 'Q'uit behaviour.  Quit will
+	now return to the Lisp-image for X11 and GCU.
+	* Minor bug-fixing.
+		
+2001-08-05  Stig E Sandø <stig@users.sourceforge.net>
+	* Ported to LispWorks on Linux and on Win32.  Both are fairly
+	fragile ports.   They also made me uncover bugs in the source.
+	* Cleaned up much in zterm/ and made main-win.c work as a
+	shared-library too.  Removed unused files, and added some
+	declarations for Win32 DLL-export
+	* Provided a simple non-defsystem loading of the system for corman
+	lisp and LWW
+	* Added Lispworks support to the FFI-generator
+	* Improved verification of some objects, and improved testing
+	* Added win-keys and fonts for windows in config/
+	* Improved the FAQ slightly
+	
+2001-07-31  Stig E Sandø <stig@users.sourceforge.net>
+	* Improved testing-code and equality-checking considerably.
+	* Added generic CONVERT-OBJ where new methods replace a few of the
+	foo-to-bar methods that converted objects and structures.
+	* Added dumping and reading of object-kinds and monsters.  Vanilla
+	does not rely on any *_info.txt anymore, just lisp-definitions.
+	* Updated binary-types from upstream, fixes binary-struct at
+	toplevel bug
+	* Other minor changes.
+	
+2001-07-23  Stig E Sandø <stig@users.sourceforge.net>
+	* Upgraded the feature-class and made a convertor from f_info.txt
+	to floors.lisp and installed new floors.lisp in vanilla
+	* Moved key-defs to vanilla from lib/common
+	* Minor bug-fixing
+	
+2001-07-22  Stig E Sandø <stig@users.sourceforge.net>
+	* Improved shops, basic trading is now possible (everything
+	functions as black-markets though, apart from prices where only
+	black-market is of class black-market and have steep prices)
+	* Added colours to equipment, shop-listings
+	* Added a few helper-functions like GET-PRICE, GET-ATTRIBUTE, etc.
+	* Added overlapping room, removed dummy shop-room
+	* Minor changes elsewhere
+	
+2001-07-18  Stig E Sandø <stig@users.sourceforge.net>
+	* Improved UI-handling considerably for zterm, including
+	now-usable curses-support
+	* Added better stack-handling
+	* Added nutritious effect of food
+	* Improved 'u'se code
+	* Improved birth UI
+	* Fixed a lot of minor technical issues
+	* Improved object descriptions
+	* Updated the included binary-types
+	* Improved debian-packaging
+	* Added quaff, eat and read-commands
+	* Other minor issues
+	
+2001-05-24  Stig E Sandø <stig@users.sourceforge.net>
+	* added some code to 'u'se objects, and started with potions.  
+	
+2001-05-22  Stig E Sandø <stig@users.sourceforge.net>
+	* lots of changes, some of them summarised here, others are
+	forgotten
+	* reorganised directory-structure and depend more on
+	logical-pathnames than earlier.
+	* Rewrote part of the C-side code to not depend on DEFINEs for
+	lisp-system.  To avoid linking-errors a dummycall shared-object is
+	also linked for ACL and CLISP.
+	* Tuned much of the FFI-code for ACL and slightly for CMUCL.  With
+	an intricate system of WITH-FOREIGN-STR and string-conversions and
+	even a non-consing LB-FORMAT (FORMAT-replacement) consing is down
+	and strings are basically passed as addresses in ACL and most of
+	CMUCL FFI.  I don't know for CLISP.
+	* added tests for ffi and format
+	* updated the clisp build to work with newer file-structure and
+	ffi-system.
+	* added Debian-packaging in three separate packages: the
+	c-library, the engine and currently the vanilla variant.  The
+	langband-engine depends on binary-types debian package.
+	* updated README and some docs.
+	* renamed packages to org.langband.engine, org.langband.ffi,
+	org.langband.testing
+	* fixed bug in xp-awarding/gain-level
+	* moved around code in general..
+	* added type-declarations in some places to please CMUCL, but
+	there's still plenty to do.
+	* ensured that build-system works when "developing", ie (load
+	"game") and when loading it on a debian-system.
+	* probably other minor things, but most importantly: reduced
+	consing and new improved build-system with debian-package support
+	directly. 
+	
+2001-04-25  Stig E Sandø <stig@users.sourceforge.net>
+	* added preliminary tombstone
+	* fixed bug which disallowed wearing of gloves
+	
+2001-04-21  Stig E Sandø <stig@users.sourceforge.net>
+	* improving gradually save/load, now introducing the level-object
+	* made level-constructions use a factory in the variant object,
+	this is still ugly however
+	* added more to verify.lisp
+	* moved some equipment-implementation to util.lisp
+	* ...
+	
+2001-04-21  Stig E Sandø <stig@users.sourceforge.net>
+	* improving gradually the save/load process, which now mostly
+	includes the player-object.
+	* also refactored other parts of the code, though mostly related
+	to the player-object.
+	* improved test-set somewhat
+	* minor bug-fixing
+	* ...
+	
+2001-04-20  Stig E Sandø <stig@users.sourceforge.net>	
+	* started to add save/load of both a source-based save/load and a
+	binary version.  For the binary version I use binary-types made by
+	Frode Vatvedt Fjeld which seems to work.
+	* added a LANG-EQUAL function to be able to check that save/load
+	is consistent and to allow XP-testing of the system.
+	* Added in-game XP-testing of save/load of both binary and source.
+	* added illegal x/y values to coordinates to ensure that
+	safe-values are always put there.
+	* added x/y coordinates to items-on-floor and a dungeon-pointer
+	* tries to ensure that all id's of monsters/objects are strings,
+	help in save/load process
+	
+	
+	
+2001-04-15  Stig E Sandø <stig@users.sourceforge.net>
+	* added more or less the same speed-system as in Angband, which
+	means that speed matters now.  Some actions have different
+	energy-use though
+	* added more generic functions to ensure that code for
+	monsters/player is more or less shared.
+	* ensured that the combat-system uses skill more or less
+	* added a WITH-DUNGEON-MONSTERS macro to simplify code
+	* improved WITH-NEW-SCREEN and use it in more places
+	* added support for monsters that never move and random movers.
+	* added primitive hp-regeneration
+	* tried optimising project-path slightly
+	* 
+	
+2001-04-14  Stig E Sandø <stig@users.sourceforge.net>
+	* added PROJECT-PATH and made all monsters move towards the player
+	to kill him off, which they can.. the town is tough right now.
+	* added a few generic functions to ensure somewhat general ways to
+	do combat between player and monsters, see combat.lisp
+	* fixed bug of monsters walking through walls and a shift-mistake
+	in view.lisp.  Added a fuzzy thing to make monsters move the right
+	way even if something blocks their view.
+	* added more lenient treatment of data when reading old-fashioned
+	monster-file, and also ensured that dice for objects and monsters
+	are parsed as such.
+	* fixed monster creation, now gets correct number of hit-points
+	* made attack-system use weapons and attacks from monster-file.
+	Normal weapon-damage used as well.  50% chance to hit for everyone
+	still.
+	* added dice-rolling function.. really really complex thing :-)
+	* started to add skills to the system.. a long trek with lots of
+	mistakes
+	* improved key-handling to not do anything stupid when a wrong key
+	is entered
+	* added skills to most races and classes
+	* minor edits..
+	
+2001-04-13  Stig E Sandø <stig@users.sourceforge.net>
+	* made generic functions LOCATION-X and LOCATION-Y to abstract
+	away details of various things location
+	* rewrote MAP-INFO to return two values instead of a cons
+	* added LANG-WARN
+	* rewrote much of the LOS-code.  it doesn't cons much anymore and
+	it now uses 16-bit ints instead of 32-bit ints.  it has a bug
+	though.
+	* rewrote much of the print.lisp code to just pass numbers to C to
+	avoid string-allocation.  added a couple of new C-functions for
+	this, and their FFI-declarations. 
+	* started to abstract somewhat on combat and started the long
+	trek of monster-processing
+	* Fixed buggy LOS from 16-bit change which also fixed an old bug
+	in my old code.. whaddayaknow.
+	* minor edits..
+		
+2001-03-15  Stig E Sandø <stig@users.sourceforge.net>
+	* updated a lot of code to make things work with CLISP.  No actual
+	changes to the game, but mostly system issues.
+	
+2001-02-19  Stig E Sandø <stig@users.sourceforge.net>
+	* simplified lib/zterm/Makefile slightly
+	* improved the activation protocol for objects, uses :around and
+	checks for appropriate activation and returns appropriate value.
+	Updated a few objects to ensure they're activated properly.
+	* improved shop-code slightly, shops and houses now includes item
+	containers and should specialise the appropriate functions
+	* made cmucl use a callback, just like ACL.  this will hopefully
+	make it easier later with the gtk-support which seems to work now.
+	* added a small function to print out key-mappings
+	* a few minor bugs fixed
+		
+2001-02-18  Stig E Sandø <stig@users.sourceforge.net>
+	* Added Aerton's preliminary sound-support (a daemon) for Angband
+	and Linux. The small sound-daemon is released in public domain.
+	* Updated main-x11.c, Makefile and lisp-code to reflect this.  The
+	sound-support seems to work.
+	* added a FAQ-entry to explain how to use the sound-support
+	
+2001-02-12  Stig E Sandø <stig@users.sourceforge.net>
+	* added activable mixin-class for being consistent with
+	acticate-object state and later deactivation
+	* activable objects: house, variant, active-object, level and
+	active-monster 
+	* removed reuse of dungeon arrays to allow easier saving of levels
+	later.
+	* added a hack to allow easy restart after a crash by saving state
+	now and then.  the game-loop can be restarted with GAME-LOOP&.
+	* added 'z' key to get a LISP-prompt, the restart function over
+	can be used afterwards.
+	* removed warnings from C-code
+	* did some optimisations on UPDATE-VIEW!, need a real rewrite
+	later to stop using bignums.
+	* regenerated web/file-list.html
+	* updated README and added COPYING to the fray
+	
+2001-02-10  Stig E Sandø <stig@users.sourceforge.net>
+	* reduced cons'ing slightly and optimised UPDATE-VIEW! slightly.
+	* added memoize.lisp and memoised a few string allocation
+	functions in print.lisp (moved to base.lisp)
+	* macrofied a few bit-twiddlers for allegro only
+	* small adjustments elsewhere
+
+2001-02-08  Stig E Sandø <stig@users.sourceforge.net>
+	* made an improvement to the shuffle-array function and added a
+	handy array-with-num thing to base.lisp
+	* started placing stores/houses stuff in the variant object, not
+	quite there yet
+	* added a trigger-mechanism that can be set to a special
+	coordinate in the dungeon and which will be triggered when the
+	player moves atop the location  GET-COORD-TRIGGER and it's SETF
+	* added XP testing framework, source gotten from onShore Inc.  See
+	tools/xptest-COPYING for copying details.  Only simple tests added
+	to code.  This testing imposes some overhead on the current
+	cvs-tree code
+	* Moved minor stuff around in the vanilla variant code
+		
+2001-02-02  Stig E Sandø <stig@users.sourceforge.net>
+	* added support for numpad and arrowkeys and diagonal movement.
+	* added code to allow key-macros to be set and loaded from lisp.
+	Angband-pref-files are now plain LOADed lisp.
+	* started writing a technical overview of Langband
+	* Added lazy flavouring to Langband.  an object is flavoured the
+	first time an object of a certain kind is created. 
+
+		
+2001-01-21  Stig E Sandø <stig@users.sourceforge.net>
+	* Pretty drastic upgrade of a lot of the code, wrt to levels and
+	possibly theming.  the town-level in vanilla is now a themed level
+	with it's own set of monsters.  This change has updated functions
+	to find monster- and object-types from accessing a variant table
+	to depend on level.
+	* Grouped obj-table, alloc-table and obj-table-by-level into one
+	struct and should be used by all appropriate "types" in the game.
+	* Added filters when reading monsters and objects to allow levels
+	to pick out what they want.
+	* disabled stores and flavouring, will enable flavours shortly,
+	but stores should be done on a level-by-level basis.
+	* disabled placement of gold, no (gold) rush to fix it
+	* minor adjustments
+	
+2001-01-21  Stig E Sandø <stig@users.sourceforge.net>
+	* moved *turn* into variant as variant.turn and added a
+	turn-events (non-functional yet)
+	* moved sort-values (equipment) into variant object and updated
+	all corresponding functions
+	* added some time-variables to variant object and vanilla-variant,
+	and fixed time-of-day for town.. 
+
+2001-01-20  Stig E Sandø <stig@users.sourceforge.net>
+	* added a fun room, the shop-room :-)
+	* moved monster-tables into the variant object
+	* moved object-tables into the variant object
+	* added generics for lazy init of objects, monsters and features.
+	these are specialised on the variant object.  added corresponding
+	methods for vanilla.  The ACTIVATE-OBJECT is important here
+	* renamed a few compat-functions to have COMPAT- prefix
+	* also separated the vanilla variant mostly from the rest of the
+	code, very few dependencies left, and loading is simpler.
+		
+	
+
+2001-01-19  Stig E Sandø <stig@users.sourceforge.net>
+	* renamed dungeon.level to dungeon.depth
+	* moved the constant +xp-table+ to be a property of the variant
+	object and is now variant.xp-table
+	* moved the constant +max-level+ to be a property of the variant
+	object and is now variant.max-charlevel
+	* moved +dungeon-rooms+ constant to be part of dungeon-settings as
+	the slot room-number
+	* tried to ensure the same random state when generating the town
+	in vanilla
+	* added low-level c-term-save and c-term-load which are used by
+	screen-save and screen-load.  screen-save and screen-load are
+	neatly hidden beneath WITH-NEW-SCREEN though.  This new macro is
+	used for show-inventory and show-equipment.
+	* Fixed bug with RNG to allow the town to remain constant.
+	Hackish solution is limited to one function in the variant-code.
+	* Fixed bug in map-info which displayed things in corridors it
+	shouldn't display.  Also fixed bug in map-info which showed
+	monsters on map even if they were out of torch-scope
+	* fixed stair back to level where you came from, through a
+	POST-INITIALISATION of a level, which allows customisation for
+	individual levels.
+	* added hack to OPEN-DOOR! to ensure that an opened door is
+	relighted right away.
+	* removed some more details, warnings and made the lisp
+	environment more quiet.
+	
+
+2001-01-18  Stig E Sandø <stig@users.sourceforge.net>
+	* revamped room-code to be CLOS and the actual control is put in
+	the variant and the engine is simplified.
+	* prettified code, removed warnings and ensured that things look
+	kind of nice.  time to write real code again soon. 
+		
+2001-01-18  Stig E Sandø <stig@users.sourceforge.net>
+	* removed vanilla/[races|classes] from system file and let them be
+	loaded by variant init
+	* made a variant class, and made a subclass for the vanilla
+	variant.  this variant class contains more of the information
+	which was kept globally earlier.  an active variant-object will be
+	kept in *variant*.  the file for this is core.lisp
+	* added a level class which is the start of theming of levels.
+	the file for this is level.lisp and lib/vanilla/levels.lisp update
+	this with variant-specifics (ie town).  town-code largely moved
+	here. 
+	* removed global *level-rating* variable
+	* ensured that races and classes now access the variant-object
+	* separated vanilla and compat-code from the core engine
+	system-file.  The new vanilla system file is
+	lib/var-vanilla.system.  game.lisp has been changed to reflect
+	that.
+	* common files now use the COMMON prefix
+	* distributed room-code into lib/common and to variants, also
+	removed global table and moved it into the variant
+	* moved global floor-table into variant object and updated
+	floor-code
+	* made a common module in langband.system to pretty things up
+	* moved max-sizes of dungeons into variant object and removed
+	global variables.
+	* Slight change on PRINT-DEPTH
+	
+
+
+2001-01-17  Stig E Sandø <stig@users.sourceforge.net>
+        * fixed a bug which prevented the +cave-wall+ flag from being set
+	correctly.  added this check into (SETF COORD-FEATURE) which is
+	different from (SETF COORD.FEATURE), unfortunate I know.
+	* added a WITH-DUNGEON macro
+	* updated MAP-INFO to use +cave-seen+ and +cave-view+ flags
+	* made PRINT-MAP-TO-FILE only print features, ie it ignores what
+	has been seen
+	* removed a bug in UPDATE-VIEW! where initial-elements for arrays
+	were not explicitly set
+	* removed bug in VINFO-INIT! where the grid-array was not in
+	correct order.
+	* added a temporary FORGET-VIEW!
+	
+	
+        

@@ -1,0 +1,221 @@
+2003-05-08  Stig E Sandø <stig@users.sourceforge.net>
+	* Updated code to reflect upgraded engine.
+	* Changed variant to use .png for all graphics and .ogg for all
+	sound-effects
+	* Added vicious special abilities to many monsters
+	* Added several effects for spells, sticks, scrolls, etc
+	* Made rods behave as they should. (stacking not right yet though)
+	* Added proper resting
+	* Added word of recall
+	* Make player-states use the new player-state sytstem in the
+	engine
+	* Added left-click looking, click most stuff to see what it means
+	* Plus many other code-fixes, bug-fixes and improvements.
+	
+2003-03-09  Stig E Sandø <stig@users.sourceforge.net>
+	* Tweaked some object-types to make it easier to dispatch on them.
+	* Added 't'hrow object code
+	* Added ego-item code
+	* Improved handling of town-level and shops
+	* Saves/loads shop-content properly
+	* Saves/loads spell-knowledge
+	* Improved startup-speed slightly
+	* Now checks if armour or gloves affect spell-casting and mana
+	* Added most DETECT-XXX spells
+	* Added restocking of shops
+	* Fixed food-consumption to depend on regeneration and digestion
+	* Added refill-command for torches and lanterns
+	* Added code for object- and monster-recall.  not complete
+	* Simplified chance/locale specification for objects.. not
+	transferred all code to new system
+	* Added full spell-specification to all classes
+	* Other minor fixes and tweaks
+
+2003-02-18  Stig E Sandø <stig@users.sourceforge.net>
+	* Moved skill-code to vanilla variant
+	* Added mana constants that had been removed from engine
+	* Fixed vanilla-specifric print.lisp code
+	* Tweaked stat-boosts
+	* Other minor tweaks
+	
+2003-01-18  Stig E Sandø <stig@users.sourceforge.net>
+	* Updated code to fit large changes in engine, see engine
+	changelog.
+	* Added visual effects for spells and missiles
+	* Added control of images to the variant, and this control is no
+	longer on the C-side.
+	* Reorganised some key-info to use config/ to make it easier to
+	tweak
+	* Added possibility of describing spells directly in the book
+	definition
+	* Fixed several spell-issues, and now displays study-status for
+	spells.
+	* Updated most monsters, objects, flavours, etc with x-attr/x-char
+	info with graphics directly instead of relying on graf-prefs.lisp
+	updates.  Easier to read and understand now.
+	* Other minor fixes.
+		
+
+2002-12-07  Stig E Sandø <stig@users.sourceforge.net>
+	* Added age/status/height/weight info to races in variant.
+	* Added angband-style save-and-exit on ^X and 'Q'uit will now kill
+	the savefile as well.
+	* Added better id and versioning of variant
+	* Other minor tweaks
+	
+2002-11-28  Stig E Sandø <stig@users.sourceforge.net>
+	* Updated code to use new floor-system in engine.  All floors are
+	now dynamically created, so no more constants are used.
+	* Several minor tweaks and fixes to handle updates in engine.
+	
+2002-11-11  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.1.1
+	* Very little new gameplay, and mostly UI-upgrade in engine.  See
+	engine-changelog. 
+	
+2002-09-16  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.1.0
+
+2002-09-16  Stig E Sandø <stig@users.sourceforge.net>
+	* Tweaked and added more commands (disarm, bash, ...)
+	* Added code for player's home
+	* Added stun/cut/... code
+	* Updated help-system
+	* Updated code to new and more advanced flavouring system
+	* Thanks to Scott, added numeric-ids to monsters again
+	* Many other minor changes and bugfixes
+
+2002-07-29  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.0.21
+
+2002-07-29  Stig E Sandø <stig@users.sourceforge.net>
+	* Moved much code from engine to variant and did enless amounts of
+	tweaking.
+	* Added some new files to better organise the code
+	* Improved code for effects on player
+	* Fixed bugs in spell-code
+	* Removed obj-type from all game objects
+	* Added new object-kinds and updated objects
+	* Updated many object-effects
+	* ...
+	
+2002-05-19  Stig E Sandø <stig@users.sourceforge.net>
+	* Added basics of the magic-system, commands to use it, commands
+	to learn spells, mana-calculation, spellbook-code and some basic
+	spells.  Still missing many features, but a rough system is up.
+	* Updated the ability-calculations, both temporary ones and
+	equipment/class/race based ones.
+	* Added elemental damage function
+	* Added some debug functions
+	* Added spell-info to some classes
+	* Added code to some rings
+	* Revamped floor-info to reflect changes in trap-code, but adds a
+	lot of interesting new traps with working code.
+	* Other minor changes
+	
+2002-02-17  Stig E Sandø <stig@users.sourceforge.net>
+        * Sent out a release, 0.0.19
+	
+2002-02-16  Stig E Sandø <stig@users.sourceforge.net>
+	* Updated all references to sex to gender
+	* Installed a lot of player-calculation in quirks.lisp, as that
+	have been moved into variant to make update of vanilla-specific
+	stuff easier to handle.
+	* Installed lots of player-attributes
+	* Updated the effect-list considerably
+	* Done other minor renaming of classes, functions, keywords, ..
+	* Updated many more potions to work
+	* Other minor stuff
+	
+2002-02-12  Stig E Sandø <stig@users.sourceforge.net>
+	* Updated lots of monster-ids and updated with new
+	monster-ability-names
+	* Removed some duplicate monsters
+	* Tweaked some wizard keys
+	* not much else
+	
+2002-01-22  Stig E Sandø <stig@users.sourceforge.net>
+	* Moved object-effects into the files describing the objects, and
+	removed the code for the old hack to define object-effects.  Also
+	removed the files with object-effects.
+	* Changed some DEFCONSTANTs to DEFVARs to be more in line with
+	strict ANSI
+	* Added wizard-key to create arbitrary objects
+	* Minor tweaking
+
+2002-01-19  Stig E Sandø <stig@users.sourceforge.net>
+	* Added CREATE-GOLD method that works like the vanilla make_gold()
+	function.  It replaces a function that used to be in the engine.
+	* Moved object-effects into config/ dir, they're no longer compiled
+	* Moved defvar's into vanilla-variant-object and adjusted code to
+	reflect that.
+	* Some id-tweaking
+	
+2002-01-14  Stig E Sandø <stig@users.sourceforge.net>
+	* Upgraded variant-code to work with engine-updates, primarily
+	flavour-related and changes in variant-class.
+	* Also updated lots of object-ids
+	* Minor tweaking and bug-fixing (e.g one staff that was money)
+
+2002-01-06  Stig E Sandø <stig@users.sourceforge.net>
+	* Added wizard-commands to heal and let player gain a level
+	* Fixed a -more- bug with 'g'et command (thanks to Eugene for
+	reporting. 
+	* Minor tweaking, and some new ids
+	
+2002-01-05  Stig E Sandø <stig@users.sourceforge.net>
+	* Sent out a release, 0.0.17
+	
+2002-01-05  Stig E Sandø <stig@users.sourceforge.net>
+	* Added wizard.lisp with wizard-command keys, and updated
+	key-commands.
+	* Updated objects for game-values changes in engine and other
+	minor changes.
+	* Minor tweaks
+
+2001-12-16  Stig E Sandø <stig@users.sourceforge.net>
+	* Tweaked some key-presses with more info, and added start of
+	help-topic key, and a key to display effects/elements/... and
+	other odd info.  Also added 's' key to search. (keys.lisp)
+	* Added elements and effects to config/defines.lisp but this info
+	may not be complete.  But it's a start.
+	* Added some ids and minor tweaking. 
+	
+2001-12-08  Stig E Sandø <stig@users.sourceforge.net>
+	* Rearranged and updated ids in monster-list (monster.lisp).  Removed
+	duplicate monsters and added hackish function to determine if the
+	monster comes in a group, instead of having separate individual
+	and group-monsters.
+	* Made monster-selection more picky and disallow strictly
+	duplicate ids (quirks.lisp)
+	* Minor fixes
+	
+2001-12-08  Stig E Sandø <stig@users.sourceforge.net>
+	* Split gold-related objects into gold.lisp
+	* Updated race/class ids to reflect changes in engine demands.
+	* Updated monsters with symbol ids to use a lowercase string to
+	reflect id-policy in engine.
+	* Updated level-code to reflect changes in engine-policy
+	* Minor fixes
+	
+2001-12-07  Stig E Sandø <stig@users.sourceforge.net>
+	* Added more ids to objects and monsters
+	* Moved spellbooks into books.lisp
+	* Reorganised files slightly and finally moved all unique monsters
+	into unique.lisp
+	* Edited all object and monster entries to use :depth and not the
+	old :level
+	* Other minor fixes to reflect changes in engine (id, save/load)
+
+2001-12-04  Stig E Sandø <stig@users.sourceforge.net>
+	* Split config/objects.lisp into armour.lisp, potions.lisp,
+	scrolls.lisp, weapons.lisp and sticks.lisp
+	* Updated quirks.lisp to load new files properly.
+	* Updated object-files with lots of proper object-ids.
+	* Updated stores.lisp with selling-lists for regular stores and
+	one or two new owners.
+	* Also made save/load go to ~/.langband/ instead of .
+	* Added terminating error if objects have conflicting ids
+	* A few other minor changes.
+
+	

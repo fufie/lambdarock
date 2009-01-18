@@ -1,0 +1,12 @@
+*.fasl
+*.faslmt
+*.fsl
+*.x86f
+*.err
+*.fas
+*.sparcf
+*.lib
+*.ufsl
+*.dfsl
+ffi-clisp.c
+

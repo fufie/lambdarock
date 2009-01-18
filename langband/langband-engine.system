@@ -1,0 +1,127 @@
+;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: cl-user -*-
+
+#|
+
+DESC: langband-engine.system - system-def for vanilla
+Copyright (c) 2001-2003 - Stig Erik Sandø
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+|#
+
+(in-package :cl-user)
+
+#-langband-development
+(setf (logical-pathname-translations "langband")
+      '(("**;*.*.*" "cl-library:;langband-engine;**;*.*.*")))
+
+;; we need certain flags
+(eval-when (:execute :load-toplevel :compile-toplevel)
+
+  #+(or cmu allegro lispworks sbcl)
+  (pushnew :enough-support-for-langband *features*)
+  #+(and clisp langband-development) ;; clisp not ready in debian yet
+  (pushnew :enough-support-for-langband *features*)
+
+  )
+
+
+#+enough-support-for-langband
+(mk:defsystem :langband-engine
+    :source-pathname
+  #-langband-development #p"langband:"
+  #+langband-development (translate-logical-pathname #p"langband:")
+  ;;    :source-pathname ""
+    :source-extension "lisp"
+    :components
+    (
+     (:module decl
+              :source-pathname ""
+              :components ((:file "pre-build")))
+     (:module btypes
+	      :source-pathname "tools/"
+	      :components ((:file "binary-types"))
+	      :depends-on (decl))
+
+     (:module basics
+	      :source-pathname ""
+	      :components ((:file "package")
+			   (:file "sys" :depends-on ("package"))
+			   )
+	      :depends-on (btypes))
+
+     (:module foreign
+	      :source-pathname "ffi/"
+	      :components ((:file "ffi-helpers")
+			   (:file "ffi-load" :depends-on ("ffi-helpers"))
+			   #+cmu
+			   (:file "ffi-cmu" :depends-on ("ffi-load"))
+			   #+sbcl
+			   (:file "ffi-sbcl" :depends-on ("ffi-load"))
+			   #+allegro
+			   (:file "ffi-acl" :depends-on ("ffi-load"))
+			   #+lispworks
+			   (:file "ffi-lw" :depends-on ("ffi-load"))
+			   #+clisp
+			   (:file "ffi-clisp" :depends-on ("ffi-load")))
+	      :depends-on (decl))
+
+     ;; fix remaining dependency-problems as they show up
+     (:module basic
+              :source-pathname ""
+              :components ((:file "base")
+			   (:file "constants" :depends-on ("base"))
+			   (:file "generics")
+			   (:file "classes" :depends-on ("generics" "constants"))
+			   (:file "window" :depends-on ("classes" "constants"))
+			   (:file "sound" :depends-on ("base"))
+			   (:file "adts" :depends-on ("base"))
+			   (:file "global" :depends-on ("classes" "generics" "base" "constants" "window"))
+			   (:file "themes" :depends-on ("global"))
+			   (:file "character" :depends-on ("classes" "global"))
+			   (:file "object" :depends-on ("classes" "generics" "global"))
+			   (:file "equipment" :depends-on ("global" "object"))
+			   (:file "player" :depends-on ("classes" "global" "character" "equipment"))
+			   (:file "monster" :depends-on ("classes" "global"))
+			   (:file "dungeon" :depends-on ("base" "monster" "classes" "constants" "adts"))
+			   (:file "building" :depends-on ("generics" "base" "global" "dungeon" "equipment"))
+			   
+			   (:file "allocate" :depends-on ("generics" "dungeon" "constants" "object" "adts"))
+			   (:file "generate" :depends-on ("dungeon" "allocate" "classes" "generics"
+								    "object" "equipment"))
+			   (:file "print" :depends-on ("generics" "player"))
+			   (:file "combat" :depends-on ("generics" "base" "sound" "global"
+								   "classes" "dungeon" "player"))
+			   (:file "project" :depends-on ("base" "generics" "player" "object" "dungeon" "combat"))
+			   (:file "util" :depends-on ("constants" "dungeon" "classes" "global" "generics"
+								"generate" "building" "project"))
+			   (:file "visuals" :depends-on ("util"))
+			   (:file "stores" :depends-on ("building" "generics" "equipment" "character" "util"))
+			   (:file "view" :depends-on ("dungeon" "generics" "constants"))
+			   
+			   (:file "actions" :depends-on ("generics" "util" "global" "generate" "combat"
+								    "project" "visuals"))
+			   (:file "save" :depends-on ("player" "dungeon" "classes" "global" "generics"))
+			   (:file "load" :depends-on ("save" "generate"))
+			   (:file "death" :depends-on ("global" "player" "character" "save"))
+			   (:file "ai" :depends-on ("generics" "monster" "project" "util"))
+			   (:file "loop" :depends-on ("classes" "player" "death" "ai" "print" "actions"
+								"view" "window" "adts" "load"
+								"util" "visuals"))
+			   (:file "birth" :depends-on ("generics" "constants" "classes" "player" "loop"))
+			   (:file "dump" :depends-on ("monster" "classes" "object" "character"
+								"global" "building" "equipment"))
+			   (:file "init" :depends-on ("themes" "monster" "object" "loop" "adts" "util"))
+			   (:file "verify" :depends-on ("player" "global" "base" "dungeon" "monster" "character"))
+			   )
+	      :depends-on (foreign))
+     ))
+
+#-enough-support-for-langband
+(warn "Langband-Engine has not been tested with '~a ~a', skips compilation."
+      (lisp-implementation-type)
+      (lisp-implementation-version))
+

@@ -1,0 +1,7 @@
+*.fasl
+*.fsl
+*.faslmt
+*.x86f
+*.err
+*.ufsl
+semantic.cache

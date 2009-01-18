@@ -1,0 +1,11 @@
+*.fasl
+*.faslmt
+*.x86f
+*.err
+*.fas
+*.sparcf
+*.lib
+*.ufsl
+*.fsl
+*.dfsl
+semantic.cache
