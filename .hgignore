@@ -1,0 +1,12 @@
+syntax: glob
+
+*.lo
+*.o
+*.obj
+*.lib
+*.la
+*.a
+*.dylib
+*.so
+*.log
+
