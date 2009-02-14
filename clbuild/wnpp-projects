@@ -1,0 +1,170 @@
+# -*- fill-column: nil; indent-tabs-mode: nil -*-
+#
+# Auxiliary list of "work-needing and prospective projects" for clbuild.
+#
+# Packages in this list are not installed by default.
+# See file `projects' for the main list.
+#
+# Part of clbuild by Luke Gorrie and contributors.
+
+
+#
+# (mostly) functional projects:
+#
+
+# supposed to work on SBCL "usually", but in a state of flux:
+atdoc      get_lichteblau_com #docstring to HTML converter
+clim-alerts    get_lichteblau_com #CLIM-based mail and blog notifications
+
+# SBCL/CMUCL-only, and has trouble with current SBCL
+clg        get_cvs_sfnet  #GTK+ bindings
+
+# eclipse used to be a main project, but theming system often causes trouble
+eclipse    get_cvs_clnet  #window manager
+
+# has trouble with SBCL's relentless DEFCONSTANT implementation
+cljl       get_cvs_clnet cl-jpeg  #baseline JPEG encoder/decoder
+regex      get_darcs http://www.foldr.org/~michaelw/projects/regex  #Another Regex package
+clawk      get_darcs http://www.foldr.org/~michaelw/projects/clawk  #AWK embedded in CL
+
+# defines a package called GL, which conflicts with CLX
+# cl-opengl        get_darcs http://common-lisp.net/~loliveira/darcs/cl-opengl-thomas # FFI bindings for OpenGL (thomas fork) 
+cl-opengl        get_svn svn://erleuchtet.org/cl-opengl-thomas # FFI bindings for OpenGL (erleuchtet fork of thomas fork) 
+
+# disabled, because the directory has disappeared
+# zebu             get_svn https://cl-net-snmp.svn.sourceforge.net/svnroot/cl-net-snmp/zebu/trunk
+
+# random projects suggested by users:
+lisa             get_cvs_full :pserver:anonymous@lisa.cvs.sourceforge.net:/cvsroot/lisa lisa
+parse-html       get_darcs http://common-lisp.net/project/bese/repos/parse-html
+s-sysdeps        get_darcs http://www.beta9.be/darcs/s-sysdeps
+s-base64         get_darcs http://www.beta9.be/darcs/s-base64
+s-xml            get_cvs_clnet
+s-xml-rpc        get_cvs_clnet
+s-http-client    get_darcs http://www.beta9.be/darcs/s-http-client
+s-utils          get_darcs http://www.beta9.be/darcs/s-utils
+rucksack         get_cvs_clnet  #Persistence library for Common Lisp
+portable-threads get_tarball http://common-lisp.net/project/cl-containers/portable-threads/portable-threads_latest.tar.gz
+html-encode      get_tarball http://www.unmutual.info/software/html-encode-1.2.tar.gz
+cl-html-diff     get_tarball http://lemonodor.com/code/cl-html-diff_0.1.tar.gz
+cl-difflib       get_tarball http://lemonodor.com/code/cl-difflib_0.1.tar.gz
+lml2             get_git git://git.b9.com/lml2.git
+kmrcl            get_tarball http://files.b9.com/kmrcl/kmrcl-latest.tar.gz
+iolib            get_git http://common-lisp.net/project/iolib/git/iolib.git
+swf2             get_git git://repo.or.cz/swf2.git #avm2 bytecode generator
+cl-utilities     get_cvs_clnet cl-utilities
+external-program get_darcs http://common-lisp.net/project/external-program/darcs/external-program/
+
+# Projects by Gary King
+lift             get_darcs http://common-lisp.net/project/lift
+metabang-bind    get_darcs http://common-lisp.net/project/metabang-bind
+cl-containers    get_darcs http://common-lisp.net/project/cl-containers
+moptilities      get_darcs http://common-lisp.net/project/moptilities
+metatilities     get_darcs http://common-lisp.net/project/metatilities
+metatilities-base get_darcs http://common-lisp.net/project/metatilities-base
+metacopy         get_darcs http://common-lisp.net/project/metacopy/darcs/metacopy
+asdf-binary-locations get_darcs http://common-lisp.net/project/asdf-binary-locations/
+asdf-install-tester get_darcs http://common-lisp.net/project/ait/darcs/ait
+asdf-status      get_darcs http://common-lisp.net/project/cl-containers/asdf-status/darcs/asdf-status
+asdf-system-connections get_darcs http://common-lisp.net/project/cl-containers/asdf-system-connections/darcs
+defsystem-compatibility get_darcs http://common-lisp.net/project/cl-containers/defsystem-compatibility/darcs
+dynamic-classes  get_darcs http://common-lisp.net/project/dynamic-classes
+log5             get_darcs http://common-lisp.net/project/log5 #A logging framework
+tinaa            get_darcs http://common-lisp.net/project/tinaa
+trivial-shell    get_darcs http://common-lisp.net/project/trivial-shell
+cl-markdown      get_darcs http://common-lisp.net/project/cl-markdown
+docudown         get_darcs http://common-lisp.net/project/docudown
+
+# Projects by Cyrus Harmon
+ch-asdf          get_git git://cyrusharmon.org/pub/git/ch-asdf.git
+ch-image         get_git git://cyrusharmon.org/pub/git/ch-image.git
+ch-util          get_git git://cyrusharmon.org/pub/git/ch-util.git
+cl-bio           get_git git://cyrusharmon.org/pub/git/cl-bio.git
+cl-biodas        get_git http://cyrusharmon.org/pub/git/cl-biodas.git
+clem             get_git git://cyrusharmon.org/pub/git/clem.git
+clsr             get_git git://cyrusharmon.org/pub/git/clsr.git
+cluster-ffi      get_git git://cyrusharmon.org/pub/git/cluster-ffi.git
+gcc-xml-ffi      get_git git://cyrusharmon.org/pub/git/gcc-xml-ffi.git
+hunchentoot-auth get_git git://cyrusharmon.org/pub/git/hunchentoot-auth.git
+hunchentoot-cgi  get_git git://cyrusharmon.org/pub/git/hunchentoot-cgi.git
+hunchentoot-vhost get_git git://cyrusharmon.org/pub/git/hunchentoot-vhost.git
+nuclblog         get_git git://cyrusharmon.org/pub/git/nuclblog.git
+quicktime-ffi    get_git git://cyrusharmon.org/pub/git/quicktime-ffi.git
+smarkup          get_git git://cyrusharmon.org/pub/git/smarkup.git
+tiff-ffi         get_git git://cyrusharmon.org/pub/git/tiff-ffi.git
+time-interval    get_git git://cyrusharmon.org/pub/git/time-interval.git
+
+# Misc projects
+cl-bibtex        get_cvs_full :pserver:anonymous@cvs.sv.gnu.org:/sources/cl-bibtex cl-bibtex
+cl-store         get_darcs http://common-lisp.net/project/cl-store/darcs/cl-store/ #A Common Lisp Serialization Package
+
+stefil           get_darcs http://common-lisp.net/project/stefil/darcs/stefil
+
+# weblocks and dependencies
+f-underscore     get_darcs http://common-lisp.net/project/bpm/darcs/f-underscore
+anaphora         get_cvs_full :pserver:anonymous:anonymous@common-lisp.net:/project/anaphora/cvsroot src
+cl-cont          get_darcs http://common-lisp.net/project/cl-cont/darcs/cl-cont
+cl-json          get_darcs http://common-lisp.net/project/cl-json/darcs/cl-json
+cl-prevalence    get_cvs_clnet
+fare-matcher     get_tarball http://fare.tunes.org/asdf-packages/fare-matcher.tar.gz
+fare-utils       get_tarball http://fare.tunes.org/asdf-packages/fare-utils.tar.gz
+parenscript      get_git http://common-lisp.net/project/parenscript/git/parenscript
+cl-graph         get_darcs http://common-lisp.net/project/cl-graph
+cl-mathstats     get_darcs http://common-lisp.net/project/cl-mathstats
+s-sysdeps        get_darcs http://www.beta9.be/darcs/s-sysdeps
+s-xml            get_cvs_clnet
+weblocks         get_hg http://www.bitbucket.org/skypher/weblocks-stable/
+
+# Symbolic Web and dependencies
+symbolicweb      get_darcs http://common-lisp.net/~lnostdal/programming/lisp/symbolicweb/
+aromyxo          get_darcs http://common-lisp.net/~lnostdal/programming/lisp/aromyxo/
+sw-http          get_darcs http://common-lisp.net/~lnostdal/programming/lisp/sw-http/
+
+# perfectstorm and related projects
+perfectstorm get_svn svn://erleuchtet.org/perfectstorm #real time strategy game study
+cl-cairo get_svn svn://erleuchtet.org/cl-cairo #cairo bindings
+infpre get_svn svn://erleuchtet.org/infpre
+toolbox get_svn svn://erleuchtet.org/toolbox
+vektor get_svn svn://erleuchtet.org/vektor
+
+climc get_svn http://climc.googlecode.com/svn/trunk/ #Instant Messaging Client (CLIM GUI)
+
+# Lispbuilder
+lispbuilder-clawk       get_lispbuilder
+lispbuilder-net         get_lispbuilder
+lispbuilder-openrm      get_lispbuilder
+lispbuilder-sdl         get_lispbuilder
+lispbuilder-sdl-image   get_lispbuilder
+lispbuilder-sdl-ttf     get_lispbuilder
+lispbuilder-yacc        get_lispbuilder
+lispbuilder-cal3d       get_lispbuilder
+lispbuilder-lexer       get_lispbuilder
+lispbuilder-opengl      get_lispbuilder
+lispbuilder-regex       get_lispbuilder
+lispbuilder-sdl-gfx     get_lispbuilder
+lispbuilder-sdl-mixer   get_lispbuilder
+lispbuilder-windows     get_lispbuilder
+
+#
+# projects that are currently broken
+#
+
+# see http://common-lisp.net/pipermail/clbuild-devel/2008-May/000115.html
+# for things to check regarding elephant.
+#
+elephant         get_darcs http://www.common-lisp.net/project/elephant/darcs/elephant
+
+# cffi-net doesn't load either, presumably due to a cffi compatibility issue
+cffi-net get_darcs http://cffi-net.accela.net/darcs/cffi-net/
+
+# the ~dlichteblau fork of FTD would work, but needs cffi-net 
+# ftd get_darcs http://common-lisp.net/project/ftd/darcs/ftd/ #The Flexi-Trivial Dired-style file manager using CLIM
+ftd get_darcs http://common-lisp.net/~dlichteblau/inofficial/ftd/ #The Flexi-Trivial Dired-style file manager using CLIM (~dlichteblau fork)
+
+linedit get_cvs_full :pserver:anonymous:anonymous@common-lisp.net:/project/linedit/cvsroot src #readline-style library written in Common Lisp
+osicat get_git http://common-lisp.net/project/osicat/git/osicat.git #interface for Common Lisp on POSIX-like systems
+
+clpython    get_cvs_full :pserver:cvspublic:cvspublic@cvspublic.franz.com:/cvs-public clpython  #An implementation of the Python language
+
+fset get_svn_clnet trunk
+misc-extensions get_cvs_full :pserver:anonymous:anonymous@common-lisp.net:/project/misc-extensions/cvsroot devel

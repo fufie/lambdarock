@@ -14,4 +14,10 @@ syntax: glob
 .libs
 .deps
 config.status
+_darcs
+CVS
+.svn
+.git
+.cvsignore
+
 
