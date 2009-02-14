@@ -1,1 +1,0 @@
-/Users/stig/clbuild/source/cffi/cffi-uffi-compat.asd

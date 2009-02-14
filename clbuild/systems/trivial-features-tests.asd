@@ -1,1 +1,0 @@
-/Users/stig/clbuild/source/trivial-features/trivial-features-tests.asd

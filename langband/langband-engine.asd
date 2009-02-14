@@ -37,18 +37,6 @@ the Free Software Foundation; either version 2 of the License, or
     :properties ((#:author-email . "stig@langband.org")
 		 (#:date . "Autumn 2003")
 		 (#:licencefile . "COPYING")
-		 ((#:albert #:use-temporary-files) . t)
-		 ((#:albert #:output-dir) . "Docs-Langband/")
-		 ((#:albert #:formats) . ("html"))
-		 ((#:albert #:docbook #:template) . "book")
-		 ((#:albert #:html #:output-dir) . "HTMLDocs")
-		 ;;((#:albert #:docbook #:baseurl) . "http://localhost/~stig/lang-doc/")
-		 ;;((#:albert #:docbook #:baseurl) . "http://albert.sourceforge.net/langband/")
-		 ((#:albert #:presentation #:funcallable #:calledby) t)
-		 ((#:albert #:docbook #:cvs-viewurl) . "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/langband/langband/")
-		 ((#:albert #:docbook #:cvs-tag) . "HEAD")
-		 ((#:albert #:html #:cvs-viewurl) . "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/langband/langband/")
-		 ((#:albert #:html #:cvs-tag) . "HEAD")
 		 )
     :components
     ((:module decl

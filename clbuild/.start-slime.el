@@ -5,12 +5,12 @@
 (setq slime-net-coding-system 'utf-8-unix)
 
 ;; load slime:
-(setq load-path (cons "/Users/stig/clbuild/source/slime" load-path))
-(setq load-path (cons "/Users/stig/clbuild/source/slime/contrib" load-path))
-(setq slime-backend "/Users/stig/clbuild/.swank-loader.lisp")
+(setq load-path (cons "/Users/stig/lambdarock/clbuild/source/slime" load-path))
+(setq load-path (cons "/Users/stig/lambdarock/clbuild/source/slime/contrib" load-path))
+(setq slime-backend "/Users/stig/lambdarock/clbuild/.swank-loader.lisp")
 (setq inhibit-splash-screen t)
-(load "/Users/stig/clbuild/source/slime/slime")
-(setq inferior-lisp-program "/Users/stig/clbuild/clbuild --implementation sbcl lisp")
+(load "/Users/stig/lambdarock/clbuild/source/slime/slime")
+(setq inferior-lisp-program "/Users/stig/lambdarock/clbuild/clbuild --implementation sbcl lisp")
 (setq slime-use-autodoc-mode nil)
 (slime-setup '(slime-fancy slime-tramp slime-asdf))
 (slime)

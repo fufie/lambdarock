@@ -1,1 +1,0 @@
-/Users/stig/clbuild/source/slime/swank.asd

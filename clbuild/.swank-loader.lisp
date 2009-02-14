@@ -1,2 +1,2 @@
 (unless (find-package 'swank-loader)
-  (load "/Users/stig/clbuild/source/slime/swank-loader.lisp"))
+  (load "/Users/stig/lambdarock/clbuild/source/slime/swank-loader.lisp"))
