@@ -179,7 +179,9 @@ lbui_init_c_side(const char *ui, const char *sourcePath, const char *configPath,
 #if defined (USE_SDL)
     else if (wanted_ui == UITYPE_SDL) {
 	lbui_which_ui_used = UITYPE_SDL;
+        printf("init sdl\n");
 	init_retval = lbui_init_sdl(win_wid, win_hgt, extra_flags);
+        printf("inited sdl\n");
     }
 #endif
     
@@ -236,7 +238,7 @@ lbui_init_c_side(const char *ui, const char *sourcePath, const char *configPath,
     //DBGPUT("lisp-sys %d, callback %d\n", lbui_current_lisp_system, lbui_will_use_callback);
     if (lbui_will_use_callback) {
 	// this is a callback
-	//DBGPUT("going back");
+	DBGPUT("going back");
 	return lbui_play_game_lisp();
     }
 #endif

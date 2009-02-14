@@ -16,13 +16,16 @@ LBE_LIBS = @LBE_LIBS@
 LBE_CFLAGS = @LBE_CFLAGS@
 LBE_LINKFLAGS = @LBE_LINKFLAGS@
 
+SHAREDFLAG = -dynamiclib
+
 LBSND_LIBS = @LBSND_LIBS@
 LBSND_SRC = @LBSND_SRC@
 LBSND_CFLAGS = @LBSND_CFLAGS@
 
 MAKE_EXTSOUND=@MAKE_EXTSOUND@
 
-DLLEXT=@DLLEXT@
+DLLEXT=dylib
+#DLLEXT=@DLLEXT@
 DLLCOPY=@DLLCOPY@
 
 all: shared_objs lbsd dll_copy
@@ -34,9 +37,7 @@ clean:
 	${CC} ${LBE_CFLAGS} ${LBUI_CFLAGS} -c $<
 
 shared_objs: ${LBE_OBJS} ${LBUI_OBJS} dummy_call.o
-	${CC} ${LBE_LINKFLAGS} -shared -o lbui.$(DLLEXT) ${LBE_OBJS} ${LBUI_OBJS} ${LBE_LIBS} ${LBUI_LIBS}
-	${CC} ${LBE_LINKFLAGS} -shared -o dircall.$(DLLEXT) dummy_call.o
-
+	${CC} ${LBE_LINKFLAGS} ${SHAREDFLAG} -o lbui.$(DLLEXT) ${LBE_OBJS} ${LBUI_OBJS} ${LBE_LIBS} ${LBUI_LIBS}
 
 dll_copy:
 	${DLLCOPY}

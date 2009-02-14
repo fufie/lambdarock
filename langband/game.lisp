@@ -3,7 +3,7 @@
 #|
 
 DESC: game.lisp - simple load of the game
-Copyright (c) 2000-2004 - Stig Erik Sandø
+Copyright (c) 2000-2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -119,7 +119,8 @@ ADD_DESC: This file just contains simple init and loading of the game
 #+use-asdf
 (defun load-game ()
   "Tries to load the game asdf-style."
-  (let ((asdf:*central-registry* (list *default-pathname-defaults* "variants/vanilla/"
+  (let ((asdf:*central-registry* (list "../clbuild/source"
+				       *default-pathname-defaults* "variants/vanilla/"
 				       "variants/contraband/"))
 	;;#+lispworks ;; possibly others too
 	(asdf::*compile-file-failure-behaviour* :ignore)

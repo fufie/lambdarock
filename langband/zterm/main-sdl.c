@@ -562,6 +562,7 @@ lbui_init_sdl(int win_wid, int win_hgt, int initarguments) {
     /*initflags |= SDL_INIT_EVENTTHREAD;*/
 
 
+    printf("real init\n");
     if (SDL_Init(initflags) != 0) {
 	ERRORMSG("SDL_Init() failed for some reason.\n");
 #ifdef linux
@@ -591,7 +592,7 @@ lbui_init_sdl(int win_wid, int win_hgt, int initarguments) {
     sdl_window_flags |= SDL_HWSURFACE;
 #endif
     
-    //DBGPUT("going\n");
+    printf("going\n");
     // Let us create the base window first of all!
 
     {

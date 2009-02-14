@@ -3,7 +3,7 @@
 #||
 
 DESC: init.lisp - initialisation code
-Copyright (c) 2000-2004 - Stig Erik Sandø
+Copyright (c) 2000-2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -111,6 +111,8 @@ call appropriately high-level init in correct order."
       #+win32
       (%assign-win-dirs)
 
+      (print "set lispsys")
+      
       ;; time to register our lisp
       #+(or cmu allegro clisp lispworks sbcl cormanlisp)
       (org.langband.ffi:c-set-lisp-system! #+cmu 0 #+allegro 1 #+clisp 2 #+lispworks 3
@@ -118,9 +120,8 @@ call appropriately high-level init in correct order."
       
       #-(or cmu allegro clisp lispworks sbcl cormanlisp openmcl)
       (error "lisp-system ~s unknown for C-side." (lisp-implementation-type))
-      
+      (print "have lispsys")
       (org.langband.ffi:c-init-frame-system& +max-frames+ +predefined-frames+)
-
 
       ;; let us read what the user prefers
       (load-user-preference-file&)
@@ -191,6 +192,8 @@ call appropriately high-level init in correct order."
 	    (warn "UI-Theme problems for ~a: ~a" (illegal-data.id co)
 		  (illegal-data.desc co))
 	    (return-from game-init& nil)))
+
+      (print "rrange")
       
       #+use-callback-from-c
       (arrange-callbacks)
@@ -213,7 +216,7 @@ call appropriately high-level init in correct order."
 	    (when (eq full-screen t)
 	      (bit-flag-add! flag #x10))
 
-	    ;;(warn "init flag ~s" flag)
+	    (warn "init flag ~s" flag)
 	    (setf retval (org.langband.ffi:c-init-c-side& (string ui)
 							  *engine-source-dir*
 							  *engine-config-dir*
@@ -221,7 +224,7 @@ call appropriately high-level init in correct order."
 							  wanted-width
 							  wanted-height
 							  flag)) ;; no debug, possible gfx
-	    ;;(warn "init retval is ~s" retval)
+	    (warn "init retval is ~s" retval)
 	    (cond ((= retval -42)
 		   #-use-callback-from-c
 		   (play-game&)

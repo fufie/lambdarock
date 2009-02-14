@@ -3,7 +3,7 @@
 #|
 
 DESC: ffi/ffi-load.lisp - settings that must be set before foreign build
-Copyright (c) 2001 - Stig Erik Sandø
+Copyright (c) 2001 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ the Free Software Foundation; either version 2 of the License, or
 					   (namestring (lb-engine:lbsys/get-current-directory)))
 				  "zterm/")))
 
-    #|
+    
     #+unix
     (progn
       #-(or cmu sbcl)
@@ -42,14 +42,11 @@ the Free Software Foundation; either version 2 of the License, or
       
       ;; everyone
       (unless (find :ui *langband-loaded-libs*)
-	(load-shared-lib :key :lang-ffi :lib (concatenate 'string lib-path "lbui.so"))
+	(load-shared-lib :key :lang-ffi :lib (concatenate 'string lib-path "lbui.dylib"))
 	(push :ui *langband-loaded-libs*)))
     
     #+win32
     (progn
-      (load-shared-lib :key :lang-ffi :lib (concatenate 'string lib-path "lbui.dll"))
+      (load-shared-lib :key :lang-ffi :lib (concatenate 'string lib-path "lbui.dll")))
 
-|#
-      
     ))
-

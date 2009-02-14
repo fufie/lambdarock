@@ -2,29 +2,14 @@
 #include "langband.h"
 #include "lbtools.h"
 
-typedef unsigned long cmucl_lispobj;
-extern cmucl_lispobj funcall0(cmucl_lispobj function);
-extern cmucl_lispobj funcall2(cmucl_lispobj function,
-			      cmucl_lispobj first_arg,
-			      cmucl_lispobj second_arg);
-extern cmucl_lispobj funcall3(cmucl_lispobj function,
-			      cmucl_lispobj first_arg,
-			      cmucl_lispobj second_arg,
-			      cmucl_lispobj third_arg);
 
-
-static void lbui_set_cmucl_callback(char *name, cmucl_lispobj fun);
-static void lbui_set_sbcl_callback(char *name, cmucl_lispobj fun);
+static void lbui_set_sbcl_callback(char *name, int (*fun)());
 static void lbui_set_acl_callback(char *name, int (*fun)());
 static void lbui_set_lispworks_callback(char *name, int (*fun)());
 
-static cmucl_lispobj cmucl_callback_play = 0;
-static cmucl_lispobj cmucl_callback_resize = 0;
-static cmucl_lispobj cmucl_callback_mouseclick = 0;
-
-static cmucl_lispobj sbcl_callback_play = 0;
-static cmucl_lispobj sbcl_callback_resize = 0;
-static cmucl_lispobj sbcl_callback_mouseclick = 0;
+static int (*sbcl_callback_play)() = 0;
+static int (*sbcl_callback_resize)(int,int) = 0;
+static int (*sbcl_callback_mouseclick)(int,int,int) = 0;
 
 static int (*acl_callback_play)() = 0;
 static int (*acl_callback_resize)(int,int) = 0;
@@ -57,11 +42,6 @@ int
 lbui_cleanup_callbacks() {
 
     //DBGPUT("Cleaning callbacks\n");
-    
-    cmucl_callback_play = 0;
-    cmucl_callback_resize = 0;
-    cmucl_callback_mouseclick = 0;
-    
     sbcl_callback_play = 0;
     sbcl_callback_resize = 0;
     sbcl_callback_mouseclick = 0;
@@ -81,14 +61,11 @@ void
 lbui_set_lisp_callback (char *name, void *ptr) {
 
     //DBGPUT("callback %s %p\n", name, ptr);
-    if (lbui_current_lisp_system == LISPSYS_CMUCL) {
-	lbui_set_cmucl_callback(name, (cmucl_lispobj)ptr);
-    }
-    else if (lbui_current_lisp_system == LISPSYS_ACL) {
+    if (lbui_current_lisp_system == LISPSYS_ACL) {
 	lbui_set_acl_callback(name, ptr);
     }
     else if (lbui_current_lisp_system == LISPSYS_SBCL) {
-	lbui_set_sbcl_callback(name, (cmucl_lispobj)ptr);
+	lbui_set_sbcl_callback(name, ptr);
     }
     else if (lbui_current_lisp_system == LISPSYS_LISPWORKS) {
 	lbui_set_lispworks_callback(name, ptr);
@@ -101,7 +78,7 @@ lbui_set_lisp_callback (char *name, void *ptr) {
 
 void
 lbui_set_acl_callback(char *name, int (*fun)()) {
-//    printf("Setting cb to %p\n", fun);
+    //    printf("Setting cb to %p\n", fun);
     if (name != NULL && strlen(name)> 0) {
 	if (!strcmp(name, "play-game")) {
 	    lbui_will_use_callback = 1;
@@ -121,7 +98,7 @@ lbui_set_acl_callback(char *name, int (*fun)()) {
 
 void
 lbui_set_lispworks_callback(char *name, int (*fun)()) {
-//    printf("Setting cb to %p\n", fun);
+    //    printf("Setting cb to %p\n", fun);
     if (name != NULL && strlen(name)> 0) {
 	if (!strcmp(name, "play-game")) {
 	    lbui_will_use_callback = 1;
@@ -141,33 +118,13 @@ lbui_set_lispworks_callback(char *name, int (*fun)()) {
 
 
 void
-lbui_set_cmucl_callback(char *name, cmucl_lispobj fun) {
-//    printf("Setting cb to %uld\n", fun);
-    if (name != NULL && strlen(name)> 0) {
-	if (!strcmp(name, "play-game")) {
-	    lbui_will_use_callback = 1;
-	    cmucl_callback_play = fun;
-	    }
-	else if (!strcmp(name, "adjust-size")) {
-	    cmucl_callback_resize = fun;
-	}
-	else if (!strcmp(name, "mouse-clicked")) {
-	    cmucl_callback_mouseclick = fun;
-	}
-	else {
-	    ERRORMSG("Unknown callback '%s'\n", name);
-	}
-    }
-}
-
-void
-lbui_set_sbcl_callback(char *name, cmucl_lispobj fun) {
-    //printf("Setting cb to %lu\n", fun);
+lbui_set_sbcl_callback(char *name, int (*fun)()) {
+    //    printf("Setting cb to %p\n", fun);
     if (name != NULL && strlen(name)> 0) {
 	if (!strcmp(name, "play-game")) {
 	    lbui_will_use_callback = 1;
 	    sbcl_callback_play = fun;
-	    }
+	}
 	else if (!strcmp(name, "adjust-size")) {
 	    sbcl_callback_resize = fun;
 	}
@@ -181,22 +138,17 @@ lbui_set_sbcl_callback(char *name, cmucl_lispobj fun) {
 }
 
 
+
 int
 lbui_play_game_lisp() {
 
     if (lbui_will_use_callback) {
 	// DBGPUT("Note: playing lisp-game through callback from C\n");
 	
-	if (lbui_current_lisp_system == LISPSYS_CMUCL && cmucl_callback_play) {
-#ifndef WIN32
-	    funcall0(cmucl_callback_play);
-#endif
-	}
-	
-	else if (lbui_current_lisp_system == LISPSYS_SBCL && sbcl_callback_play) {
+	if (lbui_current_lisp_system == LISPSYS_SBCL && sbcl_callback_play) {
 	    // DBGPUT("Trying to phone home with %lu\n", sbcl_callback_play);
 #ifndef WIN32
-	    funcall0(sbcl_callback_play);
+	    (*sbcl_callback_play)();
 #endif
 	    // DBGPUT("Returned\n");
 	}
@@ -231,16 +183,8 @@ lbui_readjust_screen_lisp(int width, int height) {
     if (lbui_will_use_callback) {
 	// DBGPUT("Note: calling resize on lisp-side\n"); 
 	
-	if (lbui_current_lisp_system == LISPSYS_CMUCL && cmucl_callback_resize) {
-#ifndef WIN32
-	    funcall2(cmucl_callback_resize, make_fixnum(width), make_fixnum(height));
-#endif
-	}
-	
-	else if (lbui_current_lisp_system == LISPSYS_SBCL && sbcl_callback_resize) {
-#ifndef WIN32
-	    funcall2(sbcl_callback_resize, make_fixnum(width), make_fixnum(height));
-#endif
+        if (lbui_current_lisp_system == LISPSYS_SBCL && sbcl_callback_resize) {
+	    (*sbcl_callback_resize)(width, height);
 	}
 
 	else if (lbui_current_lisp_system == LISPSYS_ACL && acl_callback_resize) {
@@ -256,8 +200,8 @@ lbui_readjust_screen_lisp(int width, int height) {
 	}
     }
     else {
-//	ERRORMSG("Tried to resize by callback, but lisp-system %d doesn't want callbacking.\n",
-//		lbui_current_lisp_system);
+        //	ERRORMSG("Tried to resize by callback, but lisp-system %d doesn't want callbacking.\n",
+        //		lbui_current_lisp_system);
     }
  
 
@@ -268,16 +212,8 @@ lbui_mouse_clicked(int button, int x, int y) {
 
     if (lbui_will_use_callback) {
 
-	if (lbui_current_lisp_system == LISPSYS_CMUCL && cmucl_callback_mouseclick) {
-#ifndef WIN32
-	    funcall3(cmucl_callback_mouseclick, make_fixnum(button), make_fixnum(x), make_fixnum(y));
-#endif
-	}
-	
-	else if (lbui_current_lisp_system == LISPSYS_SBCL && sbcl_callback_mouseclick) {
-#ifndef WIN32
-	    funcall3(sbcl_callback_mouseclick, make_fixnum(button), make_fixnum(x), make_fixnum(y));
-#endif
+        if (lbui_current_lisp_system == LISPSYS_SBCL && sbcl_callback_mouseclick) {
+	    (*sbcl_callback_mouseclick)(button, x, y);
 	}
 
 	else if (lbui_current_lisp_system == LISPSYS_ACL && acl_callback_mouseclick) {
