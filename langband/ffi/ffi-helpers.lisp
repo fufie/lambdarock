@@ -5,9 +5,9 @@
 DESC: ffi/ffi-helpers.lisp - helpers when loading ffi-defs
 Copyright (c) 2001-2003 - Stig Erik Sandø
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you can redistribute it and/or modify ;
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
+the Free Software Foundation; either version 2 of the License, or ;
 (at your option) any later version.
 
 |#
@@ -59,7 +59,6 @@ instead of (load-1-foreign filename), use:
 	    lib)
       (lb-quickly-quit-game&)))
   
-  
   #+allegro
   (load lib)
   #+cmu
@@ -67,7 +66,7 @@ instead of (load-1-foreign filename), use:
   #+clisp
   nil
   #+lispworks
-  (fli:register-module key :real-name lib :connection-style :manual)
+  (fli:register-module key :real-name "lbui" :connection-style :manual)
   
   ;; was killed summer 2004
   ;; #+sbcl

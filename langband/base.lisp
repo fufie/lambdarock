@@ -574,6 +574,7 @@ symbol which can be passed to e.g defun (as name of function)."
 
 
 ;; hackish, must be improved later
+#-lispworks
 (declaim (inline text-paint-value))
 (defun text-paint-value (attr char)
   (let ((charnum (etypecase char
@@ -583,14 +584,14 @@ symbol which can be passed to e.g defun (as name of function)."
 	    (dpb charnum (byte 8 2) 0)
 	    (dpb attr (byte 8 10) 0)
 	    )))
-
+#-lispworks
 (declaim (inline tile-paint-value))
 (defun tile-paint-value (file tile)
   (logior +lbbf-gfx+
 	  (dpb file (byte 8 2) 0)
 	  (dpb tile (byte 16 10) 0)
 	  ))
-
+#-lispworks
 (declaim (inline idx-paint-value))
 (defun idx-paint-value (attr idx)
   (logior +lbbf-idx+
