@@ -1,10 +1,10 @@
 syntax: glob
 
+.sconsign*
 *~
 *.lo
 *.o
 *.obj
-*.lib
 *.la
 *.a
 *.dylib
@@ -20,5 +20,8 @@ CVS
 .svn
 .git
 .cvsignore
+lbui.dll
+lbui.exp
+lbui.lib
 
 
