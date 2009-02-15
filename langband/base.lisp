@@ -3,7 +3,7 @@
 #|
 
 DESC: base.lisp - basic code for the rest of the game
-Copyright (c) 2000-2004 - Stig Erik Sandø
+Copyright (c) 2000-2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -118,6 +118,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 ;;; === Some dynamic variables of importance for the rest of the system:
 
+
 ;;(defvar *game-parameters* (make-hash-table :test #'eq)
 ;;  "a table with keyword game-parameters")
 
@@ -182,10 +183,11 @@ the number you should look at. It's quick to compare against and it's unambigiou
 (defvar *printfield-info* (make-hash-table :test #'eq))
 (defvar *printfield-hooks* (make-hash-table :test #'eq))
 
+
 ;; these specify how many possible windows there are
 ;; should be variable, not constants!
-(def-exportconst +max-frames+ 10)
-(def-exportconst +predefined-frames+ 10)
+(def-exportconst +max-frames+ 10 "max frames")
+(def-exportconst +predefined-frames+ 10 "predefined frames")
 
 
 ;;; === End dynamic variables
@@ -236,6 +238,7 @@ but optimized for vectors."
   `(char-code ,chr)
   )
 
+
 (defun positive-integer? (obj)
   "Returns T if obj is an integer and > 0."
   (and (integerp obj) (> obj 0)))
@@ -253,6 +256,8 @@ but optimized for vectors."
   (if (eq data nil)
       nil
       `',data))
+
+
 #-sbcl
 (declaim (ftype (function (u-fixnum) character) i2a))
 #+sbcl
@@ -724,3 +729,4 @@ symbol which can be passed to e.g defun (as name of function)."
     (maphash #'(lambda (key value) (when value (push key flags)))
 	     *update*)
     flags))
+

@@ -50,9 +50,7 @@ ADD_DESC: This file just contains simple init and loading of the game
 ;;  (pushnew :maintainer-mode *features*)
   #+(or cmu allegro sbcl lispworks clisp openmcl)
   (pushnew :use-asdf *features*)
-  
-;;  #+(or clisp)
-;;  (pushnew :use-mkdefsystem *features*)
+
   )
 
 #-use-asdf
@@ -149,102 +147,4 @@ ADD_DESC: This file just contains simple init and loading of the game
 
 (compile-in-environment #'load-game)
 
-
-#||
-(defvar *defsystem-file*
-  #+(or ecl cormanlisp) "tools/defsystem.lisp"
-  #-(or ecl cormanlisp) "tools/defsystem")
-
-(defun strcat (&rest args)
-  (apply #'concatenate 'string args))
-
-#+use-mkdefsystem
-(defun assign-log-path& (log-path name)
-
-  (setf (logical-pathname-translations name)
-	(list (list ";**;*.*.*"  (strcat log-path "**/*.*"))
-	      (list "**;*.*.*"  (strcat log-path "**/*.*"))
-;;	      (list "**;*"     (strcat log-path "**/*")) 
-	      (list ";*.*.*"  (strcat log-path "*.*"))
-	      (list "*.*.*"  (strcat log-path "*.*"))))
-  )
-
-#+use-mkdefsystem
-(progn
-  ;; make some logical paths for later loading
-  (assign-log-path& *current-dir* "langband")
-  (assign-log-path& (strcat *current-dir* "tools/") "langband-tools")
-  (assign-log-path& (strcat *current-dir* "tests/") "langband-tests")
-  (assign-log-path& (strcat *current-dir* "variants/vanilla/") "langband-vanilla")
-  (assign-log-path& (strcat *current-dir* "variants/vanilla/tests/") "vanilla-tests")
-  ;;(assign-log-path& (strcat *current-dir* "lib/foreign/") "langband-foreign")
-  )
-
-#+use-mkdefsystem
-(unless (find-package :make)
-  (load *defsystem-file* :verbose nil))
-
-
-
-#+use-mkdefsystem
-(defun load-game ()
-  "Tries to load the game."
-  ;;  (push :langband-debug *features*)
-
-  (load "langband-engine.system")
-;;  (print (mk:get-file-order-system 'langband-engine))
-;;  (load "lib/foreign/langband-foreign.system")
-;;  (mk:operate-on-system 'langband-foreign 'compile :verbose nil)
-  (mk:operate-on-system 'langband-engine 'compile :verbose nil)
-  (progress-msg "Base engine loaded...")
-  
-  (load "variants/vanilla/langband-vanilla.system")
-  (mk:operate-on-system 'langband-vanilla 'compile :verbose nil)
-  (progress-msg "Variant loaded...")
-  t)
-
-
-
-
-#+xp-testing	
-(defun load-tests ()
-  
-  #+use-asdf
-  (let (;;(asdf:*central-registry* (list *default-pathname-defaults* "tools/" "tests/"))
-	(asdf:*compile-file-warnings-behaviour* :ignore))
-    (load "tools/xp-test.asd")
-    (load "tests/langband-tests.asd")
-    (load "variants/vanilla/tests/vanilla-tests.asd")
-    (asdf:oos 'asdf:load-op :vanilla-tests)
-    )
-
-  #+use-mkdefsystem
-  (progn
-    (load "tools/XPTest.system")
-    (mk:operate-on-system 'XPTest 'compile :verbose nil)
-    
-    (load "tests/langband-tests.system")
-    (mk:operate-on-system 'langband-tests 'compile :verbose nil)
-    
-    (load "variants/vanilla/tests/vanilla-tests.system")
-    (mk:operate-on-system 'vanilla-tests 'compile :verbose nil))
-  
-  #-(or use-asdf use-mkdefsystem)
-  (progn
-    (warn "Tests cannot be loaded without ASDF or MK:DEFSYSTEM"))
-  
-  (progress-msg "Tests loaded."))
-	
-#+xp-testing
-(compile-in-environment #'load-tests)
-
 (in-package :org.langband.engine)
-
-#+xp-testing
-(do-a-test :pre)
-
-;; hidden thing to print out lists
-(defun fil (lst tp)
-  (loop for i in lst do
-	(when (typep i tp) (format t "~&~a~%" (object.name i)))))
-||#

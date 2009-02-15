@@ -13,6 +13,7 @@ media
 *.log
 *.fasl
 *.fas
+*.ofasl
 .libs
 .deps
 config.status

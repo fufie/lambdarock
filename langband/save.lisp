@@ -3,7 +3,7 @@
 #|
 
 DESC: save.lisp - saving of various parts of the game
-Copyright (c) 2000-2004 - Stig Erik Sandø
+Copyright (c) 2000-2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -834,9 +834,9 @@ the Free Software Foundation; either version 2 of the License, or
 	)
       )))
 
-(def-exportconst +savefile-type-variant+ 11)
-(def-exportconst +savefile-type-player+  12)
-(def-exportconst +savefile-type-level+   13)
+(def-exportconst +savefile-type-variant+ 11 ".")
+(def-exportconst +savefile-type-player+  12 ".")
+(def-exportconst +savefile-type-level+   13 ".")
 (defvar *saveblock* nil)
 (defvar *saveheader* nil)
 

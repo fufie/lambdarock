@@ -3,7 +3,7 @@
 #|
 
 DESC: constants.lisp - constants for the game code
-Copyright (c) 2000-2004 - Stig Erik Sandø
+Copyright (c) 2000-2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -144,13 +144,13 @@ ADD_DESC: This file contains the constants in the game.  should be small.
 
 
 ;;(defconst +escape+ =char-code= (charify-number 27) "escape-key")
-(def-exportconst +escape+ #\Escape)
+(def-exportconst +escape+ #\Escape "Escape key")
 
-(def-exportconst +store-item-limit+ 24)
-(def-exportconst +store-maximum-items+ 18)
-(def-exportconst +store-minimum-items+ 6)
-(def-exportconst +store-turnover+ 9)
-(def-exportconst +max-itemstack-size+ 99)
+(def-exportconst +store-item-limit+ 24 "How many items in a store")
+(def-exportconst +store-maximum-items+ 18 "Max items in a store")
+(def-exportconst +store-minimum-items+ 6 "Min items in store")
+(def-exportconst +store-turnover+ 9 "How often does the content change")
+(def-exportconst +max-itemstack-size+ 99 "What is the max items of a type")
 
 ;; make these into variables later.. 
 
@@ -207,7 +207,7 @@ ADD_DESC: This file contains the constants in the game.  should be small.
 (def-exportconst +project-hide+ #x80
   "Don't show any visual clues to what happens.")
 
-(def-exportconst +energy-normal-action+ 100)
+(def-exportconst +energy-normal-action+ 100 "cost of doing a normal action")
 
 (defvar *energy-table*  #200(
     1  1  1  1  1  1  1  1  1  1 ;; Slow
@@ -233,7 +233,7 @@ ADD_DESC: This file contains the constants in the game.  should be small.
    ))
 
 
-(def-exportconst +speed-base+ 110)
+(def-exportconst +speed-base+ 110 "Base for some speed thingie")
 
 (def-exportconst +food-max+      15000 "Bloated")
 (def-exportconst +food-full+     10000 "Normal")
@@ -246,7 +246,7 @@ ADD_DESC: This file contains the constants in the game.  should be small.
 (defconstant +illegal-loc-y+ 7777)
 (defconstant +room-size-arg-len+ 5)
 
-(def-exportconst +saved-cave-flags+ (logior +cave-mark+ +cave-glow+ +cave-icky+ +cave-room+))
+(def-exportconst +saved-cave-flags+ (logior +cave-mark+ +cave-glow+ +cave-icky+ +cave-room+) "Which flags to store for a cave")
 
 ;; stuff for view.lisp
 
@@ -269,7 +269,7 @@ ADD_DESC: This file contains the constants in the game.  should be small.
 (defconstant +scale+ 100000)
 
 ;; for visual effects
-(def-exportconst +draw-delay+ 150) ;; hackish, remove later
+(def-exportconst +draw-delay+ 150 "How long delay when drawing") ;; hackish, remove later
 ;;(def-exportconst +draw-delay+ 250) ;; hackish, remove later
 ;;(def-exportconst +draw-delay+ 500) ;; hackish, remove later
 
@@ -277,24 +277,24 @@ ADD_DESC: This file contains the constants in the game.  should be small.
 ;;(def-exportconst +calculated-effect+ #x01)
 ;;(def-exportconst +temporary-effect+  #x02)
 
-(def-exportconst +max-range+ 18)
+(def-exportconst +max-range+ 18 "How far can we see?")
 
 
 ;; the above need not be the same, but typically is the same
 
-(def-exportconst +full-frame+ 0)
-(def-exportconst +message-frame+ 1)
-(def-exportconst +charinfo-frame+ 2)
-(def-exportconst +misc-frame+ 3)
-(def-exportconst +gfxmap-frame+ 4)
-(def-exportconst +asciimap-frame+ 5)
-(def-exportconst +inv-frame+ 6)
-(def-exportconst +dialogue-frame+ 7)
-(def-exportconst +infodisp-frame+ 8)
-(def-exportconst +tiledfields-frame+ 9)
+(def-exportconst +full-frame+ 0 "Action affects whole frame")
+(def-exportconst +message-frame+ 1 "Action affects message frame")
+(def-exportconst +charinfo-frame+ 2 "Action affects charinfo")
+(def-exportconst +misc-frame+ 3 "Action affects misc frame")
+(def-exportconst +gfxmap-frame+ 4 "Action affects gfxmap")
+(def-exportconst +asciimap-frame+ 5 "Action affects gfxmap")
+(def-exportconst +inv-frame+ 6 "Action affects inventory frame")
+(def-exportconst +dialogue-frame+ 7 "Dialogue frame")
+(def-exportconst +infodisp-frame+ 8 "Info display frame")
+(def-exportconst +tiledfields-frame+ 9 "Tiledfields frame")
 
-(def-exportconst +frametype-active+ 0)
-(def-exportconst +frametype-predefined+ 1)
+(def-exportconst +frametype-active+ 0 ".")
+(def-exportconst +frametype-predefined+ 1 ".")
 
 ;; allowed to change between ascii and gfx
 (defvar *current-map-mode* :gfx-tiles) ;; or ascii
@@ -308,57 +308,57 @@ ADD_DESC: This file contains the constants in the game.  should be small.
 (def-exportconst +max-wincol+ 1024 "What is the maximum expected number of columns in a window.")
 (def-exportconst +max-winrow+ 1024 "What is the maximum expected number of rows in a window.")
 
-(def-exportconst +winflag-normal-paint+ #x00)
-(def-exportconst +winflag-clear-bg+ #x01)
-(def-exportconst +winflag-delay-paint+ #x02)
+(def-exportconst +winflag-normal-paint+ #x00 "Paint")
+(def-exportconst +winflag-clear-bg+ #x01 "Clear")
+(def-exportconst +winflag-delay-paint+ #x02 "Delay")
 
 ;; alias!
-(def-exportconst +query-frame+ +misc-frame+)
+(def-exportconst +query-frame+ +misc-frame+ "Alias")
 
-(def-exportconst +tilefile-armour+ 3)
-(def-exportconst +tilefile-effects+ 4)
-(def-exportconst +tilefile-food+ 5)
-(def-exportconst +tilefile-classes+ 6)
-(def-exportconst +tilefile-humans+ 7)
-(def-exportconst +tilefile-magic+ 9)
-(def-exportconst +tilefile-misc+ 10)
-(def-exportconst +tilefile-weapons+ 13)
-(def-exportconst +tilefile-people+ 14)
-(def-exportconst +tilefile-undeads+ 28)
-(def-exportconst +tilefile-buttons+ 38)
-(def-exportconst +tilefile-buttons-8x16+ 39)
-(def-exportconst +tilefile-crosshairs+ 40)
-(def-exportconst +tilefile-backgrounds+ 44) ;; 64x64 tiles!
-(def-exportconst +tilefile-town+ 45)
+(def-exportconst +tilefile-armour+ 3 "Gfxfile ref")
+(def-exportconst +tilefile-effects+ 4 "Gfxfile ref")
+(def-exportconst +tilefile-food+ 5 "Gfxfile ref")
+(def-exportconst +tilefile-classes+ 6 "Gfxfile ref")
+(def-exportconst +tilefile-humans+ 7 "Gfxfile ref")
+(def-exportconst +tilefile-magic+ 9 "Gfxfile ref")
+(def-exportconst +tilefile-misc+ 10 "Gfxfile ref")
+(def-exportconst +tilefile-weapons+ 13 "Gfxfile ref")
+(def-exportconst +tilefile-people+ 14 "Gfxfile ref")
+(def-exportconst +tilefile-undeads+ 28 "Gfxfile ref")
+(def-exportconst +tilefile-buttons+ 38 "Gfxfile ref")
+(def-exportconst +tilefile-buttons-8x16+ 39 "Gfxfile ref")
+(def-exportconst +tilefile-crosshairs+ 40 "Gfxfile ref")
+(def-exportconst +tilefile-backgrounds+ 44 "Gfxfile ref") ;; 64x64 tiles!
+(def-exportconst +tilefile-town+ 45 "Gfxfile ref")
 
 ;;; these are for the gfxtile system:
-(def-exportconst +num-gfx-layers+ 4)
-(def-exportconst +background+ 0)
-(def-exportconst +decor+ 1)
-(def-exportconst +foreground+ 2)
-(def-exportconst +effect+ 3)
+(def-exportconst +num-gfx-layers+ 4 "gfx layers")
+(def-exportconst +background+ 0 "Bg layer")
+(def-exportconst +decor+ 1 "Decor layer")
+(def-exportconst +foreground+ 2 "Fg layer")
+(def-exportconst +effect+ 3 "Fx layer")
 
-(def-exportconst +coord-updated+ 1)
+(def-exportconst +coord-updated+ 1 "Has coord been updated")
 
 ;; can probably be moved to vanilla variant
-(def-exportconst +element-vulnerability+ -100)
-(def-exportconst +element-calculated-resistance+ +33)
-(def-exportconst +element-temporary-resistance+ +66)
-(def-exportconst +element-immunity+ +100)
+(def-exportconst +element-vulnerability+ -100 ".")
+(def-exportconst +element-calculated-resistance+ +33 ".")
+(def-exportconst +element-temporary-resistance+ +66 ".")
+(def-exportconst +element-immunity+ +100 ".")
 
 (defvar *dungeon-table* nil "Reusable table of a 2d dungeon filled with coords.")
 
-(def-exportconst +tick-precision+ 1000.0)
+(def-exportconst +tick-precision+ 1000.0 ".")
 
 ;; walk-speed is 500msec for one square
-(def-exportconst +default-tilesize+ 32)                ;; do not rely on this!!
-(def-exportconst +walk-speed+ (* 2 +default-tilesize+)) ;; pixels pr second
-(def-exportconst +run-speed+ (* 2 +walk-speed+))       ;; pixels pr second
-(def-exportconst +throw-speed+ (* 3 +walk-speed+))     ;; pixels pr second
-(def-exportconst +missile-speed+ (* 4 +walk-speed+))   ;; pixels pr second
-(def-exportconst +monster-speed+ (* 4 +walk-speed+))   ;; pixels pr second
+(def-exportconst +default-tilesize+ 32 ".")                ;; do not rely on this!!
+(def-exportconst +walk-speed+ (* 2 +default-tilesize+) ".") ;; pixels pr second
+(def-exportconst +run-speed+ (* 2 +walk-speed+) ".")       ;; pixels pr second
+(def-exportconst +throw-speed+ (* 3 +walk-speed+) ".")     ;; pixels pr second
+(def-exportconst +missile-speed+ (* 4 +walk-speed+) ".")   ;; pixels pr second
+(def-exportconst +monster-speed+ (* 4 +walk-speed+) ".")   ;; pixels pr second
 
-(def-exportconst +walk-animation-interval+  (floor (/ +tick-precision+ 9.0)))
+(def-exportconst +walk-animation-interval+  (floor (/ +tick-precision+ 9.0)) ".")
 
 (defconstant +event-poll-mode+ nil "Set to NIL if you only want to poll for events,
 and T if you want to wait for events.  May change.")
