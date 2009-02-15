@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/vanilla/effects.lisp - apply effects on stuff
-Copyright (c) 2003 - Stig Erik Sandø
+Copyright (c) 2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
