@@ -1,0 +1,20 @@
+#    -*- Python -*-
+
+Import('env')
+
+ztermEnv = env.Clone()
+
+ztermEnv.Append(CPPDEFINES=['USE_SDL'],
+           CPPPATH=['../SDL-1.2.13/include', '../SDL_image-1.2.7'],
+           LIBPATH=['../../precompiled/SDL-1.2.13/lib'],
+           LIBS=['SDL'])
+
+ztermEnv.SharedLibrary('lbui',
+                  ['collected.c',
+                   'sound.c',
+                   'frame.c',
+                   'lisp_if.c',
+                   'tools.c',
+                   'main-sdl.c',
+                   'sdl-sound.c',
+                   'sdl-extra.c'])
