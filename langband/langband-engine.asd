@@ -17,7 +17,7 @@ the Free Software Foundation; either version 2 of the License, or
 ;; we need certain flags
 (eval-when (:execute :load-toplevel :compile-toplevel)
 
-  #+(or cmu allegro lispworks sbcl)
+  #+(or cmu allegro lispworks sbcl ecl)
   (pushnew :enough-support-for-langband cl:*features*)
   #+(and clisp langband-development) ;; clisp not ready in debian yet
   (pushnew :enough-support-for-langband cl:*features*)

@@ -288,7 +288,7 @@ all elements in the dir /foo/"
 ;;; generally inappropriate for users to do bare RSTK operations on
 ;;; it. Unfortunately, without static typing it's tedious both to
 ;;; write and to run code which enforces this..
-
+#-ecl
 (defstruct (pq (:include rstk
                          (make-element #'make-pqe)
                          (cleared-element #'pqe.clear!))

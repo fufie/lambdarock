@@ -48,7 +48,7 @@ ADD_DESC: This file just contains simple init and loading of the game
   ;;(pushnew :langband-release *features*)
 
 ;;  (pushnew :maintainer-mode *features*)
-  #+(or cmu allegro sbcl lispworks clisp openmcl)
+  #+(or cmu allegro sbcl lispworks clisp openmcl ecl)
   (pushnew :use-asdf *features*)
 
   )
