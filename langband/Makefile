@@ -25,7 +25,7 @@ packages:
 	dpkg-buildpackage -rfakeroot -us -uc
 
 clean: lisp-clean
-	cd zterm && $(MAKE) clean
+	#cd zterm && $(MAKE) clean
 	cd variants && $(MAKE) clean
 	cd debian && $(RM) $(CLEANFILES)
 	cd docs/web && $(RM) $(CLEANFILES)

@@ -262,7 +262,10 @@ all elements in the dir /foo/"
 		 (:conc-name rstk.)
 		 (:copier nil))
   (bare-count 0 :type ufixnum)
+  #-ecl
   (bare-vector #() :type (simple-array t 1))
+  #+ecl
+  (bare-vector #())
   ;; a function used to create a new element for the array
   (make-element (oops) :type function :read-only t)
   ;; a function to return a pointer to a cleared copy of an element. Note that
@@ -272,7 +275,8 @@ all elements in the dir /foo/"
   ;; portable way to shrink a hash table, and we might want to use a new
   ;; average-size hash table instead of endlessly reusing one which has grown
   ;; to be enormous.
-  (cleared-element (oops) :type function :read-only t))
+  (cleared-element (oops) :type function :read-only t)
+  )
 
 ;; an element of a priority queue
 (defstruct (pqe (:conc-name pqe.)
@@ -288,7 +292,6 @@ all elements in the dir /foo/"
 ;;; generally inappropriate for users to do bare RSTK operations on
 ;;; it. Unfortunately, without static typing it's tedious both to
 ;;; write and to run code which enforces this..
-#-ecl
 (defstruct (pq (:include rstk
                          (make-element #'make-pqe)
                          (cleared-element #'pqe.clear!))

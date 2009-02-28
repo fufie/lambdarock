@@ -149,7 +149,7 @@ the Free Software Foundation; either version 2 of the License, or
 (defun rstk.count (rstk)
   (rstk.bare-count rstk))
 
-#-sbcl
+#-(or sbcl ecl)
 (declaim (ftype (function (ufixnum rstk) ufixnum) (setf rstk.count)))
 #+sbcl
 (declaim (ftype (function (ufixnum rstk) (values ufixnum &optional)) (setf rstk.count)))
