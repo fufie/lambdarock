@@ -70,7 +70,10 @@ the Free Software Foundation; either version 2 of the License, or
 			   #+clisp
 			   (:file "ffi-clisp" :depends-on ("ffi-load"))
 			   #+openmcl
-			   (:file "ffi-openmcl" :depends-on ("ffi-load")))
+			   (:file "ffi-openmcl" :depends-on ("ffi-load"))
+			   #+ecl
+			   (:file "ffi-cffi" :depends-on ("ffi-load"))
+			   )
 	      :depends-on (basics))
 
      ;; fix remaining dependency-problems as they show up
@@ -124,7 +127,8 @@ the Free Software Foundation; either version 2 of the License, or
 			   
 			   )
 	      :depends-on (foreign))
-     ))
+     )
+    :depends-on (:cffi))
 
 
 #-enough-support-for-langband
