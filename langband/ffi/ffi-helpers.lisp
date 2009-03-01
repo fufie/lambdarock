@@ -78,6 +78,20 @@ instead of (load-1-foreign filename), use:
   
   #+openmcl
   (ccl:open-shared-library lib)
-  #-(or cmu allegro clisp lispworks sbcl openmcl)
+  #+ecl
+  (progn
+    (print lib)
+    (print key)
+      (cffi:define-foreign-library :lbui
+	  
+	  (:unix lib)
+	(t (:default lib)))
+      (print "curdir")
+      (print (si::getcwd))
+      (cffi:load-foreign-library "lbui.dylib")
+      )
+
+  
+  #-(or cmu allegro clisp lispworks sbcl openmcl ecl)
   (warn "Did not load shared-library.."))
 
