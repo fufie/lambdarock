@@ -192,6 +192,7 @@ typedef enum {
     LISPSYS_SBCL      = 4,
     LISPSYS_CORMAN    = 5,
     LISPSYS_OPENMCL   = 6,
+    LISPSYS_ECL       = 7,
     LISPSYS_BAD       = 20
 } LISP_SYSTEMS;
 
