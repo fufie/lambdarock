@@ -35,7 +35,7 @@ the Free Software Foundation; either version 2 of the License, or
     
     #+unix
     (progn
-      #-(or cmu sbcl)
+      #-(or cmu sbcl ecl)
       (unless (find :dc *langband-loaded-libs*)
 	(load-shared-lib :key :dc :lib (concatenate 'string lib-path "dircall.so"))
 	(push :dc *langband-loaded-libs*))
