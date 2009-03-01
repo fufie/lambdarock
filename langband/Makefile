@@ -17,6 +17,10 @@ lisp-clean:
 	cd modules/tests && $(RM) $(CLEANFILES)
 	cd modules/dialogue && $(RM) $(CLEANFILES)
 	cd ffi && $(RM) $(CLEANFILES)
+	cd cffi/src && $(RM) $(CLEANFILES)
+	cd babel/src && $(RM) $(CLEANFILES)
+	cd trivial-features/src && $(RM) $(CLEANFILES)
+	cd alexandria && $(RM) $(CLEANFILES)
 	cd tools && $(RM) $(CLEANFILES)
 	cd variants; $(MAKE) lisp-clean
 	$(RM) $(CLEANFILES) *.data prof.dump
