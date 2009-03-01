@@ -114,14 +114,15 @@ call appropriately high-level init in correct order."
       (print "set lispsys")
       
       ;; time to register our lisp
-      #+(or cmu allegro clisp lispworks sbcl cormanlisp)
+      #+(or cmu allegro clisp lispworks sbcl cormanlisp ecl)
       (org.langband.ffi:c-set-lisp-system! #+cmu 0 #+allegro 1 #+clisp 2 #+lispworks 3
-					   #+sbcl 4 #+cormanlisp 5 #+openmcl 6)
+					   #+sbcl 4 #+cormanlisp 5 #+openmcl 6 #+ecl 7)
       
-      #-(or cmu allegro clisp lispworks sbcl cormanlisp openmcl)
+      #-(or cmu allegro clisp lispworks sbcl cormanlisp openmcl ecl)
       (error "lisp-system ~s unknown for C-side." (lisp-implementation-type))
       (print "have lispsys")
       (org.langband.ffi:c-init-frame-system& +max-frames+ +predefined-frames+)
+      (print "load")
 
       ;; let us read what the user prefers
       (load-user-preference-file&)
@@ -139,7 +140,6 @@ call appropriately high-level init in correct order."
 	    (minimum-height +sdl-minimum-window-height+)
 	    (maximum-width +sdl-maximum-window-width+)
 	    (maximum-height +sdl-maximum-window-height+))
-	    
       
 	(cond ((and (positive-integer? window-width)
 		    (>= window-width minimum-width)
@@ -165,7 +165,6 @@ call appropriately high-level init in correct order."
      
 	)
 		  
-      
       (handler-case
 	  (let* (;; hacks
 		 (*screen-width* wanted-width)
