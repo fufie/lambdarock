@@ -3,7 +3,7 @@
 #||
 
 DESC: util.lisp - utility-code dependant on other classes/code
-Copyright (c) 2000-2004 - Stig Erik Sandø
+Copyright (c) 2000-2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -460,7 +460,7 @@ exist it will be created, assigned to the coordinate and returned."
 
 (defmethod item-table-print ((table items-on-floor)
 			     &key show-pause start-x start-y
-			     print-selection)
+			     print-selection printer-function)
   
   (let ((x (if start-x start-x 5));; 25))
 	(y (if start-y start-y 1))
