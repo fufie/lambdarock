@@ -3,7 +3,7 @@
 #|
 
 DESC: sys.lisp - Various system-related code
-Copyright (c) 2001-2003 - Stig Erik Sandø
+Copyright (c) 2001-2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,11 +23,11 @@ the Free Software Foundation; either version 2 of the License, or
   #+clisp (sys::getenv (string var))
   #+cmu (cdr (assoc (string var) ext:*environment-list* :test #'equalp
                     :key #'string))
-  #+gcl (si:getenv (string var))
+  #+ecl (si:getenv (string var))
   #+lispworks (lw:environment-variable (string var))
   #+lucid (lcl:environment-variable (string var))
   #+sbcl (sb-ext:posix-getenv var)
-  #-(or allegro clisp cmu gcl lispworks lucid sbcl)
+  #-(or allegro clisp cmu ecl lispworks lucid sbcl)
   (error 'not-implemented :proc (list 'getenv var)))
 
 
@@ -64,7 +64,7 @@ but stops errors from floating out.. returns NIL instead."
     (let ((home-dir (lbsys/getenv "HOME")))
       (when (and home-dir (length home-dir))
         (setq home-dir (lbsys/ensure-dir-name home-dir))
-        ;;      (print home-dir)
+        ;;(print home-dir)
         (concatenate 'string home-dir ".angband/langband/"))))
   #+win32
   "c:/")
