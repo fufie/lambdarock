@@ -1,8 +1,0 @@
-tmp
-*.debhelper
-langband-vanilla
-langband-zterm
-langband-data
-files
-*substvars
-

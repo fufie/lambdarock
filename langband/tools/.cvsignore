@@ -1,9 +1,0 @@
-*.fasl
-*.faslmt
-*.x86f
-*.err
-*.ufsl
-*.dfsl
-*.fsl
-obsolete.lsp
-
