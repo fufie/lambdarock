@@ -130,6 +130,19 @@ ADD_DESC: This file just contains simple init and loading of the game
 	;;(var :vanilla)
 	;;(var :both)
 	)
+
+    #+ecl
+    (progn
+      (load "trivial-features/trivial-features.asd")
+      (asdf:oos 'asdf:load-op :trivial-features)
+      (load "alexandria/alexandria.asd")
+      (asdf:oos 'asdf:load-op :alexandria)
+      (load "babel/babel.asd")
+      (asdf:oos 'asdf:load-op :babel)
+      (load "cffi/cffi.asd")
+      (asdf:oos 'asdf:load-op :cffi))
+
+    
     
     (load "langband-engine.asd")
 
@@ -140,7 +153,10 @@ ADD_DESC: This file just contains simple init and loading of the game
     
     (when (or (eq var :vanilla) (eq var :both))
       (load "variants/vanilla/langband-vanilla.asd")
+      #-ecl
       (asdf:oos 'asdf:load-op :langband-vanilla)
+      #+ecl
+      (asdf:make-build :langband-vanilla :type :program :epilogue-code '(ext:quit))
       #+sbcl
       (asdf:oos 'asdf:compile-op :langband-vanilla-data))
 
