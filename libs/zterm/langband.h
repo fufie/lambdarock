@@ -392,7 +392,7 @@ INTERFACE int sdl_cleanup(void);
 
 #ifdef USE_SDL
 
-#include "SDL.h"
+#include <SDL/SDL.h>
 
 #define FONT_TYPE_TTF 5
 #define FONT_TYPE_HEX 6

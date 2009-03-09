@@ -1,6 +1,6 @@
 /*
  * DESC: main-sdl.c - langband-backend for SDL
- * Copyright (c) 2002-2003 - Stig Erik Sandø
+ * Copyright (c) 2002-2003 - Stig Erik SandÂ¯
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@
 
 #include "langband.h"
 #include "lbwindows.h"
-#include "lbsound.h"
+//#include "lbsound.h"
 #include "lbtools.h"
 
 
@@ -71,7 +71,7 @@
  *
  */
 
-#include "SDL_image.h"
+#include <SDL_image/SDL_image.h>
 //#include "SDL_mixer.h"
 #include <string.h>
 

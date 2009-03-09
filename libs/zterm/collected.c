@@ -1,6 +1,6 @@
 /*
  * DESC: collected.h - a kitchen sink of all non-system specific C-code
- * Copyright (c) 2000-2002 - Stig Erik Sandø
+ * Copyright (c) 2000-2002 - Stig Erik Sandoe
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,7 +13,10 @@
 #endif
 #include "langband.h"
 #include "lbwindows.h"
+
+#ifdef USE_SOUND
 #include "lbsound.h"
+#endif
 #include "lbtools.h"
 
 #if defined(USE_GCU)
@@ -63,6 +66,7 @@ lbui_init_c_side(const char *ui, const char *sourcePath, const char *configPath,
     
 
 //#ifdef USE_SDL
+#ifdef USE_SOUND    
     lbui_set_sound_status(extra_flags & LANGBAND_SOUND);
 //#else
 //    lbui_set_sound_status(0);
@@ -80,6 +84,7 @@ lbui_init_c_side(const char *ui, const char *sourcePath, const char *configPath,
 	lbui_set_soundsystem(SOUNDSYSTEM_EXTERNAL);
 #endif
     }
+#endif
     
     if (!ui) {
 	ui = "SDL"; // default
@@ -257,8 +262,10 @@ lbui_cleanup_c_side(void) {
     
     lbui_cleanup_callbacks();
     lbui_cleanup_frame_system();
+#ifdef USE_SOUND    
     lbui_close_sound_system();
-
+#endif
+    
     if (0) { }
     
 #ifdef USE_X11
@@ -281,8 +288,9 @@ lbui_cleanup_c_side(void) {
 
     lbui_current_lisp_system = LISPSYS_BAD;
     lbui_which_ui_used = -1;
+#ifdef USE_SOUND    
     lbui_set_sound_status(0);
-
+#endif
     return retval;
 }
 

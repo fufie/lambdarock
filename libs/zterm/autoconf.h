@@ -61,6 +61,8 @@
 /* Compile SDL frontend */
 #define USE_SDL 1
 
+//#define USE_SOUND
+
 /* are we on a windows box? */
 /* #undef WINDOWS */
 
