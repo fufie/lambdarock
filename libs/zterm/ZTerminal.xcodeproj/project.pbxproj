@@ -17,6 +17,8 @@
 		537281F70F6520DF004D8BFC /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 537281F60F6520DF004D8BFC /* SDL_image.framework */; };
 		537281FF0F65212A004D8BFC /* autoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 537281FE0F65212A004D8BFC /* autoconf.h */; };
 		537282020F652176004D8BFC /* lbtools.h in Headers */ = {isa = PBXBuildFile; fileRef = 537282010F652176004D8BFC /* lbtools.h */; };
+		537282200F6525BD004D8BFC /* load_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 5372821F0F6525BD004D8BFC /* load_sdl.c */; };
+		537282230F652625004D8BFC /* cocoahelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 537282220F652625004D8BFC /* cocoahelper.m */; };
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -36,6 +38,8 @@
 		537281F60F6520DF004D8BFC /* SDL_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_image.framework; path = /Library/Frameworks/SDL_image.framework; sourceTree = "<absolute>"; };
 		537281FE0F65212A004D8BFC /* autoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autoconf.h; sourceTree = "<group>"; };
 		537282010F652176004D8BFC /* lbtools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lbtools.h; sourceTree = "<group>"; };
+		5372821F0F6525BD004D8BFC /* load_sdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = load_sdl.c; sourceTree = "<group>"; };
+		537282220F652625004D8BFC /* cocoahelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = cocoahelper.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* ZTerminal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ZTerminal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F7E79907B2D74100F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
@@ -123,11 +127,13 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				537282220F652625004D8BFC /* cocoahelper.m */,
 				537281FE0F65212A004D8BFC /* autoconf.h */,
 				537281D30F651F89004D8BFC /* collected.c */,
 				537281DB0F651FA9004D8BFC /* frame.c */,
 				537282010F652176004D8BFC /* lbtools.h */,
 				537281D50F651F94004D8BFC /* lisp_if.c */,
+				5372821F0F6525BD004D8BFC /* load_sdl.c */,
 				537281D60F651F94004D8BFC /* main-sdl.c */,
 				537281D90F651FA0004D8BFC /* sdl-extra.c */,
 				537281DD0F651FB2004D8BFC /* tools.c */,
@@ -209,6 +215,8 @@
 				537281DA0F651FA0004D8BFC /* sdl-extra.c in Sources */,
 				537281DC0F651FA9004D8BFC /* frame.c in Sources */,
 				537281DE0F651FB2004D8BFC /* tools.c in Sources */,
+				537282200F6525BD004D8BFC /* load_sdl.c in Sources */,
+				537282230F652625004D8BFC /* cocoahelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
