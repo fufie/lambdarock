@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/contraband/creatures.lisp - code dealing with various levels
-Copyright (c) 2003 - Stig Erik Sandø
+Copyright (c) 2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -135,7 +135,7 @@ the Free Software Foundation; either version 2 of the License, or
 
     level))
 
-(defmethod print-depth ((level level) setting)
+(defmethod print-depth ((variant contraband) (level level) setting)
   "prints current depth somewhere"
   (declare (ignorable setting))
   (with-frame (+misc-frame+)

@@ -1,9 +1,9 @@
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.vanilla -*-
+;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.contraband -*-
 
 #|
 
-DESC: variants/vanilla/config/rooms.lisp - rooms we want
-Copyright (c) 2004 - Stig Erik Sandoe
+DESC: variants/contraband/config/rooms.lisp - various defines that should be loaded as data
+Copyright (c) 2000-2003,2009 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -12,7 +12,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 |#
 
-(in-package :org.langband.vanilla)
+(in-package :org.langband.contraband)
 
 (defclass simple-room (room-type) ()) ;; might be removed
 (defclass overlapping-room (room-type) ()) ;; might be removed
