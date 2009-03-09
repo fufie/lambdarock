@@ -350,8 +350,11 @@ call appropriately high-level init in correct order."
 (defun e (&optional (ui "sdl"))
   (a :ui ui :gfx t :window-width 1280 :window-height 1024 :full-screen t))
 
+(defun f (&optional (ui "sdl"))
+  (a :ui ui :gfx t :window-width 1280 :window-height 1024 :full-screen nil))
+
 (setf (symbol-function 'cl-user::langband)
-      #'c)
+      #'f)
 
 (setf (symbol-function 'cl-user::gcu-langband)
       #'b)
