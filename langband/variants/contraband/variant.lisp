@@ -81,6 +81,7 @@ the rest of the game is init'ed."
   
   (let ((*load-verbose* nil))
     (load-variant-data& var-obj "config/defines")
+    (load-variant-data& var-obj "config/rooms")
     (load-variant-data& var-obj "config/settings")
     (load-variant-data& var-obj "config/sound")
     (load-variant-data& var-obj "config/character")
