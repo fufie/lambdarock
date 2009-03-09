@@ -1152,7 +1152,9 @@ window, relative x and relative y."
     ;;(pause-last-line!)
 
     (print-note! "[Initing sound-system]")
-    
+
+    #+use-sound
+    (progn
     (let ((sstatus (init-sound-system& 40))) ;; fix this later
       (when sstatus
 	(print-note! "[Activating sound-system]")
@@ -1170,6 +1172,7 @@ window, relative x and relative y."
     ||#
     (load-music "langband_tune04.ogg")
     (play-music 0 1)
+    )
     
     (print-note! "[Initialization complete]")
 

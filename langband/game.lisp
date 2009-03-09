@@ -131,7 +131,7 @@ ADD_DESC: This file just contains simple init and loading of the game
 	;;(var :both)
 	)
 
-    #+ecl
+    #+(or ecl sbcl)
     (progn
       (load "trivial-features/trivial-features.asd")
       (asdf:oos 'asdf:load-op :trivial-features)

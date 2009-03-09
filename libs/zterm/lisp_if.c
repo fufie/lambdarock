@@ -8,11 +8,14 @@ static int (*generic_callback_play)() = 0;
 static int (*generic_callback_resize)(int,int) = 0;
 static int (*generic_callback_mouseclick)(int,int,int) = 0;
 
+// forward
+void cocoahelper_init();
 
 void
 lbui_set_lisp_system(LISP_SYSTEMS val) {
 
     fprintf(stderr, "Lisp system %d vs %d.\n", val, LISPSYS_ACL);
+    cocoahelper_init();
     
     if (val == LISPSYS_CMUCL || val == LISPSYS_ACL ||
         val == LISPSYS_SBCL || val == LISPSYS_LISPWORKS ||

@@ -3,7 +3,7 @@
 #|
 
 DESC: sound.lisp - simple functions that deals with sound
-Copyright (c) 2001-2003 - Stig Erik Sandø
+Copyright (c) 2001-2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 (defun init-sound-system& (size)
   ;; put init here later
+  #+use-sound
   (let ((retval (org.langband.ffi:c-init-sound-system& size)))
     (setf *music-table* (make-array size :fill-pointer 0))
     ;; return this value
@@ -27,6 +28,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 (defun play-sound (type &key (loops 0) (channel -1))
   "Plays the given sound(s) for type."
+  #+use-sound
   (when (using-sound?)
     (let ((sounds (gethash type *sound-table*)))
       (when sounds
@@ -38,6 +40,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 (defun load-music (fname)
   "Tries to load the fname."
+  #+use-sound
   (when (using-sound?)
     (let ((path (concatenate 'string *engine-data-dir* "audio/music/" fname)))
       (when (probe-file path)
@@ -49,6 +52,7 @@ the Free Software Foundation; either version 2 of the License, or
 (defun play-music (music loops)
   "Tries to play given music."
 
+  #+use-sound
   (let ((idx (etypecase music
 	       (integer music)
 	       (string (find music *music-table* :test #'equal)))))
@@ -59,16 +63,19 @@ the Free Software Foundation; either version 2 of the License, or
 
 (defun halt-music ()
   "Tries to stop any music playing."
+  #+use-sound
   (org.langband.ffi:c-halt-music))
 
 (defun halt-sound-effects (&optional (channel -1))
   "Tries to stop any music playing."
+  #+use-sound
   (when (integerp channel)
     (org.langband.ffi:c-halt-sound-effects channel)))
 
 (defun define-sound-effect (key &rest sounds)
   "Defines a sound.  Returns nil when sound is not loaded."
 
+  #+use-sound
   (when (using-sound?)
     (let ((base-path (concatenate 'string *engine-data-dir* "audio/effects/"))
 	  (current-sounds (gethash key *sound-table*)))
@@ -86,6 +93,9 @@ the Free Software Foundation; either version 2 of the License, or
 
 (defun using-sound? ()
   "Returns either T or NIL."
+  #-use-sound
+  nil
+  #+use-sound
   ;; fix: cache value to avoid ffi-call
   (if (= 0 (org.langband.ffi:c-get-sound-status))
       nil

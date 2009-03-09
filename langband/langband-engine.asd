@@ -3,7 +3,7 @@
 #|
 
 DESC: langband-engine.asd - another system-def for vanilla
-Copyright (c) 2001-2003 - Stig Erik Sandø
+Copyright (c) 2001-2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -61,8 +61,8 @@ the Free Software Foundation; either version 2 of the License, or
 
 			   #+cmu
 			   (:file "ffi-cmu" :depends-on ("ffi-load"))
-			   #+sbcl
-			   (:file "ffi-sbcl" :depends-on ("ffi-load"))
+			   ;;#+sbcl
+			   ;;(:file "ffi-sbcl" :depends-on ("ffi-load"))
 			   #+allegro
 			   (:file "ffi-acl" :depends-on ("ffi-load"))
 			   #+lispworks
@@ -71,7 +71,7 @@ the Free Software Foundation; either version 2 of the License, or
 			   (:file "ffi-clisp" :depends-on ("ffi-load"))
 			   #+openmcl
 			   (:file "ffi-openmcl" :depends-on ("ffi-load"))
-			   #+ecl
+			   #+(or sbcl ecl)
 			   (:file "ffi-cffi" :depends-on ("ffi-load"))
 			   )
 	      :depends-on (basics))
