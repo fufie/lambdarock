@@ -53,10 +53,10 @@
 #define STDC_HEADERS 1
 
 /* compile curses interface */
-#define USE_GCU 1
+//#define USE_GCU 1
 
 /* compile with ncurses for curses */
-#define USE_NCURSES 1
+//#define USE_NCURSES 1
 
 /* Compile SDL frontend */
 #define USE_SDL 1

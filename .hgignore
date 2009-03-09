@@ -1,5 +1,9 @@
 syntax: glob
 
+build
+
+*.pbxuser
+*.mode1v3
 media
 .sconsign*
 *~
