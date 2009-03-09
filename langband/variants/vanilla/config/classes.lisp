@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/vanilla/config/classes.lisp - classes for vanilla variant
-Copyright (c) 2000-2004 - Stig Erik Sandø
+Copyright (c) 2000-2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

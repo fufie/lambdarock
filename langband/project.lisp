@@ -3,7 +3,7 @@
 #|
 
 DESC: project.lisp - code for doing projections
-Copyright (c) 2001-2004 - Stig Erik Sandø
+Copyright (c) 2001-2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

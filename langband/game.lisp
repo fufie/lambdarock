@@ -5,9 +5,9 @@
 DESC: game.lisp - simple load of the game
 Copyright (c) 2000-2004 - Stig Erik Sandoe
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you can redistribute it and/or modify ;
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
+the Free Software Foundation; either version 2 of the License, or ;
 (at your option) any later version.
 
 ----
@@ -131,7 +131,7 @@ ADD_DESC: This file just contains simple init and loading of the game
 	;;(var :both)
 	)
 
-    #+(or ecl sbcl)
+    #+(or ecl)
     (progn
       (load "trivial-features/trivial-features.asd")
       (asdf:oos 'asdf:load-op :trivial-features)
@@ -141,8 +141,6 @@ ADD_DESC: This file just contains simple init and loading of the game
       (asdf:oos 'asdf:load-op :babel)
       (load "cffi/cffi.asd")
       (asdf:oos 'asdf:load-op :cffi))
-
-    
     
     (load "langband-engine.asd")
 

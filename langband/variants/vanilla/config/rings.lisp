@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/vanilla/config/rings.lisp - rings for vanilla variant
-Copyright (c) 2002,2004 - Stig Erik Sandø
+Copyright (c) 2002,2004 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

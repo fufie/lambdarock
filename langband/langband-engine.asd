@@ -61,8 +61,8 @@ the Free Software Foundation; either version 2 of the License, or
 
 			   #+cmu
 			   (:file "ffi-cmu" :depends-on ("ffi-load"))
-			   ;;#+sbcl
-			   ;;(:file "ffi-sbcl" :depends-on ("ffi-load"))
+			   #+sbcl
+			   (:file "ffi-sbcl" :depends-on ("ffi-load"))
 			   #+allegro
 			   (:file "ffi-acl" :depends-on ("ffi-load"))
 			   #+lispworks
@@ -71,7 +71,7 @@ the Free Software Foundation; either version 2 of the License, or
 			   (:file "ffi-clisp" :depends-on ("ffi-load"))
 			   #+openmcl
 			   (:file "ffi-openmcl" :depends-on ("ffi-load"))
-			   #+(or sbcl ecl)
+			   #+ecl
 			   (:file "ffi-cffi" :depends-on ("ffi-load"))
 			   )
 	      :depends-on (basics))
@@ -128,7 +128,7 @@ the Free Software Foundation; either version 2 of the License, or
 			   )
 	      :depends-on (foreign))
      )
-    :depends-on (:cffi))
+    :depends-on #+ecl (:cffi) #-ecl ())
 
 
 #-enough-support-for-langband

@@ -3,7 +3,7 @@
 #|
 
 DESC: modules/compat/monster.lisp - code to be compatible with r_info.txt
-Copyright (c) 2000-2002 - Stig Erik Sandø
+Copyright (c) 2000-2002 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

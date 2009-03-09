@@ -155,23 +155,7 @@ lbui_init_c_side(const char *ui, const char *sourcePath, const char *configPath,
 	return -2;
     }
 
-#ifdef USE_GCU
-//    ERRORMSG("Yes, we have compiled in gcu.. \n");
-#endif
-
-
-    /* let us check if we can go X */
-    
-#if defined(USE_GTK) || defined(USE_X11)    
-    {
-	char *val = getenv("DISPLAY");
-	if (val && strlen(val)) {
-	    possible_to_go_X = 1;
-	}
-    }
-#endif
-
-    // alloocate memory for indexes
+    // allocate memory for indexes
     {
 	int i = 0;
 	lbui_indexes = malloc(lbui_index_len * sizeof(char*));
@@ -192,28 +176,6 @@ lbui_init_c_side(const char *ui, const char *sourcePath, const char *configPath,
     }
 #endif
     
-#if defined(USE_X11)
-    else if (possible_to_go_X && wanted_ui == UITYPE_X11) {
-	lbui_which_ui_used = UITYPE_X11;
-	init_retval = init_x11(argc,argv); /* proper value set */
-    }
-#endif
-    
-#if defined(USE_GTK)
-    /* a fallback if X11 doesn't exist */
-    else if (possible_to_go_X && (wanted_ui == UITYPE_GTK || wanted_ui == UITYPE_X11)) {
-	lbui_which_ui_used = UITYPE_GTK;
-	init_retval = init_gtk(argc,argv); /* proper value set */
-    }
-#endif
-    
-#if defined (USE_GCU)
-    else if (wanted_ui == UITYPE_GCU) {
-	lbui_which_ui_used = UITYPE_GCU;
-	init_retval = lbui_init_gcu(extra_flags);
-    }
-#endif
-
     else {
 	if (!possible_to_go_X && (wanted_ui == UITYPE_X11 || wanted_ui == UITYPE_GTK)) {
 	    ERRORMSG("Wanted an X-dependent UI, but unable to find X (no DISPLAY env).\n");
@@ -235,13 +197,7 @@ lbui_init_c_side(const char *ui, const char *sourcePath, const char *configPath,
 	return -2;
     }
 
-    /* Make sure main term is active */
-    //Term_activate(activeFrames[0]->azt);
-
-    /* Verify minimum size */
-    /* FIX!!! */
-
-#if defined(USE_X11) || defined(USE_GCU) || defined(USE_SDL)
+#if defined(USE_SDL)
     //DBGPUT("lisp-sys %d, callback %d\n", lbui_current_lisp_system, lbui_will_use_callback);
     if (lbui_will_use_callback) {
 	// this is a callback
@@ -268,18 +224,6 @@ lbui_cleanup_c_side(void) {
     
     if (0) { }
     
-#ifdef USE_X11
-    else if (cur_ui == UITYPE_X11) {
-	retval = cleanup_X11();
-    }
-#endif
-
-#ifdef USE_GCU
-    else if (cur_ui == UITYPE_GCU) {
-	retval = gcu_cleanup();
-    }
-#endif
-
 #ifdef USE_SDL
     else if (cur_ui == UITYPE_SDL) {
 	retval = sdl_cleanup();
@@ -331,11 +275,6 @@ lbui_listen_for_event(int option) {
 	return sdl_get_event(option);
     }
 #endif /* sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return gcu_get_event(option);
-    }
-#endif /* gcu */
     else {
 	return -1;
     }
@@ -349,11 +288,6 @@ lbui_get_internal_time() {
 	return sdl_get_internal_time();
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return -2; // fix!! 
-    }
-#endif /* gcu */    
     else {
 	return -1;
     }
@@ -368,11 +302,6 @@ lbui_flip_framebuffer() {
 	return sdl_flip_framebuffer();
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return -2; // fix!! 
-    }
-#endif /* gcu */    
     else {
 	return -1;
     }
@@ -414,11 +343,6 @@ lbui_get_window_width() {
 	return sdl_get_window_width();
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return gcu_get_window_width();
-    }
-#endif /* gcu */
     else {
 	return -1;
     }
@@ -432,11 +356,6 @@ lbui_get_window_height() {
 	return sdl_get_window_height();
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return gcu_get_window_height();
-    }
-#endif /* gcu */
     else {
 	return -1;
     }
@@ -450,11 +369,6 @@ lbui_full_blit(short win_num, short x, short y, unsigned int img, short flags) {
 	return sdl_full_blit(win_num, x, y, img, flags);
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return gcu_full_blit(win_num, x, y, img, flags);
-    }
-#endif /* gcu */
     else {
 	return -1;
     }
@@ -468,11 +382,6 @@ lbui_transparent_blit(short win_num, short x, short y, unsigned int img, short f
 	return sdl_transparent_blit(win_num, x, y, img, flags);
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return gcu_transparent_blit(win_num, x, y, img, flags);
-    }
-#endif /* gcu */
     else {
 	return -1;
     }
@@ -486,11 +395,6 @@ lbui_clear_coords(short win_num, short x, short y, short w, short h) {
 	return sdl_clear_coords(win_num, x, y, w, h);
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return gcu_clear_coords(win_num, x, y, w, h);
-    }
-#endif /* gcu */
     else {
 	return -1;
     }
@@ -504,11 +408,6 @@ lbui_flush_coords(short win_num, short x, short y, short w, short h) {
 	return sdl_flush_coords(win_num, x, y, w, h);
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return gcu_flush_coords(win_num, x, y, w, h);
-    }
-#endif /* gcu */
     else {
 	return -1;
     }
@@ -522,11 +421,6 @@ lbui_recalculate_frame_placements(int arg) {
 	return sdl_recalculate_frame_placements(arg);
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return gcu_recalculate_frame_placements(arg);
-    }
-#endif /* gcu */
     else {
 	return -1;
     }
@@ -562,11 +456,6 @@ lbui_install_font_in_frame(int win_num, const char *font, int ptsize, int style)
 	    return -3;
     }
 #endif /*sdl */
-#ifdef USE_GCU
-    else if (lbui_which_ui_used == UITYPE_GCU) {
-	return 0;
-    }
-#endif /* gcu */
     else {
 	return -1;
     }

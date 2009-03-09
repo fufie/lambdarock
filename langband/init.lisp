@@ -5,9 +5,9 @@
 DESC: init.lisp - initialisation code
 Copyright (c) 2000-2004 - Stig Erik Sandoe
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you can redistribute it and/or modify ;
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
+the Free Software Foundation; either version 2 of the License, or ;
 (at your option) any later version.
 
 ----
@@ -75,8 +75,8 @@ call appropriately high-level init in correct order."
   ;; check gcu thoroughly
   (when (string-equal ui "gcu")
     (setf ;;size :wait
-	  *screen-height* :wait
-	  *screen-width* :wait))
+     *screen-height* :wait
+     *screen-width* :wait))
   
   (let ((alternative-errors (open #+win32 #p"lb-warn.txt"
 				  #-win32 #p"warnings-langband.txt"
@@ -105,148 +105,140 @@ call appropriately high-level init in correct order."
 		)
 	   
 
-      ;; fix paths
-      #-langband-development
-      (%assign-debian-dirs)
-      #+win32
-      (%assign-win-dirs)
+	   ;; fix paths
+	   #-langband-development
+	   (%assign-debian-dirs)
+	   #+win32
+	   (%assign-win-dirs)
+      
+	   ;; time to register our lisp
+	   #+(or cmu allegro clisp lispworks sbcl cormanlisp ecl)
+	   (org.langband.ffi:c-set-lisp-system! #+cmu 0 #+allegro 1 #+clisp 2 #+lispworks 3
+						#+sbcl 4 #+cormanlisp 5 #+openmcl 6 #+ecl 7)
+      
+	   #-(or cmu allegro clisp lispworks sbcl cormanlisp openmcl ecl)
+	   (error "lisp-system ~s unknown for C-side." (lisp-implementation-type))
+	   (org.langband.ffi:c-init-frame-system& +max-frames+ +predefined-frames+)
 
-      (print "set lispsys")
-      
-      ;; time to register our lisp
-      #+(or cmu allegro clisp lispworks sbcl cormanlisp ecl)
-      (org.langband.ffi:c-set-lisp-system! #+cmu 0 #+allegro 1 #+clisp 2 #+lispworks 3
-					   #+sbcl 4 #+cormanlisp 5 #+openmcl 6 #+ecl 7)
-      
-      #-(or cmu allegro clisp lispworks sbcl cormanlisp openmcl ecl)
-      (error "lisp-system ~s unknown for C-side." (lisp-implementation-type))
-      (print "have lispsys")
-      (org.langband.ffi:c-init-frame-system& +max-frames+ +predefined-frames+)
-      (print "load")
+	   ;; let us read what the user prefers
+	   (load-user-preference-file&)
 
-      ;; let us read what the user prefers
-      (load-user-preference-file&)
+	   (when (eq window-width :default)
+	     (setf window-width (default-setting "window-width")))
+      
+	   (when (eq window-height :default)
+	     (setf window-height (default-setting "window-height")))
+      
+	   (when (eq full-screen :default)
+	     (setf full-screen (default-setting "full-screen")))
 
-      (when (eq window-width :default)
-	(setf window-width (default-setting "window-width")))
+	   (let ((minimum-width +sdl-minimum-window-width+)
+		 (minimum-height +sdl-minimum-window-height+)
+		 (maximum-width +sdl-maximum-window-width+)
+		 (maximum-height +sdl-maximum-window-height+))
       
-      (when (eq window-height :default)
-	(setf window-height (default-setting "window-height")))
+	     (cond ((and (positive-integer? window-width)
+			 (>= window-width minimum-width)
+			 (<= window-width maximum-width))
+		    (setf wanted-width window-width))
+		   ((integerp window-width)
+		    (warn "Window width ~s out of bounds, using minimum: ~s." window-width minimum-width)
+		    (setf wanted-width minimum-width))
+		   (t
+		    (warn "Weird window-width, exiting: ~s" window-width)
+		    (return-from game-init& nil)))
       
-      (when (eq full-screen :default)
-	(setf full-screen (default-setting "full-screen")))
-
-      (let ((minimum-width +sdl-minimum-window-width+)
-	    (minimum-height +sdl-minimum-window-height+)
-	    (maximum-width +sdl-maximum-window-width+)
-	    (maximum-height +sdl-maximum-window-height+))
-      
-	(cond ((and (positive-integer? window-width)
-		    (>= window-width minimum-width)
-		    (<= window-width maximum-width))
-	       (setf wanted-width window-width))
-	      ((integerp window-width)
-	       (warn "Window width ~s out of bounds, using minimum: ~s." window-width minimum-width)
-	       (setf wanted-width minimum-width))
-	      (t
-	       (warn "Weird window-width, exiting: ~s" window-width)
-	       (return-from game-init& nil)))
-      
-	(cond ((and (positive-integer? window-height)
-		    (>= window-height minimum-height)
-		    (<= window-height maximum-height))
-	       (setf wanted-height window-height))
-	      ((integerp window-height)
-	       (warn "Window height ~s out of bounds, using minimum: ~s." window-height minimum-height)
-	       (setf wanted-height minimum-height))
-	      (t
-	       (warn "Weird window-height, exiting: ~s" window-height)
-	       (return-from game-init& nil)))
+	     (cond ((and (positive-integer? window-height)
+			 (>= window-height minimum-height)
+			 (<= window-height maximum-height))
+		    (setf wanted-height window-height))
+		   ((integerp window-height)
+		    (warn "Window height ~s out of bounds, using minimum: ~s." window-height minimum-height)
+		    (setf wanted-height minimum-height))
+		   (t
+		    (warn "Weird window-height, exiting: ~s" window-height)
+		    (return-from game-init& nil)))
      
-	)
+	     )
 		  
-      (handler-case
-	  (let* (;; hacks
-		 (*screen-width* wanted-width)
-		 (*screen-height* wanted-height)
+	   (handler-case
+	       (let* ( ;; hacks
+		      (*screen-width* wanted-width)
+		      (*screen-height* wanted-height)
 
-		 #||
-				   (:wait :wait)
-				   (:800x600 800)
-				   (:1024x768 1024)
-				   (:1280x1024 1280)))
-		 (*screen-height* (ecase size
-				    (:wait :wait)
-				    (:800x600 600)
-				    (:1024x768 768)
-				    (:1280x1024 1024)))
-		 ||#
-		 (theme (find-ui-theme ui)))
-	    (unless (typep theme 'ui-theme)
-	      (warn "No usable theme found, using defaults."))
-	    (install-ui-theme& theme)
-	    (setf *current-ui-theme* theme))
+		      #||
+		      (:wait :wait)
+		      (:800x600 800)
+		      (:1024x768 1024)
+		      (:1280x1024 1280)))
+		      (*screen-height* (ecase size
+		      (:wait :wait)
+		      (:800x600 600)
+		      (:1024x768 768)
+		      (:1280x1024 1024)))
+		      ||#
+		      (theme (find-ui-theme ui)))
+	   (unless (typep theme 'ui-theme)
+	     (warn "No usable theme found, using defaults."))
+	   (install-ui-theme& theme)
+	   (setf *current-ui-theme* theme))
 	
-	(illegal-ui-theme-data (co)
-	    (warn "UI-Theme problems for ~a: ~a" (illegal-data.id co)
-		  (illegal-data.desc co))
-	    (return-from game-init& nil)))
+	     (illegal-ui-theme-data (co)
+	       (warn "UI-Theme problems for ~a: ~a" (illegal-data.id co)
+		     (illegal-data.desc co))
+	       (return-from game-init& nil)))
 
-      (print "rrange")
+    #+use-callback-from-c
+    (arrange-callbacks)
       
-      #+use-callback-from-c
-      (arrange-callbacks)
+    #+(and cmu use-callback-from-c)
+    (pushnew 'arrange-callbacks ext:*after-gc-hooks*)
       
-      #+(and cmu use-callback-from-c)
-      (pushnew 'arrange-callbacks ext:*after-gc-hooks*)
-      
-      #+(and sbcl use-callback-from-c)
-      (pushnew 'arrange-callbacks sb-ext:*after-gc-hooks*)
+    #+(and sbcl use-callback-from-c)
+    (pushnew 'arrange-callbacks sb-ext:*after-gc-hooks*)
 
-      (handler-case
-	  (let ((flag 0)
-		(retval -1))
-	    (when *graphics-supported*
-	      (bit-flag-add! flag #x01)) ;; graphics
-	    ;; add sound?
-	    #-disable-sound
-	    (bit-flag-add! flag #x02)
+    (handler-case
+	(let ((flag 0)
+	      (retval -1))
+	  (when *graphics-supported*
+	    (bit-flag-add! flag #x01)) ;; graphics
+	  ;; add sound?
+	  #-disable-sound
+	  (bit-flag-add! flag #x02)
 
-	    (when (eq full-screen t)
-	      (bit-flag-add! flag #x10))
+	  (when (eq full-screen t)
+	    (bit-flag-add! flag #x10))
 
-	    (warn "init flag ~s" flag)
-	    (setf retval (org.langband.ffi:c-init-c-side& (string ui)
-							  *engine-source-dir*
-							  *engine-config-dir*
-							  *engine-data-dir*
-							  wanted-width
-							  wanted-height
-							  flag)) ;; no debug, possible gfx
-	    (warn "init retval is ~s" retval)
-	    (cond ((= retval -42)
-		   #-use-callback-from-c
-		   (play-game&)
-		   #+use-callback-from-c
-		   (progn
-		     (warn "Problems init'ing UI, please check term-window for error-messages")
-		     (return-from game-init& nil))
-		   )
-		  ((/= retval 0) ;; only success is accepted
+	  (setf retval (org.langband.ffi:c-init-c-side& (string ui)
+							*engine-source-dir*
+							*engine-config-dir*
+							*engine-data-dir*
+							wanted-width
+							wanted-height
+							flag)) ;; no debug, possible gfx
+	  (cond ((= retval -42)
+		 #-use-callback-from-c
+		 (play-game&)
+		 #+use-callback-from-c
+		 (progn
 		   (warn "Problems init'ing UI, please check term-window for error-messages")
 		   (return-from game-init& nil))
-		  ;;(warn "return..")
-		  ))
+		 )
+		((/= retval 0) ;; only success is accepted
+		 (warn "Problems init'ing UI, please check term-window for error-messages")
+		 (return-from game-init& nil))
+		;;(warn "return..")
+		))
 	    
-	(langband-quit ()
-	  (format t "~&Thanks for helping to test Langband.~2%")
-	  (org.langband.ffi:c-cleanup-c-side&)
-	  ))
+      (langband-quit ()
+	(format t "~&Thanks for helping to test Langband.~2%")
+	(org.langband.ffi:c-cleanup-c-side&)
+	))
   
-      t)
+    t)
       ;; cleanup
-      (close alternative-errors)
-      )))
+  (close alternative-errors)
+  )))
 
 (defun %adjust-screen-size (width height)
   (declare (ignore width height))
@@ -268,31 +260,31 @@ call appropriately high-level init in correct order."
 	(size-ptr  (ff:register-foreign-callable `c-callable-resize nil t))
 	(mouse-ptr (ff:register-foreign-callable `c-callable-mouseclick nil t))
 	)
-    (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr)
-    )
+  (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr)
+  )
   
   #+cmu
   (let ((play-ptr  (kernel:get-lisp-obj-address #'play-game&))
 	(size-ptr  (kernel:get-lisp-obj-address #'%adjust-screen-size))
 	(mouse-ptr (kernel:get-lisp-obj-address #'%mouse-clicked))
 	)
-    (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr)
-    )
+  (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr)
+  )
 
   #+sbcl
   (let ((play-ptr  (sb-kernel:get-lisp-obj-address #'play-game&))
 	(size-ptr  (sb-kernel:get-lisp-obj-address #'%adjust-screen-size))
 	(mouse-ptr (sb-kernel:get-lisp-obj-address #'%mouse-clicked))
 	)
-;;    (warn "setting callbacks ~d ~d" play-ptr size-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr)
-    )
+    ;;    (warn "setting callbacks ~d ~d" play-ptr size-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr)
+  )
 
   #+lispworks
   (let ((play-ptr  (fli:make-pointer :symbol-name "LB_PlayGame"))
@@ -300,10 +292,10 @@ call appropriately high-level init in correct order."
 	(mouse-ptr (fli:make-pointer :symbol-name "LB_MouseClicked"))
 	)
     
-    (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr)
-    )
+  (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
+  (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr)
+  )
   
   #-(or sbcl cmu allegro lispworks)
   (error "No callback arranged for implementation..")
@@ -312,35 +304,35 @@ call appropriately high-level init in correct order."
 
 ;;; hackish thing to start the game ever so long.
 (defun a (&key (ui "sdl")
-	  (gfx nil)
-	  (window-width :default)
-	  (window-height :default)
-	  (full-screen :default))
+(gfx nil)
+(window-width :default)
+(window-height :default)
+(full-screen :default))
   
-  ;; to make sure dumps look pretty
-  (let ((*package* (find-package :org.langband.engine))
-	#+(or cmu) (extensions:*gc-verbose* nil)
-	#+(or cmu sbcl) (*compile-print* nil)
-	)
+;; to make sure dumps look pretty
+(let ((*package* (find-package :org.langband.engine))
+      #+(or cmu) (extensions:*gc-verbose* nil)
+      #+(or cmu sbcl) (*compile-print* nil)
+      )
 
-    (unless (or (string-equal "sdl" (string ui))
-		(string-equal "x11" (string ui)))
-      (setf gfx nil)) ;; hack      
+(unless (or (string-equal "sdl" (string ui))
+	    (string-equal "x11" (string ui)))
+  (setf gfx nil)) ;; hack      
     
-    (when gfx
-      (setf *graphics-supported* t))
-    ;; still get problems as ffi locks up thread system, but a bit better.
-    #||
-    #+lispworks
-    (mp:process-run-function "langband" '() #'game-init& ui)
-    #-lispworks
-    ||#
-    (game-init& :ui ui
-		:window-width window-width
-		:window-height window-height
-		:full-screen full-screen)
+(when gfx
+  (setf *graphics-supported* t))
+;; still get problems as ffi locks up thread system, but a bit better.
+#||
+#+lispworks
+(mp:process-run-function "langband" '() #'game-init& ui)
+#-lispworks
+||#
+(game-init& :ui ui
+	    :window-width window-width
+	    :window-height window-height
+	    :full-screen full-screen)
 ;;    (format t "~&Thanks for helping to test Langband.~2%")
-    ))
+))
 
 (defun b (&optional (ui "gcu"))
   ;;(warn "Curses/GCU not supported in this version.")
@@ -348,9 +340,9 @@ call appropriately high-level init in correct order."
 
 (defun c (&key (ui "sdl") (full-screen :default))
   (a :ui ui :gfx t
-     :window-width +sdl-minimum-window-width+
-     :window-height +sdl-minimum-window-height+
-     :full-screen full-screen))
+  :window-width +sdl-minimum-window-width+
+  :window-height +sdl-minimum-window-height+
+  :full-screen full-screen))
 
 (defun d (&optional (ui "sdl"))
   (a :ui ui :gfx t :window-width 1024 :window-height 768))

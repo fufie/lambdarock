@@ -14,7 +14,7 @@ void cocoahelper_init();
 void
 lbui_set_lisp_system(LISP_SYSTEMS val) {
 
-    fprintf(stderr, "Lisp system %d vs %d.\n", val, LISPSYS_ACL);
+    //fprintf(stderr, "Lisp system %d vs %d.\n", val, LISPSYS_ACL);
     cocoahelper_init();
     
     if (val == LISPSYS_CMUCL || val == LISPSYS_ACL ||
@@ -61,7 +61,6 @@ lbui_set_lisp_callback (char *name, void *ptr) {
 
 void
 lbui_set_generic_callback(char *name, int (*fun)()) {
-    //    printf("Setting cb to %p\n", fun);
     if (name != NULL && strlen(name)> 0) {
 	if (!strcmp(name, "play-game")) {
 	    lbui_will_use_callback = 1;
@@ -86,7 +85,6 @@ int
 lbui_play_game_lisp() {
 
     if (lbui_will_use_callback) {
-	// DBGPUT("Note: playing lisp-game through callback from C\n");
 	
 	if ((lbui_current_lisp_system == LISPSYS_SBCL ||
              lbui_current_lisp_system == LISPSYS_ACL ||

@@ -3,7 +3,7 @@
 #|
 
 DESC: ffi/ffi-helpers.lisp - helpers when loading ffi-defs
-Copyright (c) 2001-2003 - Stig Erik Sandø
+Copyright (c) 2001-2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify ;
 it under the terms of the GNU General Public License as published by

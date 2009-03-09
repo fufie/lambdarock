@@ -1,6 +1,6 @@
 /*
  * DESC: main-sdl.c - langband-backend for SDL
- * Copyright (c) 2002-2003 - Stig Erik Sand¯
+ * Copyright (c) 2002-2003 - Stig Erik Sandoe
 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,24 +24,24 @@
  * are included in all such copies.  Other copyrights may also apply.
  * 
  * The GNU GPL notice:
-   main-sdl.c - SDL (http://libsdl.org) display module for Angband.
-	Copyright (C) 2001  Gregory Velichansky (hmaon@bumba.net)
-	Portions Copyright (C) 1997 Ben Harrison
-	(see the file COPYING in the latest distribution of the Angband source code)
+ main-sdl.c - SDL (http://libsdl.org) display module for Angband.
+ Copyright (C) 2001  Gregory Velichansky (hmaon@bumba.net)
+ Portions Copyright (C) 1997 Ben Harrison
+ (see the file COPYING in the latest distribution of the Angband source code)
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, please see 
-	http://www.gnu.org/copyleft/gpl.html
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, please see 
+ http://www.gnu.org/copyleft/gpl.html
 
 */
 
@@ -133,24 +133,24 @@ static graf_tiles *screen_tiles = NULL;
 
 /* color data copied straight from main-xxx.c */
 SDL_Color sdl_colour_data[16] =
-{
-/* 0 */	{0, 0, 0, 0}, 
+    {
+        /* 0 */	{0, 0, 0, 0}, 
 	{4, 4, 4, 0}, 
 	{2, 2, 2, 0}, 
 	{4, 2, 0, 0}, 
 	{3, 0, 0, 0}, 
-/* 5 */	{0, 2, 1, 0}, 
+        /* 5 */	{0, 2, 1, 0}, 
 	{0, 0, 4, 0}, 
 	{2, 1, 0, 0}, 
 	{1, 1, 1, 0}, 
 	{3, 3, 3, 0}, 
-/* 10 */{4, 0, 4, 0}, 
+        /* 10 */{4, 0, 4, 0}, 
 	{4, 4, 0, 0}, 
 	{4, 0, 0, 0}, 
 	{0, 4, 0, 0}, 
 	{0, 4, 4, 0}, 
 	{3, 2, 1, 0}
-};
+    };
 
 void
 sdl_UpdateRect(SDL_Surface *screen, Sint32 x, Sint32 y, Sint32 w, Sint32 h) {
@@ -199,7 +199,7 @@ sdl_find_image(const char *fname) {
 
 static int
 sdl_load_image_data(const char *filename, int image_index, int tiled,
-		int tile_width, int tile_height, unsigned int transcolour) {
+                    int tile_width, int tile_height, unsigned int transcolour) {
     SDL_Surface *surf = NULL;
     surf = IMG_Load(filename);
 
@@ -411,8 +411,8 @@ sdl_connect_to_frame(LangbandFrame *lf) {
     lf->ui_connection = wc;
 
     //DBGPUT("Making window %d with tw %d and th %d\n", lf->key, lf->tile_width, lf->tile_height);
-//    if (!sdl_install_font_in_frame(lf))
-//	return NULL;
+    //    if (!sdl_install_font_in_frame(lf))
+    //	return NULL;
     
     wc->background = NULL;
     wc->face = theWindow;
@@ -555,16 +555,14 @@ lbui_init_sdl(int win_wid, int win_hgt, int initarguments) {
     /* TODO perhaps use SDL_InitSubSystem() instead. */
 
     /* I don't think you'd want the following (except for core dump): */
-//#ifdef SDL_NOPARACHUTE
+    //#ifdef SDL_NOPARACHUTE
     initflags |= SDL_INIT_NOPARACHUTE;
-//#endif
+    //#endif
 
     /* This isn't supposed to do anything on Windows but it may break things!
      * XXX XXX XXX */
     /*initflags |= SDL_INIT_EVENTTHREAD;*/
 
-
-    printf("real init\n");
     if (SDL_Init(initflags) != 0) {
 	ERRORMSG("SDL_Init() failed for some reason.\n");
 #ifdef linux
@@ -594,7 +592,6 @@ lbui_init_sdl(int win_wid, int win_hgt, int initarguments) {
     sdl_window_flags |= SDL_HWSURFACE;
 #endif
     
-    printf("going\n");
     // Let us create the base window first of all!
 
     {
@@ -811,7 +808,7 @@ sdl_complex_blit(short win_num, short x, short y, unsigned int img, int flags) {
 	    if (fd->font_type == FONT_TYPE_HEX) {
 		orig = fd->theFont;
 		//DBGPUT("3.1. Char = %c, attr = %d\n", thechar, attr);
-	    // SDL_BlitSurface(fd->theFont, &sr, f, dr);
+                // SDL_BlitSurface(fd->theFont, &sr, f, dr);
 	    
 		SDL_SetColors(fd->theFont, &(sdl_colour_data[attr & 0xf]), 0xff, 1);
 		// SDL_SetColors(fd->face, &(sdl_colour_data[a&0xf]), 0xff, 1); 
@@ -835,10 +832,10 @@ sdl_complex_blit(short win_num, short x, short y, unsigned int img, int flags) {
 	//DBGPUT("4. Char = %c, attr = %d\n", thechar, attr);
 		
 	/*    
-	if (thechar != '#' && thechar != '.') {
-	    DBGPUT("Writing '%c' (%d) char and %u attr to %d,%d (%d,%d,%d,%d -> %d,%d,%d,%d) %d\n",
-		   thechar, thechar, attr, x, y, sr.x, sr.y, sr.w, sr.h, dr.x, dr.y, dr.w, dr.h, flags);
-	}
+              if (thechar != '#' && thechar != '.') {
+              DBGPUT("Writing '%c' (%d) char and %u attr to %d,%d (%d,%d,%d,%d -> %d,%d,%d,%d) %d\n",
+              thechar, thechar, attr, x, y, sr.x, sr.y, sr.w, sr.h, dr.x, dr.y, dr.w, dr.h, flags);
+              }
 	*/
 		
     }
@@ -853,12 +850,12 @@ sdl_complex_blit(short win_num, short x, short y, unsigned int img, int flags) {
         orig = tileInfo->tiles[file];
 
         if (orig) {
-           grp1_tilecols = orig->w / lf->tile_width;
+            grp1_tilecols = orig->w / lf->tile_width;
 
-	//DBGPUT("At %d,%d File %d and Tile %d\n", x, y, file, tile);
+            //DBGPUT("At %d,%d File %d and Tile %d\n", x, y, file, tile);
 	
-  	   sr.x = (tile % grp1_tilecols) * lf->tile_width; //td->gt->dw; //td->fnt->twid;
-	   sr.y = (tile / grp1_tilecols) * lf->tile_height; //td->gt->dh; //td->fnt->hgt;
+            sr.x = (tile % grp1_tilecols) * lf->tile_width; //td->gt->dw; //td->fnt->twid;
+            sr.y = (tile / grp1_tilecols) * lf->tile_height; //td->gt->dh; //td->fnt->hgt;
 	}
 	
 	//DBGPUT("Writing %u file and %u tile to %d,%d (%d,%d -> %d,%d,%d,%d)\n",
@@ -1008,8 +1005,8 @@ sdl_clear_coords(short win_num, short x, short y, short w, short h) {
     sdl_winconnection *wc = NULL;
     SDL_Rect dr;
 
-//    int destx = x * lf->tile_width;
-//    int desty = y * lf->tile_height;
+    //    int destx = x * lf->tile_width;
+    //    int desty = y * lf->tile_height;
     int destx = x;
     int desty = y;
     
@@ -1072,7 +1069,7 @@ sdl_flush_coords(short win_num, short x, short y, short w, short h) {
 	return 2;
     }
 	
-//    if (!(lf->visible)) return 1;
+    //    if (!(lf->visible)) return 1;
     
     dr.x = destx  + lf->xoffset;
     dr.y = desty + lf->yoffset;
@@ -1177,7 +1174,6 @@ sdl_get_event(int option) {
 	
 
     return 0;
-    
 }
 
 int
@@ -1198,13 +1194,11 @@ sdl_get_window_height() {
 
 unsigned 
 sdl_get_internal_time() {
-
     return SDL_GetTicks();
 }
 
 int 
 sdl_flip_framebuffer() {
-
     return SDL_Flip(theWindow);
 }
 

@@ -3,7 +3,7 @@
 #|
 
 DESC: modules/compat/spells.lisp - reads standard vanilla spell-info
-Copyright (c) 2003 - Stig Erik Sandø
+Copyright (c) 2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
