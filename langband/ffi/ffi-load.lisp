@@ -16,12 +16,14 @@ the Free Software Foundation; either version 2 of the License, or
 
 
 (eval-when (:execute :load-toplevel :compile-toplevel)
-  #+darwin
-      (let ((lib "/Users/stig/Library/Frameworks/ZTerminal.framework/ZTerminal"))
+  #+(or darwin win32)
+  (let (#+darwin (lib "/Users/stig/Library/Frameworks/ZTerminal.framework/ZTerminal")
+		 #+win32 (lib "lbui.dll"))
       (unless (find :ui *langband-loaded-libs*)
 	(load-shared-lib :key :lang-ffi :lib lib)
 	(push :ui *langband-loaded-libs*)))
-  #-darwin
+
+  #-(or darwin win32)
   (let ((lib-path "./zterm/"))
 
 ;;   #+cmu
