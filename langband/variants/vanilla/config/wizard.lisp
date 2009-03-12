@@ -15,6 +15,7 @@ the Free Software Foundation; either version 2 of the License, or
 (in-package :org.langband.vanilla)
 
 ;; Ctrl-A
+#-darwin
 (define-keypress *angband-keys* :global (code-char 1) 'wizard-menu)
 
 ;; wizard stuff

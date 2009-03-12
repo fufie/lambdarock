@@ -299,11 +299,14 @@ window, relative x and relative y."
 		       (advance-message-sys! *message-handler*)
 		       (try-printing-messages! *message-handler*)
 		       (return-from get-and-process-command! (values nil nil)))
-		     
+
+
+		     (warn "Looking for ~s ~s" ch kev)
+
 		     ;; add ALT-key later as well.. 
 		     (when (kbd-event.shift kev)
 		       (setf check (list 'shift ch)) ;; can avoid consing later if it is a problem.
-		       ;;(warn "Looking for ~s" check)
+		       (warn "Looking for ~s ~s ~s" ch kev check)
 		       (setf fun (check-keypress loc-table check)))
 		     
 		     (unless (functionp fun)

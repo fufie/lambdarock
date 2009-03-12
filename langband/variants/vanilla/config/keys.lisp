@@ -78,6 +78,13 @@ the Free Software Foundation; either version 2 of the License, or
 (define-keypress *angband-keys* :global #\8 'move-up)
 (define-keypress *angband-keys* :global #\9 'move-up-right)
 
+#+darwin
+(define-keypress *angband-keys* :global #\Stx 'move-left)
+#+darwin
+(define-keypress *angband-keys* :global #\Etx 'move-right)
+#+darwin
+(define-keypress *angband-keys* :global #\Soh 'move-down)
+
 (define-keypress *angband-keys* :global #\. 'toggle-run-mode)
 
 (define-keypress *angband-keys* :global '(shift #\1) 'run-down-left)
