@@ -16,8 +16,7 @@
     :calling-convention :stdcall :module :lang-ffi)
 
 (fli:define-foreign-function (c-init-c-side& "lbui_init_c_side")
-    ((ui (:reference-pass :ef-mb-string))
-     (source-path (:reference-pass :ef-mb-string))
+    ((source-path (:reference-pass :ef-mb-string))
      (config-path (:reference-pass :ef-mb-string))
      (data-path (:reference-pass :ef-mb-string)) (win-width :int)
      (win-height :int) (flags :int))

@@ -18,8 +18,7 @@ DESC: ffi/ffi-defs.lisp - the foreign declarations that [L] uses
 
 (def-foreign-function ("lbui_init_c_side" c-init-c-side&)
     :returns 'int
-    :args '((cptr ui)
-	    (cptr source-path)
+    :args '((cptr source-path)
 	    (cptr config-path)
 	    (cptr data-path)
 	    (int win-width)

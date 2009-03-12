@@ -21,7 +21,6 @@
 (declaim (inline c-init-c-side&))
 (sb-alien:define-alien-routine ("lbui_init_c_side" c-init-c-side&)
            int
-           (ui cptr)
            (source-path cptr)
            (config-path cptr)
            (data-path cptr)
