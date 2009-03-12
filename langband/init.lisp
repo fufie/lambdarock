@@ -5,9 +5,9 @@
 DESC: init.lisp - initialisation code
 Copyright (c) 2000-2004 - Stig Erik Sandoe
 
-This program is free software; you can redistribute it and/or modify ;
+This program is free software; you can redistribute it and/or modify ; ; ; ;
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or ;
+the Free Software Foundation; either version 2 of the License, or ; ; ; ;
 (at your option) any later version.
 
 ----
@@ -53,7 +53,6 @@ ADD_DESC: at the start.
 
 
 (defun game-init& (&key
-		   (ui "sdl")
 		   (window-width :default)
 		   (window-height :default)
 		   (full-screen :default))
@@ -72,12 +71,6 @@ call appropriately high-level init in correct order."
     (setf *input-event* (make-input-event :keypress (make-keyboard-event)
 					  :mouseclick (make-mouse-event))))
 
-  ;; check gcu thoroughly
-  (when (string-equal ui "gcu")
-    (setf ;;size :wait
-     *screen-height* :wait
-     *screen-width* :wait))
-  
   (let ((alternative-errors (open #+win32 #p"lb-warn.txt"
 				  #-win32 #p"warnings-langband.txt"
 				  :direction :output
@@ -88,8 +81,7 @@ call appropriately high-level init in correct order."
     
     (unwind-protect
 	 (let* ((hide-warnings (or #+win32 t
-				   #+langband-release t
-				   (string-equal ui "gcu")))
+				   #+langband-release t))
 		
 		(cl:*error-output* (if hide-warnings
 				       alternative-errors
@@ -177,7 +169,7 @@ call appropriately high-level init in correct order."
 		      (:1024x768 768)
 		      (:1280x1024 1024)))
 		      ||#
-		      (theme (find-ui-theme ui)))
+		      (theme (find-ui-theme "sdl")))
 	   (unless (typep theme 'ui-theme)
 	     (warn "No usable theme found, using defaults."))
 	   (install-ui-theme& theme)
@@ -209,8 +201,7 @@ call appropriately high-level init in correct order."
 	  (when (eq full-screen t)
 	    (bit-flag-add! flag #x10))
 
-	  (setf retval (org.langband.ffi:c-init-c-side& (string ui)
-							*engine-source-dir*
+	  (setf retval (org.langband.ffi:c-init-c-side& *engine-source-dir*
 							*engine-config-dir*
 							*engine-data-dir*
 							wanted-width
@@ -303,65 +294,41 @@ call appropriately high-level init in correct order."
   )
 
 ;;; hackish thing to start the game ever so long.
-(defun a (&key (ui "sdl")
-(gfx nil)
-(window-width :default)
-(window-height :default)
-(full-screen :default))
-  
-;; to make sure dumps look pretty
-(let ((*package* (find-package :org.langband.engine))
-      #+(or cmu) (extensions:*gc-verbose* nil)
-      #+(or cmu sbcl) (*compile-print* nil)
-      )
+(defun a (&key (gfx nil) (window-width :default) (window-height :default) (full-screen :default))
 
-(unless (or (string-equal "sdl" (string ui))
-	    (string-equal "x11" (string ui)))
-  (setf gfx nil)) ;; hack      
+  ;; to make sure dumps look pretty
+  (let ((*package* (find-package :org.langband.engine))
+	#+(or cmu) (extensions:*gc-verbose* nil)
+	#+(or cmu sbcl) (*compile-print* nil)
+	)
     
-(when gfx
-  (setf *graphics-supported* t))
-;; still get problems as ffi locks up thread system, but a bit better.
-#||
-#+lispworks
-(mp:process-run-function "langband" '() #'game-init& ui)
-#-lispworks
-||#
-(game-init& :ui ui
-	    :window-width window-width
-	    :window-height window-height
-	    :full-screen full-screen)
-;;    (format t "~&Thanks for helping to test Langband.~2%")
-))
+  (when gfx
+    (setf *graphics-supported* t))
 
-(defun b (&optional (ui "gcu"))
-  ;;(warn "Curses/GCU not supported in this version.")
-  (a :ui ui :gfx nil))
+  ;; still get problems as ffi locks up thread system, but a bit better.
+  #||
+  #+lispworks
+  (mp:process-run-function "langband" '() #'game-init& ui)
+  #-lispworks
+  ||#
+  (game-init& :window-width window-width
+	      :window-height window-height
+	      :full-screen full-screen)
+  ;;    (format t "~&Thanks for helping to test Langband.~2%")
+  ))
 
-(defun c (&key (ui "sdl") (full-screen :default))
-  (a :ui ui :gfx t
+
+(defun c (&key (full-screen :default))
+  (a :gfx t
   :window-width +sdl-minimum-window-width+
   :window-height +sdl-minimum-window-height+
   :full-screen full-screen))
 
-(defun d (&optional (ui "sdl"))
-  (a :ui ui :gfx t :window-width 1024 :window-height 768))
+(defun d ()
+  (a :gfx t :window-width 1024 :window-height 768))
 
-(defun e (&optional (ui "sdl"))
-  (a :ui ui :gfx t :window-width 1280 :window-height 1024 :full-screen t))
-
-(defun f (&optional (ui "sdl"))
-  (a :ui ui :gfx t :window-width 1280 :window-height 1024 :full-screen nil))
+(defun f ()
+  (a :gfx t :window-width 1280 :window-height 1024 :full-screen nil))
 
 (setf (symbol-function 'cl-user::langband)
-      #'f)
-
-(setf (symbol-function 'cl-user::gcu-langband)
-      #'b)
-
-
-(setf (symbol-function 'cl-user::gfx-langband)
-      #'c)
-
-(setf (symbol-function 'cl-user::sdl-langband)
       #'c)

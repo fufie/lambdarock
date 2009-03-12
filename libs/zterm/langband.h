@@ -343,7 +343,7 @@ INTERFACE int lbui_current_soundsystem();
 //INTERFACE void print_coloured_token(int wantedTerm, int colour, int token, int row, int col);
 //INTERFACE void print_coloured_stat(int wantedTerm, int colour, int stat, int row, int col);
 //INTERFACE void print_coloured_number(int wantedTerm, int colour, long number, int padding, int row, int col);
-INTERFACE int lbui_init_c_side(const char *ui, const char *sourcePath,
+INTERFACE int lbui_init_c_side(const char *sourcePath,
 			       const char *confPath, const char *gfxPath,
 			       int win_wid, int win_hgt, int extra_flags);
 INTERFACE char *lbui_load_sound(int msg, char *fname);
