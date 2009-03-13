@@ -1,6 +1,6 @@
 # Really simple Makefile which works ok on Linux
 
-CLEANFILES=*.o *.so *.fasl *.faslmt *.x86f *.err *.fas *.ufsl *.lib *.sparcf *.fsl *~ *.dfsl
+CLEANFILES=*.o *.so *.fasl *.faslmt *.x86f *.err *.fas *.ofasl *.ufsl *.lib *.sparcf *.fsl *~ *.dfsl
 
 CLISP_PATH=/usr/lib/clisp
 CLISP_LINKKIT=${CLISP_PATH}/linkkit
