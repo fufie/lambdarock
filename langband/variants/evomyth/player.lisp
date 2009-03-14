@@ -10,14 +10,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 (in-package :org.langband.evomyth)
 
 (defmethod get-class-tile ((variant evomyth) player)
-  (cond ((is-atrocitan? player)
-	 ;;(values 7 10)
-	 (values +tilefile-classes+ 6))
-
-	((is-copian? player)
-	 (values 7 1))
-	(t
-	 (values +tilefile-classes+ 6))))
+  (values +tilefile-classes+ 37))
 
 (defmethod get-character-picture ((variant evomyth) (player player))
   (let (;;(race-sym   (race.symbol   (player.race player)))

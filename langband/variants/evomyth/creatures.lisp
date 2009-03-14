@@ -9,34 +9,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (in-package :org.langband.evomyth)
 
-
-(defun is-atrocitan? (creature)
-  "Returns T if the creature is from Atrocitas."
-  (etypecase creature
-    (player (eq (race.symbol (player.race creature)) '<atrocitan>))
-    (active-monster (find '<atrocitan> (monster.type (amon.kind creature))))))
-
-(defun is-copian? (creature)
-  "Returns T if the creature is from copia."
-  (etypecase creature
-    (player (eq (race.symbol (player.race creature)) '<copian>))
-    (active-monster (find '<copian> (monster.type (amon.kind creature))))))
-
-(defun get-nationality (creature)
-  "Returns a symbol for nationality."
-  (cond ((is-copian? creature) '<copian>)
-	((is-atrocitan? creature) '<atrocitan>)
-	(t nil)))
-
-(defun in-faction? (creature faction)
-  "Returns T if the creature is part of the given faction."
-  (cond ((eq faction '<atrocitan>) (is-atrocitan? creature))
-	((eq faction '<copian>) (is-copian? creature))
-	((typep creature 'active-monster) (find faction (monster.type (amon.kind creature))))
-	;; add for player here
-	(t
-	 nil)))
-
 (defmethod generate-random-name ((variant evomyth) creature race)
   "Returns a random name for a given creature of a given race."
   (declare (ignore creature race))
