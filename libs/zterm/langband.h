@@ -3,12 +3,7 @@
 
 /*
  * DESC: langband.h - langband-related defined/includes/etc.
- * Copyright (c) 2000-2002 - Stig Erik Sandø
-
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (c) 2000-2002, 2009 - Stig Erik Sandø
  */
 
 #ifndef WIN32
@@ -25,115 +20,9 @@
 #endif
 #endif /* iface */
 
-
-
-/*
- * Extract the "SUNOS" flag from the compiler
- */
-#if defined(sun)
-# ifndef SUNOS
-#   define SUNOS
-# endif
-#endif
-
-/*
- * Extract the "ULTRIX" flag from the compiler
- */
-#if defined(ultrix) || defined(Pyramid)
-# ifndef ULTRIX
-#  define ULTRIX
-# endif
-#endif
-
-/*
- * Extract the "ATARI" flag from the compiler [cjh]
- */
-#if defined(__atarist) || defined(__atarist__)
-# ifndef ATARI
-#  define ATARI
-# endif
-#endif
-
-/*
- * Extract the "ACORN" flag from the compiler
- */
-#ifdef __riscos
-# ifndef ACORN
-#  define ACORN
-# endif
-#endif
-
-/*
- * Extract the "SGI" flag from the compiler
- */
-#ifdef sgi
-# ifndef SGI
-#  define SGI
-# endif
-#endif
-
-/*
- * Extract the "MSDOS" flag from the compiler
- */
-#ifdef __MSDOS__
-# ifndef MSDOS
-#  define MSDOS
-# endif
-#endif
-
-/*
- * Extract the "WINDOWS" flag from the compiler
- */
-#if defined(_Windows) || defined(__WINDOWS__) ||        \
-    defined(__WIN32__) || defined(WIN32) ||             \
-    defined(__WINNT__) || defined(__NT__)
-# ifndef WINDOWS
-#  define WINDOWS
-# endif
-#endif
-
-/*
- * Remove the MSDOS flag when using WINDOWS
- */
-#ifdef WINDOWS
-# ifdef MSDOS
-#  undef MSDOS
-# endif
-#endif
-
-/*
- * Remove the WINDOWS flag when using MACINTOSH
- */
-#ifdef MACINTOSH
-# ifdef WINDOWS
-#  undef WINDOWS
-# endif
-#endif
-
-
-
-/*
- * OPTION: Define "L64" if a "long" is 64-bits.  See "h-types.h".
- * The only such platform that angband is ported to is currently
- * DEC Alpha AXP running OSF/1 (OpenVMS uses 32-bit longs).
- */
-#if defined(__alpha) && defined(__osf__)
-# define L64
-#endif
-
-#if !defined(NeXT) && !defined(__MWERKS__) && !defined(ACORN)
-# include <fcntl.h>
-#endif
-
-
 #include <stdio.h>
 #include <ctype.h>
-
-#if defined(NeXT)
-# include <libc.h>
-#else
 # include <stdlib.h>
-#endif
 
 #if defined(unix) || defined(DARWIN)
 #include <unistd.h>
@@ -142,31 +31,6 @@
 #include <time.h>
 #include <string.h>
 #include <stdarg.h>
-
-/*
- * Basic "types".
- *
- * Note the attempt to make all basic types have 4 letters.
- * This improves readibility and standardizes the code.
- *
- * Likewise, all complex types are at least 4 letters.
- * Thus, almost every 1 to 3 letter word is a legal variable,
- * except for certain reserved words ('for' and 'if' and 'do').
- *
- * Note that the type used in structures for bit flags should be uint.
- * As long as these bit flags are sequential, they will be space smart.
- *
- * Note that on some machines, apparently "signed char" is illegal.
- *
- * A s16b/u16b takes exactly 2 bytes
- * A s32b/u32b takes exactly 4 bytes
- *
- * Also, see <limits.h> for min/max values for sint, uint, long, huge
- * (INT_MIN, INT_MAX, 0, UINT_MAX, LONG_MIN, LONG_MAX, 0, ULONG_MAX).
- * These limits should be verified and coded into "h-constant.h", or
- * perhaps not, since those types have "unknown" length by definition.
- */
-
 
 /* Signed/Unsigned 16 bit value */
 typedef signed short s16b;
@@ -205,10 +69,6 @@ typedef enum {
     UITYPE_BAD        = 20
 } UITYPES;
 
-/*
- * Define some simple constants
- */
-
 
 /*
  * Hack -- Define NULL
@@ -220,33 +80,6 @@ typedef enum {
 #  define NULL ((char*)0)
 # endif /* __STDC__ */
 #endif /* NULL */
-
-
-/*
- * OPTION: Use "blocking getch() calls" in "main-gcu.c".
- * Hack -- Note that this option will NOT work on many BSD machines
- * Currently used whenever available, if you get a warning about
- * "nodelay()" undefined, then make sure to undefine this.
- */
-#if defined(SYS_V) || defined(AMIGA)
-# define USE_GETCH
-#endif
-
-/* langband-specific hack */
-
-#ifdef linux
-#define USE_GETCH
-#define USE_CURS_SET
-#endif
-
-/*
- * OPTION: Use the "curs_set()" call in "main-gcu.c".
- * Hack -- This option will not work on most BSD machines
- */
-#ifdef SYS_V
-# define USE_CURS_SET
-#endif
-
 
 
 /*** Color constants ***/
@@ -308,10 +141,6 @@ extern const char *lbui_base_data_path;
 /** will we access lisp through callbacks? */
 extern int lbui_will_use_callback;
 extern LISP_SYSTEMS lbui_current_lisp_system;
-
-
-//INTERFACE int lbui_init_graphics(void);
-
 
 INTERFACE int lbui_paint_image(const char *fname, int x, int y);
 INTERFACE int lbui_load_gfx_image(const char *fname, int idx, unsigned int transcolour);
@@ -376,23 +205,18 @@ INTERFACE unsigned lbui_get_internal_time();
 INTERFACE int lbui_flip_framebuffer();
 //INTERFACE int sdl_complex_blit(short win_num, short x, short y, unsigned int img, int flags);
 
-
-#ifdef USE_GCU
-INTERFACE int gcu_cleanup(void);
-#endif
-
 #ifdef USE_SDL
 INTERFACE int sdl_cleanup(void);
 #endif
 
 
-#ifdef WIN32
-//INTERFACE int main(int argc, char *argv[]);
-#endif
-
 #ifdef USE_SDL
 
+#ifdef WIN32
+#include "SDL.h"
+#else
 #include <SDL/SDL.h>
+#endif
 
 #define FONT_TYPE_TTF 5
 #define FONT_TYPE_HEX 6
@@ -492,19 +316,5 @@ extern int sdl_flush_coords(short win_num, short x, short y, short w, short h);
 extern SDL_Color sdl_colour_data[16];
 
 #endif /* use sdl */
-
-#ifdef USE_GCU
-
-extern int gcu_switch_terms(int bigterm);
-extern int gcu_get_event(int option);
-extern int gcu_full_blit(short win_num, short x, short y, unsigned int img, short flags);
-extern int gcu_transparent_blit(short win_num, short x, short y, unsigned int img, short flags);
-extern int gcu_clear_coords(short win_num, short x, short y, short w, short h);
-extern int gcu_flush_coords(short win_num, short x, short y, short w, short h);
-extern int gcu_get_window_width();
-extern int gcu_get_window_height();
-
-extern int gcu_recalculate_frame_placements(int arg);
-#endif /* use gcu */
 
 #endif /* langband_h */

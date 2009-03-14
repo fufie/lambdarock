@@ -3,12 +3,7 @@
 
 /*
  * DESC: lbwindows.h - the windowing system for langband on the C-side
- * Copyright (c) 2000-2002 - Stig Erik Sandø
-
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (c) 2000-2002, 2009 - Stig Erik Sandoe
  */
 
 #include "langband.h"
@@ -70,8 +65,6 @@ struct LangbandFrame {
     //char *backgroundfile;
 
     int background;
-
-
 };
 
 typedef struct LangbandFrame LangbandFrame;
@@ -83,7 +76,6 @@ extern LangbandFrame **lbui_predefinedFrames;
 extern int lbui_num_activeFrames;
 extern int lbui_max_activeFrames;
 extern LangbandFrame **lbui_activeFrames;
-
 
 INTERFACE int lbui_init_frame_system(int active_size, int predefined_size);
 INTERFACE int lbui_legal_frame_key_p(int key, FrameType ft);

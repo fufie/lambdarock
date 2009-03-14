@@ -1,27 +1,22 @@
 /*
  * DESC: collected.h - a kitchen sink of all non-system specific C-code
- * Copyright (c) 2000-2002 - Stig Erik Sandoe
- 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (c) 2000-2002, 2009 - Stig Erik Sandoe
  */
 
-#ifndef WIN32
+#ifdef WIN32
+#ifndef USE_SDL
+#define USE_SDL
+#endif
+#else
 #include "autoconf.h"
 #endif
-#include "langband.h"
+
 #include "lbwindows.h"
 
 #ifdef USE_SOUND
 #include "lbsound.h"
 #endif
 #include "lbtools.h"
-
-#if defined(USE_GCU)
-int lbui_init_gcu(int flags);
-#endif
 
 #if defined(USE_SDL)
 int lbui_init_sdl(int win_wid, int win_hgt, int flags);
@@ -144,7 +139,7 @@ lbui_cleanup_c_side(void) {
     lbui_close_sound_system();
 #endif
     
-	retval = sdl_cleanup();
+    retval = sdl_cleanup();
     
     lbui_current_lisp_system = LISPSYS_BAD;
     lbui_which_ui_used = -1;
@@ -156,78 +151,79 @@ lbui_cleanup_c_side(void) {
 
 int
 lbui_load_gfx_image(const char *fname, int idx, unsigned int transcolour) {
-	return sdl_load_gfx_image(fname, idx, transcolour);
+    return sdl_load_gfx_image(fname, idx, transcolour);
 }
 
 int
 lbui_load_texture(int idx, const char *filename, int target_width, int target_height, int alpha) {
-	return sdl_load_texture(idx, filename, target_width, target_height, alpha);
+    return sdl_load_texture(idx, filename, target_width, target_height, alpha);
 }
 
 int
 lbui_listen_for_event(int option) {
-	return sdl_get_event(option);
+    return sdl_get_event(option);
 }
 
 unsigned 
 lbui_get_internal_time() {
-	return sdl_get_internal_time();
+    return sdl_get_internal_time();
 }
 
 int 
 lbui_flip_framebuffer() {
-	return sdl_flip_framebuffer();
+    return sdl_flip_framebuffer();
 }
 
 
 int
 lbui_get_image_width(int idx) {
-	return sdl_get_image_width(idx);
+    return sdl_get_image_width(idx);
 }
 
 int
 lbui_get_image_height(int idx) {
-	return sdl_get_image_height(idx);
+    return sdl_get_image_height(idx);
 }
 
 int
 lbui_get_window_width() {
-	return sdl_get_window_width();
+    return sdl_get_window_width();
 }
 
 int
 lbui_get_window_height() {
-	return sdl_get_window_height();
+    return sdl_get_window_height();
 }
 
 int
 lbui_full_blit(short win_num, short x, short y, unsigned int img, short flags) {
-	return sdl_full_blit(win_num, x, y, img, flags);
+    return sdl_full_blit(win_num, x, y, img, flags);
 }
 
 int
 lbui_transparent_blit(short win_num, short x, short y, unsigned int img, short flags) {
-	return sdl_transparent_blit(win_num, x, y, img, flags);
+    return sdl_transparent_blit(win_num, x, y, img, flags);
 }
 
 int
 lbui_clear_coords(short win_num, short x, short y, short w, short h) {
-	return sdl_clear_coords(win_num, x, y, w, h);
+    return sdl_clear_coords(win_num, x, y, w, h);
 }
 
 int
 lbui_flush_coords(short win_num, short x, short y, short w, short h) {
-	return sdl_flush_coords(win_num, x, y, w, h);
+    return sdl_flush_coords(win_num, x, y, w, h);
 }
 
 int
 lbui_recalculate_frame_placements(int arg) {
-	return sdl_recalculate_frame_placements(arg);
+    return sdl_recalculate_frame_placements(arg);
 }
 
 int
 lbui_install_font_in_frame(int win_num, const char *font, int ptsize, int style) {
-    
+
+    LangbandFrame *lf =  NULL;
     int install_retval = 0;
     
     //DBGPUT("Adding to frame\n");
@@ -241,16 +237,15 @@ lbui_install_font_in_frame(int win_num, const char *font, int ptsize, int style)
         return install_retval;
     }
     
-	LangbandFrame *lf = lbui_predefinedFrames[win_num];
-	if (lf) {
-	    lf = sdl_install_font_in_frame(lf);
-	}
-	if (lf)
-	    return 0;
-	else
-	    return -3;
+    lf = lbui_predefinedFrames[win_num];
+    if (lf) {
+        lf = sdl_install_font_in_frame(lf);
+    }
+    if (lf)
+        return 0;
+    else
+        return -3;
 }
-
 
 int
 lbui_set_idx_intvalue(int idx, int value) {
@@ -261,7 +256,6 @@ lbui_set_idx_intvalue(int idx, int value) {
     else {
         return -1;
     }
-    
 }
 
 int
@@ -273,9 +267,7 @@ lbui_set_idx_stringvalue(int idx, const char *value) {
     else {
         return -1;
     }
-    
 }
-
 
 const char *
 lbui_get_idx_value(int idx) {
@@ -285,5 +277,4 @@ lbui_get_idx_value(int idx) {
     else {
         return NULL; // que??
     }
-    
 }

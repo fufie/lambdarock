@@ -1,48 +1,7 @@
 /*
  * DESC: main-sdl.c - langband-backend for SDL
  * Copyright (c) 2002-2003 - Stig Erik Sandoe
- 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * -----
- *
- * Has been adapted from Greg Velichansky's SDL visual module for regular
- * Angband:
- *
- * Copyright 2001 Gregory Velichansky (hmaon@bumba.net)
- * You may use it under the terms of the standard Angband license (below) or
- * the GNU General Public License (GPL) Version 2 or greater. (see below)
- * Ben Harrison's copyright appears in the file COPYING and at last
- * check allows you to use his code under the GPL as well.
- *
- * The Angband license states:
- * This software may be copied and distributed for educational, research,
- * and not for profit purposes provided that this copyright and statement
- * are included in all such copies.  Other copyrights may also apply.
  * 
- * The GNU GPL notice:
- main-sdl.c - SDL (http://libsdl.org) display module for Angband.
- Copyright (C) 2001  Gregory Velichansky (hmaon@bumba.net)
- Portions Copyright (C) 1997 Ben Harrison
- (see the file COPYING in the latest distribution of the Angband source code)
- 
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License
- as published by the Free Software Foundation; either version 2
- of the License, or (at your option) any later version.
- 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with this program; if not, please see 
- http://www.gnu.org/copyleft/gpl.html
- 
  */
 
 #ifndef WIN32
@@ -51,29 +10,14 @@
 
 #ifdef USE_SDL
 
-#include "langband.h"
 #include "lbwindows.h"
-//#include "lbsound.h"
 #include "lbtools.h"
 
 //#define FLIP_MODE
 
-/* 
- *
- * Pre-processor configuration, data structure definitions, global variables,
- * and #includes.
- *
- * The #defines could be moved into config.h if this module was a standard
- * feature of Angband, if people find that helpful.
- *
- * If certain parts of this file are moved to a separate file, the data
- * structures would possibly need to be moved to a header file. That's probably
- * not a good idea since no other display module works that way.
- *
- */
 
-#include <SDL_image/SDL_image.h>
-//#include "SDL_mixer.h"
+//#include <SDL_image/SDL_image.h>
+
 #include <string.h>
 
 struct sdl_winconnection {
