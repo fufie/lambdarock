@@ -30,8 +30,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	   '(engine-gfx "people/female-human-bard.png")))))
 
 (defmethod interactive-creation-of-player ((variant evomyth))
-
-  (evo/show-intro)
   
   (call-next-method))
 
@@ -112,22 +110,15 @@ Modififes the passed player object THE-PLAYER.  This is a long function."
     
     (clear-window-from win info-row) ;; clears things
 
-    (unless (lb-engine::%query-for-race variant player settings :race-name "Nationality")
-      (return-from query-for-character-basics! nil))
-
-
-    (cond ((is-atrocitan? player)
-	   (setf (player.class player) (gethash "diplomat" (variant.classes variant))))
-	  ((is-copian? player)
-	   (setf (player.class player) (gethash "spy" (variant.classes variant))))
-	  (t
-	   (error "Unknown race ~s" (player.race player))))
-
-
+    ;; only one possible race now
+    (setf (player.race player) (gethash "man" (variant.races variant)))
+    ;; only one possible class now
+    (setf (player.class player) (gethash "hunter" (variant.classes variant)))
     
     (clear-window +full-frame+)
     (refresh-window +full-frame+)
 
+    
     ;; let's figure out the skill-basics
     (let* ((the-class (player.class player))
 	   (skills (class.skills the-class)))
@@ -145,31 +136,9 @@ Modififes the passed player object THE-PLAYER.  This is a long function."
 	      (when s-obj
 		(setf (gethash (evo/skill.slot s-obj) (player.skills player)) (second i)))))))
       )
-    
-    ;;(clear-window-from win info-row) ;; clears things
-
-    (interactive-skillpoint-distribution variant player settings)
-    
-;;    (clear-window-from win info-row) ;; clears things
-
-
-    ;;(check-type (player.class player) 'character-class)
-
-    #||
-    (put-coloured-str! +term-white+  "Class" choice-col (+ 2 choice-row))
-    (put-coloured-str! +term-l-blue+ (get-class-name player)
-		       (+ 7 choice-col) (+ 2 choice-row))
-    
-    
-    (unless (%query-for-class variant player settings)
-      (return-from query-for-character-basics! nil))
-    ||#
-    
-;;    (clear-window-from win info-row) ;; clears things
 
     (clear-window +full-frame+)
     (refresh-window +full-frame+)
-
     
     t))
 
@@ -302,98 +271,6 @@ can be assigned later." :end-col 43)
 (defmethod on-new-player ((variant evomyth) (player player))
   ;; in evomyth we add a quest right away, don't we?
 
-  ;;(warn "cur-win is ~s and has bg ~s" *cur-win* (window.background *cur-win*))
-  ;;(%print-imagelist)
-  
-  (let ((win *cur-win*)
-	(text-colour +term-umber+)
-	(end-col 95)
-	)
-    
-    (clear-window win)
-    (refresh-window win)
-    
-    (texture-background! win "textures/paper-bg.png" -1)
-    (clear-window win)
-    (refresh-window win)
-
-    (put-coloured-line! text-colour (format nil "To ~a," (player.name player)) 8 2)
-
-    ;; move this shit somewhere else..
-    (when (is-copian? player)
-      (print-text! 8 4 text-colour
-		   "Congratulations on being appointed Imperial Agent, I hear you have impressed your trainers. After the sudden death of King Aequus in the Kingdom of Atrocitas, the Empire of Copia needs updated information about what happens in Atrocitas. Since you've repeatedly asked for a 'real mission', you'll get one at the border areas where a lot of travelers and merchants from Atrocitas pass."
-		   :end-col end-col)
-      
-      (print-text! 8 10 text-colour
-		   "You have received two sealed letters. One of them is for Imperial Mereo Ulydes in Bartertown, and he will give you further assignments. The other letter is for Imperial Mereo Junifer in Mont Renuo (Lambda Rock), and she will have further assignments for you. Titulate Mereo Junifer as General, and not as Mereo. In Bartertown you must seek out Procedo Quovis. Agent Quovis has three fingers on his left hand. You will tell him that you're trading silk, but want to learn the copper trade. Agent Quovis will be your contact with the Agency."
-		   :end-col end-col)
-      
-      (print-text! 8 18 text-colour
-		   "Your cover story is that you're a former textile trader, but lost your shop. You have little money left and you're looking for a new business.  To support your story the Agency provides you with two hundred florentins.  Running a shop in either Bartertown or Mont Renuo will make you blend in. Do not under any circumstances reveal your identity as an imperial agent to anyone not mentioned in this letter."
-		   :end-col end-col)
-      
-      (print-text! 8 24 text-colour
-		   "As an Imperial Agent you have no special privileges and any crimes you're caught for will be punished by the local government. The Agency will not interfere with the local government's right to punish criminals. The Agency reserves the right to punish you in addition for crimes against the Empire's interests."
-		   :end-col end-col)
-      
-      (print-text! 8 29 text-colour
-		   "The Most Holy Emperor Sapient wishes you all luck and hopes that you will uncover more of what happens in Atrocitas. Information about what's happening in Bartertown and Mont Renuo is also of great importance to us."
-		   :end-col end-col)
-      
-      (put-coloured-line! +term-blue+ "<signature>" 8 33)
-      (put-coloured-line! +term-umber+ "Imperial High Agent Statim Mangrevi" 8 34))
-
-    (when (is-atrocitan? player)
-
-      (print-text! 8 4 text-colour "Congratulations on finishing your studies at the Royal Academy of Atroburg. Your professors tell me you finished with honours. As we agreed last february at your father's mansion, I will be your mentor the next two years, training you in the arts of diplomacy, trade and politics. After King Aequus' death last week, things are very hectic and I send you this letter because there is no time to meet in person."
-		   :end-col end-col)
-
-      (print-text! 8 10 text-colour "When we last met, you insisted that you wanted to 'prove yourself and your worthiness'. It seems that Fate was listening to our conversation. The Kingdom, myself and our families need you to go to the two border towns Bartertown and Lambda Rock in the Empire of Copia. In Bartertown you will join the Atrocitan Consul Tepesco as a clerk and trainee. Consul Tepesco will undoubtedly give you assignments to secure our trade with Copia and secure the peace."
-		   :end-col end-col)
-
-      
-      (print-text! 8 17 text-colour "The Kingdom is overrun by agents from the Empire of Copia, trying to create chaos after the King's death. We suspect that the imperial agents are trying to weaken our Kingdom so they can make another of their cowardly attacks on us. It's a bad situation, and we need you to report to us what happens on the border. We want to know about trading, schemes, copian force movements and all other information you find appropriate. With good information we can judge the situation better and avoid living in fear. Fear will only benefit the Copians."
-		   :end-col end-col)
-           
-      (print-text! 8 25 text-colour "Atrocitans in the Empire of Copia you have no special privileges and any crimes you're caught for will be punished by Copians. The Kingdom cannot interfere with the Copian authorities on criminal matters. Be careful."
-		   :end-col end-col)
-
-      (print-text! 8 29 text-colour "Prince Callidus, who manages foreign affairs after his father's death, wishes you all luck and hopes that you will uncover more of what the Empire of Copia is up to. Our freedom is at stake."
-		    :end-col end-col)
-      
-      (put-coloured-line! +term-blue+ "<signature>" 8 33)
-      (put-coloured-line! +term-umber+ "Duke Larethian, Minister of the Foreign Office" 8 34))
-
-    (pause-last-line! :msg "[Press any key to destroy letter and continue]"
-		      :attr +term-green+)
-    ;;(pause-last-line! :attr +term-green+)
-
-    (texture-background! win "" -1)
-    (clear-window win)
-    )
-
-  ;;(%print-imagelist)
-  
-  ;; find letter-quest, add to player, activate quest
-  (warn "Nuevo playeras")
-  (cond ((is-copian? player)
-	 (dolist (i '("deliver-letter-to-junifer" "deliver-letter-to-ulydes"))
-	   (let ((quest (find-quest variant i)))
-	     (init-quest variant quest nil player))))
-	
-	((is-atrocitan? player)
-	 (dolist (i '("deliver-letter-to-tepesco"))
-	   (let ((quest (find-quest variant i)))
-	     (init-quest variant quest nil player)))
-	 (add-to-inventory player (get-new-object "facts-machine")))
-	 
-	(t (error "Uknown nationality.")))
-
-  ;; hacks to help test stuff
-  ;;(add-to-inventory player (get-new-object "filled-out-export-forms"))
-  (set-flag "test-robbery")
-  (warn "oof")
   player)
 
 (defmethod roll-hitpoints-for-new-level ((variant evomyth) (player player))

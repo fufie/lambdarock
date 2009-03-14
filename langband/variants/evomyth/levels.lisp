@@ -80,53 +80,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	(setf py 7))
       (place-player! dungeon player px py))
     
-    ;;(setf (cave-floor dungeon x y) (get-floor-type "stair-down"))
-    (flet ((place-person (id x y)
-	     (let ((*variant* variant)
-		   (*dungeon* dungeon)
-		   (*player* player))
-	       (evo/place-person id x y))))
-
-      (let ((mon (place-person "copian-guard" 10 19)))
-	(setf (amon.strategies mon) (list (make-guard-strategy '(9 16) '(13 16)
-							       '(6 45) '(13 45)))))
-
-      (place-person "copian-guard" 1 15)
-      (place-person "copian-guard" 2 13)
-      (place-person "copian-guard" 9 47)
-      (place-person "copian-guard" 11 47)
-      (place-person "copian-guard" 8 49)
-      (place-person "copian-guard" 69 16)
-      (place-person "copian-guard" 64 18)
-      (place-person "copian-guard" 83 15)
-      (place-person "copian-guard" 112 13)
-      (place-person "copian-guard" 139 11)
-      (place-person "copian-guard" 141 11)
-      (place-person "copian-guard" 97 63)
-      (place-person "copian-guard" 91 82)
-      (place-person "copian-guard" 80 79)
-
-      (place-person "copian-customs-officer" 6 36) ;; remove later
-      (place-person "copian-customs-officer" 68 17)
-      (place-person "copian-customs-officer" 83 16)
-      (place-person "copian-customs-officer" 92 81)
-      (place-person "copian-customs-officer" 80 81)
-      
-      (place-person "mereo-ulydes" 6 52)
-      (place-person "consul-tepesco" 17 25)
-      
-      ;; build them a fortress and put them there
-      (place-person "mereo-junifer" 19 9)     ;; move to lambda rock later
-      (place-person "captain-perpetro" 19 12) ;; move to lambda rock later
-
-      (place-person "elf-fossgard" 5 5) ;; move to elf-place later
-      )
-
-    #||
-    (when-bind (dress (produce-active-object variant "green-silk-dress"))
-      (drop-near-location! variant dungeon dress 5 5))
-    ||#
-
     level))
 
 (defmethod print-depth ((variant evomyth) (level level) setting)
@@ -282,7 +235,9 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (defun %fill-coordmap (coordmap table i j)
 
-  (let ((alts '(("water" . water) ("grass" . grass) ("bridge" . bridge) ("road" . road) ("perm-solid" . perm-solid)
+  (let ((alts '(("water" . water) ("grass" . grass)
+		("bridge" . bridge) ("road" . road)
+		("perm-solid" . perm-solid)
 		("pier" . bridge))))
 
     (dotimes (i 10)

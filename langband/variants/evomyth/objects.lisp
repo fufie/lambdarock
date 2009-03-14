@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/evomyth/objects.lisp - code dealing with physical objects
-Copyright (c) 2003, 2009 - Stig Erik Sandø
+Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 |#
 

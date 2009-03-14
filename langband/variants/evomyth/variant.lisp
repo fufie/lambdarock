@@ -29,50 +29,6 @@ the rest of the game is init'ed."
   (pushnew (make-gender :id "female" :symbol '<female> :name "Female" :win-title "Queen")
 	   (variant.genders var-obj) :test #'eql :key #'gender.symbol)
 
-  ;; fix a lot of this later..
-   (flet ((help-path (file)
-	   (concatenate 'string *engine-source-dir* "docs/help/" file)))
-  
-
-    (register-help-topic& var-obj
-			  (make-help-topic :id "keys" :key #\k
-					   :name "Show commands/keys"
-					   :data (help-path "keys.txt")))
-    
-    (register-help-topic& var-obj
-			  (make-help-topic :id "general" :key #\g
-					   :name "General information"
-					   :data (help-path "general.txt")))
-
-    (register-help-topic& var-obj
-			  (make-help-topic :id "dungeon" :key #\d
-					   :name "Simple information about the dungeons"
-					   :data (help-path "dungeon.txt")))
-
-    (register-help-topic& var-obj
-			  (make-help-topic :id "birth" :key #\b
-					   :name "Information about creating a character"
-					   :data (help-path "birth.txt")))
-
-    (register-help-topic& var-obj
-			  (make-help-topic :id "playing" :key #\p
-					   :name "Tips and hints on how to play langband"
-					   :data (help-path "playing.txt")))
-
-    (register-help-topic& var-obj
-			  (make-help-topic :id "thanks" :key #\t
-					   :name "Who made Langband possible"
-					   :data (help-path "THANKS")))
-    (register-help-topic& var-obj
-			  (make-help-topic :id "version" :key #\v
-					   :name "Show version information"
-					   :data (help-path "version.txt"))))
- 
-
-  ;; register help
-  ;; register levels
-  ;; register skills
-  ;; register combat
   
   (let ((*load-verbose* nil))
     (load-variant-data& var-obj "config/defines")
@@ -270,71 +226,6 @@ the rest of the game is init'ed."
 (defmethod arrange-game-exit& ((variant evomyth) player)
   (declare (ignorable player))
   ;; nothing special happens yet
-  t)
-
-(defun evo/show-intro ()
-  (clear-window +full-frame+)
-  (refresh-window +full-frame+)
-
-  (print-text! 10 1 +term-l-red+ "[Pictures used in the intro are copyrighted by others
-and are used for illustration during development but will not be in the released product.]"
-	       :end-col 80)
-  
-  (paint-gfx-image& '(variant-gfx "other/aequus.png") 40 8)
-
-  (print-text! 3 6 +term-l-blue+
-	       "The news are spreading quickly as we speak..")
-  (print-text! 3 11 +term-white+ "The wise King Aequus of Atrocitas has passed away 70 winters  
-old.  His rule was long and just, and he secured peace, trade and prosperity for his nation. 
-He was also a brilliant but ruthless commander on the battlefield.  He held the 
-northern Dakau Dogmen at bay, and he crushed the mighty Empire of Copia's invading 
-legions with a decisive victory 30 years ago."
-	       :end-col 35)
-  
-  (pause-last-line!)
-  (clear-window +full-frame+)
-  (refresh-window +full-frame+)
-
-  (paint-gfx-image& '(variant-gfx "other/adaugeo2.png") 10 3)
-  
-  (paint-gfx-image& '(variant-gfx "other/vehemen.png") 40 3)
-
-  (paint-gfx-image& '(variant-gfx "other/callidus2.png") 70 3)
-
-  (print-text! 10 14 +term-white+ "King Aequus' three sons are already powerful 
-princes and known far outside the kingdom. 
-The oldest son Prince Adauego is a pious knight and a missionary for the atrocitan healing god Deus Salveus. 
-Prince Vehemen is a legendary knight famous for his valour, battle skills and gallant manners.  The youngest 
-son, Prince Callidus, is a learned man whose organisational skills have turned the Kingdom 
-from a war nation into a strong trading nation." :end-col 90) 
-
-  (paint-gfx-image& '(variant-gfx "other/sapient.png") 10 22)
-
-  (print-text! 35 23 +term-white+ "The Empire of Copia has prospered on the trade with the Kingdom 
-of Atrocitas, much to the benefit of the merchants and the people.  The Holy Emperor Sapient has sent an 
-official letter to the Kingdom of Atrocitas with regrets for their loss of King Aequus.  There is 
-much uncertainty in the Empire of Copia, if the peace will be upheld by a new king 
-or if the kingdom will be divided between the princes.   " :end-col 90)
-  
-  (pause-last-line!)
-
-  (clear-window +full-frame+)
-  (refresh-window +full-frame+)
-
-  (paint-gfx-image& '(variant-gfx "other/map-towns.png") 40 4)
-
-  (print-text! 3 8 +term-white+ "Evomyth is a game of intrigue, diplomacy, smuggling and 
-good old-fashioned adventure.  It's a time of uncertainty for two mighty nations and the player 
-will be tossed into the middle of the nations' playground.  Along the River Ovid lies the two 
-small copian towns Bartertown and Lambda Rock.  It's in an area filled with ancient secrets, 
-legends and all travelers between the Kingdom and the Empire pass these two towns."
-	       :end-col 35)
-
-  (print-text! 3 30 +term-l-blue+ "It's time to decide who you are and what you want to play...")
-	       
-  
-  (pause-last-line!)
-    
   t)
 
 (defun define-skill (id slot-name slot-alias &key desc index)

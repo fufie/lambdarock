@@ -20,7 +20,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandø
   :power-lvl 1
   :flags '(<show-modififers>)
   :sort-value 1001
-  :the-kind '<short-blade>
+  :the-kind '<blade>
   :damage "1d4")
 
 (define-object-kind "short-sword" "& short sword~"
@@ -33,5 +33,5 @@ Copyright (c) 2003, 2009 - Stig Erik Sandø
   :power-lvl 3
   :flags '(<show-modififers>)
   :sort-value 1002
-  :the-kind '<short-blade>
+  :the-kind '<blade>
   :damage "1d7")

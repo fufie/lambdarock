@@ -892,6 +892,7 @@ Copyright (c) 2001-2004 - Stig Erik Sandoe
 	   #:variant.monsters-by-level
 	   #:variant.objects
 	   #:variant.objects-by-level
+	   #:variant.races
 	   #:variant.stat-length
 	   #:variant.stats
 	   #:variant.turn

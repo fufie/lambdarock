@@ -9,32 +9,14 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (in-package :org.langband.evomyth)
 
-(defvar *defence-strength-help* "
-DEFENCE-STRENGTH
-
-Formula is
-full-armour-rating     ((2 * evasion) + agility)
------------------- +  ------------------------------
-      25               6 + armour-bulk + shield-bulk
-
-The full-armour-rating is calculated by going through all equipped
-armour, including shield, and multiplying with the skill for that
-armour.  Clothes and light armours use the light-armour skill,
-metal armours use the heavy-armour skill and shields use the
-shield-skill. 
-
-Each piece of body-armour makes up a percentage of the total
-armour-rating of the body. 
-")
+(defvar *defence-strength-help* "")
 
 (defun evo/get-ac-from-obj (obj)
   (unless obj
     (return-from evo/get-ac-from-obj 0))
 
   (let ((skill-score (gethash (ecase (object.armour-skill (aobj.kind obj))
-				(<light> 'light-armour)
-				(<heavy> 'heavy-armour)
-				(<shield> 'shield))
+				(<light> 'light-armour))
 			      (player.skills *player*))))
 
     (* (get-armour-rating obj) skill-score)))
@@ -42,13 +24,10 @@ armour-rating of the body.
 (defun evo/calculate-body-armour-rating (player)
   (let ((sum 0)
 	(light-skill (gethash 'light-armour (player.skills player)))
-	(heavy-skill (gethash 'heavy-armour (player.skills player)))
 	(the-eq (player.equipment player)))
 
     (check-type light-skill integer)
-    (check-type heavy-skill integer)
     (check-type the-eq item-table)
-
     
     ;; all calculations are boosted by 100 to let even small armours have accumulated effect
     
@@ -62,38 +41,11 @@ armour-rating of the body.
     (round-/ sum 100) ;; we normalise the armour-rating at the end
     ))
 
-(defun evo/check-for-shield (player)
-  (let ((the-eq (player.equipment player)))
-    (when-bind (obj (item-table-find the-eq 'eq.lefthand))
-      (when (typep obj 'active-object/shield)
-	(return-from evo/check-for-shield obj)))
-    (when-bind (obj (item-table-find the-eq 'eq.righthand))
-      (when (typep obj 'active-object/shield)
-	(return-from evo/check-for-shield obj)))
-    nil))
-        
-
-(defun evo/calculate-shield-rating (player)
-  (let ((shield (evo/check-for-shield player))
-	(shield-skill (gethash 'shield (player.skills player))))
-
-    (check-type shield-skill integer)
-
-    (when (= 0 shield-skill)
-      (return-from evo/calculate-shield-rating 0))
-
-    (unless shield
-      (return-from evo/calculate-shield-rating 0))
-
-    ;; return value
-    (evo/get-ac-from-obj shield)))
-
 (defmethod get-melee-attack-skill ((variant evomyth) (player player))
   (let ((wpn (get-melee-weapon player)))
     (etypecase wpn
       (null (gethash 'unarmed (player.skills player))) ;; no weapons is unarmed
-      (active-object/short-blade (gethash 'short-blades (player.skills player)))
-      (active-object/long-blade  (gethash 'long-blades  (player.skills player)))
+      (active-object/blade (gethash 'blades (player.skills player)))
       )))
 
 
@@ -143,7 +95,6 @@ armour-rating of the body.
 (defun evo/get-armour-rating (player where)
   (ecase where
     (:body   (evo/calculate-body-armour-rating player))
-    (:shield (evo/calculate-shield-rating player))
     ))
 
   
@@ -158,30 +109,21 @@ armour-rating of the body.
 	(evasion-sum 0)
 	;;(armour-rating (evo/get-armour-rating player :body))
 	(armour-bulk (evo/get-armour-bulk player :body))
-	(shield-rating (evo/get-armour-rating player :shield))
-	(shield-bulk (evo/get-armour-bulk player :shield))
 	(agility-value (aref (player.active-stats player) 1)) ;; hack
 	(evasion-value (gethash 'evasion (player.skills player)))
 	;; we fake this:
 	(armour-value (gethash 'light-armour (player.skills player)))
-	(shield-value (gethash 'shield (player.skills player)))
 	)
 
 ;;    (check-type armour-rating integer)
     (check-type armour-bulk   integer)
-    (check-type shield-rating integer)
-    (check-type shield-bulk   integer)
     (check-type agility-value integer)
     (check-type evasion-value integer)
     (check-type armour-value integer)
-    (check-type shield-value integer)
 
-    (setf armour-sum (round-/ (+ (evo/get-armour-rating player :body)
-				 (evo/get-armour-rating player :shield))
-				 25))
+    (setf armour-sum (+ (evo/get-armour-rating player :body) 25))
 
-    (setf evasion-sum (round-/ (+ evasion-value evasion-value agility-value)
-			       (+ 6 shield-bulk armour-bulk)))
+    (setf evasion-sum (+ evasion-value evasion-value agility-value))
 
     (setf sum (+ armour-sum evasion-sum))
 
