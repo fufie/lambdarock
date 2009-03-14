@@ -81,9 +81,6 @@ lbui_set_generic_callback(char *name, int (*fun)()) {
     }
 }
 
-
-
-
 int
 lbui_play_game_lisp() {
 

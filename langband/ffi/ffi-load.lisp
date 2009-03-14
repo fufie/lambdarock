@@ -3,12 +3,7 @@
 #|
 
 DESC: ffi/ffi-load.lisp - settings that must be set before foreign build
-Copyright (c) 2001 - Stig Erik Sandoe
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+Copyright (c) 2001, 2009 - Stig Erik Sandoe
 
 |#
 
@@ -19,15 +14,15 @@ the Free Software Foundation; either version 2 of the License, or
   #+(or darwin win32)
   (let (#+darwin (lib "/Users/stig/Library/Frameworks/ZTerminal.framework/ZTerminal")
 		 #+win32 (lib "lbui.dll"))
-      (unless (find :ui *langband-loaded-libs*)
-	(load-shared-lib :key :lang-ffi :lib lib)
-	(push :ui *langband-loaded-libs*)))
+    (unless (find :ui *langband-loaded-libs*)
+      (load-shared-lib :key :lang-ffi :lib lib)
+      (push :ui *langband-loaded-libs*)))
 
   #-(or darwin win32)
   (let ((lib-path "./zterm/"))
 
-;;   #+cmu
-;;   (SYSTEM:FOREIGN-SYMBOL-ADDRESS "funcall0")
+    ;;   #+cmu
+    ;;   (SYSTEM:FOREIGN-SYMBOL-ADDRESS "funcall0")
 
     #+unix
     (progn

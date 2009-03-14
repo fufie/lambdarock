@@ -51,62 +51,6 @@
            (ptr unsigned :in))
 
 
-(declaim (inline c-init-sound-system&))
-(sb-alien:define-alien-routine ("lbui_init_sound_system" c-init-sound-system&)
-           int
-           (size int :in))
-
-
-(declaim (inline c-activate-sound-system&))
-(sb-alien:define-alien-routine ("lbui_activate_sound_system" c-activate-sound-system&)
-           int)
-
-
-(declaim (inline c-get-sound-status))
-(sb-alien:define-alien-routine ("lbui_get_sound_status" c-get-sound-status)
-           int)
-
-
-(declaim (inline c-load-sound-effect&))
-(sb-alien:define-alien-routine ("lbui_load_sound_effect" c-load-sound-effect&)
-           int
-           (fname cptr)
-           (idx int :in))
-
-
-(declaim (inline c-play-sound-effect))
-(sb-alien:define-alien-routine ("lbui_play_sound_effect" c-play-sound-effect)
-           int
-           (idx int :in)
-           (channel short :in)
-           (loops short :in))
-
-
-(declaim (inline c-halt-sound-effects))
-(sb-alien:define-alien-routine ("lbui_halt_sound_effects" c-halt-sound-effects)
-           int
-           (channel short :in))
-
-
-(declaim (inline c-load-music-file&))
-(sb-alien:define-alien-routine ("lbui_load_music_file" c-load-music-file&)
-           int
-           (fname cptr)
-           (idx int :in))
-
-
-(declaim (inline c-play-music-file))
-(sb-alien:define-alien-routine ("lbui_play_music_file" c-play-music-file)
-           int
-           (idx int :in)
-           (loops short :in))
-
-
-(declaim (inline c-halt-music))
-(sb-alien:define-alien-routine ("lbui_halt_music" c-halt-music)
-           int)
-
-
 #+image-support
 
 (declaim (inline load-gfx-image&))
@@ -348,10 +292,7 @@
 (eval-when (:execute :load-toplevel :compile-toplevel)
   (export
    '(c_current_ui c-listen-for-event c-init-c-side& c-cleanup-c-side&
-     c-set-lisp-system! c-set-lisp-callback! c-init-sound-system&
-     c-activate-sound-system& c-get-sound-status c-load-sound-effect&
-     c-play-sound-effect c-halt-sound-effects c-load-music-file&
-     c-play-music-file c-halt-music load-gfx-image& c-load-texture&
+     c-set-lisp-system! c-set-lisp-callback! load-gfx-image& c-load-texture&
      c-get-image-width c-get-image-height c-init-frame-system& c-add-frame!
      c-add-frame-coords! c-add-frame-tileinfo! c-add-frame-fontinfo!
      c-add-frame-gfxinfo! c-add-frame-bg! c-has_frame c-get-frame-columns

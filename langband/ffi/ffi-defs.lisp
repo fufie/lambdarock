@@ -41,43 +41,51 @@ DESC: ffi/ffi-defs.lisp - the foreign declarations that [L] uses
 	    )
     :only-when 'use-callback-from-c)
 
-
+#+use-sound
 (def-foreign-function ("lbui_init_sound_system" c-init-sound-system&)
     :returns 'int
     :args '((int size)))
 
+#+use-sound
 (def-foreign-function ("lbui_activate_sound_system" c-activate-sound-system&)
     :returns 'int
     :args nil)
 
+#+use-sound
 (def-foreign-function ("lbui_get_sound_status" c-get-sound-status)
     :returns 'int)
 
+#+use-sound
 (def-foreign-function ("lbui_load_sound_effect" c-load-sound-effect&)
     :returns 'int
     :args '((cptr fname)
 	    (int idx)))
 
+#+use-sound
 (def-foreign-function ("lbui_play_sound_effect" c-play-sound-effect)
     :returns 'int
     :args '((int idx)
 	    (short channel)
 	    (short loops)))
 
+#+use-sound
 (def-foreign-function ("lbui_halt_sound_effects" c-halt-sound-effects)
     :returns 'int
     :args '((short channel)))
 
+#+use-sound
 (def-foreign-function ("lbui_load_music_file" c-load-music-file&)
     :returns 'int
     :args '((cptr fname)
 	    (int idx)))
 
+#+use-sound
 (def-foreign-function ("lbui_play_music_file" c-play-music-file)
     :returns 'int
     :args '((int idx)
 	    (short loops)))
 
+#+use-sound
 (def-foreign-function ("lbui_halt_music" c-halt-music)
     :returns 'int
     :args nil)

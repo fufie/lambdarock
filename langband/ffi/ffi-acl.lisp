@@ -14,8 +14,8 @@
    :returning :int)
 
 (ff:def-foreign-call (c-init-c-side& "lbui_init_c_side")
-   ((ui cptr) (source-path cptr) (config-path cptr) (data-path cptr)
-    (win-width :int) (win-height :int) (flags :int))
+   ((source-path cptr) (config-path cptr) (data-path cptr) (win-width :int)
+    (win-height :int) (flags :int))
    :returning :int)
 
 (ff:def-foreign-call (c-cleanup-c-side& "lbui_cleanup_c_side")
@@ -31,42 +31,6 @@
 (ff:def-foreign-call (c-set-lisp-callback! "lbui_set_lisp_callback")
    ((name cptr) (ptr))
    :returning :void)
-
-(ff:def-foreign-call (c-init-sound-system& "lbui_init_sound_system")
-   ((size :int))
-   :returning :int)
-
-(ff:def-foreign-call (c-activate-sound-system& "lbui_activate_sound_system")
-   nil
-   :returning :int)
-
-(ff:def-foreign-call (c-get-sound-status "lbui_get_sound_status")
-   nil
-   :returning :int)
-
-(ff:def-foreign-call (c-load-sound-effect& "lbui_load_sound_effect")
-   ((fname cptr) (idx :int))
-   :returning :int)
-
-(ff:def-foreign-call (c-play-sound-effect "lbui_play_sound_effect")
-   ((idx :int) (channel :short) (loops :short))
-   :returning :int)
-
-(ff:def-foreign-call (c-halt-sound-effects "lbui_halt_sound_effects")
-   ((channel :short))
-   :returning :int)
-
-(ff:def-foreign-call (c-load-music-file& "lbui_load_music_file")
-   ((fname cptr) (idx :int))
-   :returning :int)
-
-(ff:def-foreign-call (c-play-music-file "lbui_play_music_file")
-   ((idx :int) (loops :short))
-   :returning :int)
-
-(ff:def-foreign-call (c-halt-music "lbui_halt_music")
-   nil
-   :returning :int)
 
 
 #+image-support
@@ -200,10 +164,7 @@
 (eval-when (:execute :load-toplevel :compile-toplevel)
   (export
    '(c_current_ui c-listen-for-event c-init-c-side& c-cleanup-c-side&
-     c-set-lisp-system! c-set-lisp-callback! c-init-sound-system&
-     c-activate-sound-system& c-get-sound-status c-load-sound-effect&
-     c-play-sound-effect c-halt-sound-effects c-load-music-file&
-     c-play-music-file c-halt-music load-gfx-image& c-load-texture&
+     c-set-lisp-system! c-set-lisp-callback! load-gfx-image& c-load-texture&
      c-get-image-width c-get-image-height c-init-frame-system& c-add-frame!
      c-add-frame-coords! c-add-frame-tileinfo! c-add-frame-fontinfo!
      c-add-frame-gfxinfo! c-add-frame-bg! c-has_frame c-get-frame-columns
