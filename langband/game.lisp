@@ -3,7 +3,7 @@
 #|
 
 DESC: game.lisp - simple load of the game
-Copyright (c) 2000-2004,2009 - Stig Erik Sandoe
+Copyright (c) 2000-2004, 2009 - Stig Erik Sandoe
 
 |#
 

@@ -3,14 +3,10 @@
 #||
 
 DESC: variants/evomyth/spells.lisp - spell-effects
-Copyright (c) 2003 - Eugene Zaikonnikov, Stig Erik Sandø
-
-This program is free software  ; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation	 ; either version 2 of the License, or
-(at your option) any later version.
+Copyright (c) 2003, 2009 - Eugene Zaikonnikov, Stig Erik Sandø
 
 ||#
+
 (in-package :org.langband.evomyth)
 
 (defclass spellbook ()

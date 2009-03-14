@@ -3,12 +3,7 @@
 #|
 
 DESC: variants/evomyth/variant.lisp - code related to variant object
-Copyright (c) 2003 - Stig Erik Sandoe
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 |#
 
@@ -83,13 +78,10 @@ the rest of the game is init'ed."
     (load-variant-data& var-obj "config/defines")
     (load-variant-data& var-obj "config/rooms")
     (load-variant-data& var-obj "config/settings")
-    (load-variant-data& var-obj "config/sound")
     (load-variant-data& var-obj "config/character")
     (load-variant-data& var-obj "config/skills")
     (load-variant-data& var-obj "config/magic")
-    (load-variant-data& var-obj "config/spells")
     (load-variant-data& var-obj "config/keys")
-    (load-variant-data& var-obj "config/dialogues")
     )
 
   (evo/init-eq-system var-obj)
@@ -99,27 +91,10 @@ the rest of the game is init'ed."
 (defmethod activate-object ((var-obj evomyth) &key)
   
   (let ((*load-verbose* nil))
-    (initialise-monsters& var-obj :file "config/townies")
-    (initialise-monsters& var-obj :file "config/leaders")
     (initialise-objects& var-obj :file "config/objects")
     (initialise-objects& var-obj :file "config/armour")
     (initialise-objects& var-obj :file "config/weapons")
 
-    ;; hack, done after objects and monsters are ok'ed.. maybe move to :after
-    (load-variant-data& var-obj "tasks/letters")
-    (load-variant-data& var-obj "tasks/dress")
-    (load-variant-data& var-obj "tasks/trader")
-    (load-variant-data& var-obj "tasks/robbery")
-    
-    (load-variant-data& var-obj "people/junifer")
-    (load-variant-data& var-obj "people/perpetro")
-    (load-variant-data& var-obj "people/tepesco")
-    (load-variant-data& var-obj "people/ulydes")
-    (load-variant-data& var-obj "people/farethan")
-    (load-variant-data& var-obj "people/fossgard")
-    (load-variant-data& var-obj "people/lodicus")
-
-    
     )
   
   ;; more hackish

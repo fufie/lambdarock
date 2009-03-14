@@ -1,6 +1,5 @@
 (in-package :org.langband.contraband)
 
-
 (define-key-operation 'break-game
     #'(lambda (dungeon player)
 	(declare (ignore dungeon player))

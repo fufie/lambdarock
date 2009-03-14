@@ -3,12 +3,7 @@
 #|
 
 DESC: combat.lisp - the combat-system
-Copyright (c) 2000-2003 - Stig Erik Sandoe
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
 
 |#
 
@@ -19,11 +14,10 @@ the Free Software Foundation; either version 2 of the License, or
   )
 
 ;; maybe drop x,y
-(defmethod kill-target! ((variant variant) dungeon attacker (target active-monster) x y)
+(defmethod kill-target! ((var-obj variant) dungeon attacker (target active-monster) x y)
   "Tries to remove the monster at the location."
 
-  (let ((var-obj *variant*)
-	(lvl-obj *level*)
+  (let ((lvl-obj *level*)
 	(the-kind (amon.kind target)))
     
     (setf (creature-alive? target) nil)
@@ -108,25 +102,25 @@ the Free Software Foundation; either version 2 of the License, or
       nil))
 
 	    
-(defmethod melee-hit-creature? ((attacker player) (target active-monster) the-attack)
+(defmethod melee-hit-creature? ((variant variant) (attacker player) (target active-monster) the-attack)
   (declare (ignore the-attack))
  
     (let* ((bonus 0) ;; (* (+ to-hit for weapon and dex/str) multiplier)
-	   (chance (+ (get-melee-attack-skill *variant* attacker) bonus))
+	   (chance (+ (get-melee-attack-skill variant attacker) bonus))
 	   (monster-ac (get-creature-ac target))
 	   (visible-p t))
       
-      (disturbance *variant* attacker target :max)
+      (disturbance variant attacker target :max)
       (melee-hit-ac? target chance monster-ac visible-p)))
 
 (defmethod get-power-of-attack (variant attack-kind)
   (declare (ignore variant attack-kind))
   (error "fell through get-power-of-attack"))
 
-(defmethod melee-hit-creature? ((attacker active-monster) target the-attack)
+(defmethod melee-hit-creature? ((variant variant) (attacker active-monster) target the-attack)
 
   (check-type the-attack attack)
-  (disturbance *variant* target attacker :max)
+  (disturbance variant target attacker :max)
   
   (let ((atype (attack.dmg-type the-attack)))
     (unless atype
@@ -136,7 +130,7 @@ the Free Software Foundation; either version 2 of the License, or
     (let* ((power (cond ((typep atype 'attack-type)
 			 (attack-type.power atype))
 			(t
-			 (get-power-of-attack *variant* atype))))
+			 (get-power-of-attack variant atype))))
 	   (mlvl (get-power-lvl attacker))
 	   (rlev (if (plusp mlvl) mlvl 1))
 	   (skill (+ power (* 3 rlev))))
@@ -236,7 +230,7 @@ the Free Software Foundation; either version 2 of the License, or
 (defun attack-target! (dungeon attacker target x y the-attack)
 
   ;;	(describe the-monster)
-  (unless (melee-hit-creature? attacker target the-attack)
+  (unless (melee-hit-creature? *variant* attacker target the-attack)
     (cmb-describe-miss attacker target)
     (play-sound "miss-someone")
     (return-from attack-target! nil))

@@ -3,12 +3,7 @@
 #|
 
 DESC: generics.lisp - the generic function interfaces
-Copyright (c) 2001-2004 - Stig Erik Sandoe
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 
 |#
 
@@ -445,7 +440,7 @@ is supplied, stacking-rules will also be checked."))
 (defgeneric (setf get-attack-description) (value variant the-attack)
   (:documentation "Registers a string with description of the attack with the variant."))
 
-(defgeneric melee-hit-creature? (attacker target the-attack)
+(defgeneric melee-hit-creature? (variant attacker target the-attack)
   (:documentation "will the attacker hit the target?"))
 
 (defgeneric melee-inflict-damage! (attacker target the-attack)

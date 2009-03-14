@@ -3,12 +3,7 @@
 #|
 
 DESC: variants/evomyth/combat.lisp - evomyth combat
-Copyright (c) 2003 - Stig Erik Sandoe
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 |#
 
@@ -229,7 +224,7 @@ armour-rating of the body.
     dmg))
 
 
-(defmethod melee-hit-creature? ((attacker player) (target active-monster) the-attack)
+(defmethod melee-hit-creature? ((variant evomyth) (attacker player) (target active-monster) the-attack)
   
   (declare (ignore the-attack))
   
