@@ -3,17 +3,7 @@
 #||
 
 DESC: global.lisp - globally available functions/methods
-Copyright (c) 2000-2004 - Stig Erik Sandoe
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-----
-
-ADD_DESC: common langband-specific code of interest for larger
-ADD_DESC: parts of the code.  Small classes, functions, et.al
+Copyright (c) 2000-2004, 2009 - Stig Erik Sandoe
 
 ||#
 
@@ -72,40 +62,6 @@ ADD_DESC: parts of the code.  Small classes, functions, et.al
   
   t)
 
-(defun gcu-handle-key (key k-ev)
-  "Translates an incoming key from GCU into a langband key-event K-EV."
-  (cond ((< 0 key 126)
-	 (setf (kbd-event.key k-ev) (code-char key)))
-	((= key #o407) ;; key_backspace
-	 (setf (kbd-event.key k-ev) #\Backspace))
-	((= key #o402) ;; key_down
-	 (setf (kbd-event.key k-ev) #\2))
-	((= key #o403) ;; key_up
-	 (setf (kbd-event.key k-ev) #\8))
-	((= key #o404) ;; key_left
-	 (setf (kbd-event.key k-ev) #\4))
-	((= key #o405) ;; key_right
-	 (setf (kbd-event.key k-ev) #\6))
-	((= key #o406) ;; key_home
-	 (setf (kbd-event.key k-ev) #\7))
-	((= key #o523) ;; page-up
-	 (setf (kbd-event.key k-ev) #\9))
-	((= key #o522) ;; page-down
-	 (setf (kbd-event.key k-ev) #\3))
-	((= key #o550) ;; key_end
-	 (setf (kbd-event.key k-ev) #\1))
-	((= key #o536) ;; key_mid_keypad
-	 (setf (kbd-event.key k-ev) #\5))
-	((= key #o513) ;; key_insert
-	 (setf (kbd-event.key k-ev) #\0))
-	#||
-	((= key #o611)
-	 (warn "shift left"))
-	||#
-	;;(t (warn "Fell through with key ~s" key))
-	)
-	 
-  nil)
 
 (defun fetch-event (event-obj only-poll)
   "Tries to fetch a new event in EVENT-OBJ.  if ONLY-POLL is true it will
@@ -156,8 +112,7 @@ when a new event was found, otherwise returns NIL."
 		       (setf (kbd-event.shift k-ev) t))
 
 		     (ecase (get-system-type)
-		       (sdl (sdl-handle-key key k-ev))
-		       (gcu (gcu-handle-key key k-ev)))
+		       (sdl (sdl-handle-key key k-ev)))
 		     
 		     (when (kbd-event.key k-ev)
 		       (setf (input-event.type event-obj) :key)
@@ -624,20 +579,7 @@ a level/identifier (key)."
   (and (non-negative-integer? obj)
        (< obj 16)))
 
-;; move later
-(defun get-system-type ()
-  ;; very hackish!
-  (let ((num (org.langband.ffi:c_current_ui)))
-    (ecase num
-      (0 'x11)
-      (1 'gcu)
-      (2 'gtk)
-      (3 'win)
-      (4 'sdl)
-      )))
-
-;;(defun get-system-type () 'sdl)
-
+(defsubst get-system-type () 'sdl)
 
 #-compiler-that-inlines
 (defmacro grid (x y)

@@ -4,7 +4,7 @@ all:
 
 
 clean:
-	if test -d config; then cd vanilla && $(RM) $(CLEANFILES)
+	if test -d config; then cd config && $(RM) $(CLEANFILES); fi
 	$(RM) $(CLEANFILES)
 
 lisp-clean: clean

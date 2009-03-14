@@ -3,16 +3,7 @@
 #|
 
 DESC: game.lisp - simple load of the game
-Copyright (c) 2000-2004 - Stig Erik Sandoe
-
-This program is free software; you can redistribute it and/or modify ;
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or ;
-(at your option) any later version.
-
-----
-
-ADD_DESC: This file just contains simple init and loading of the game
+Copyright (c) 2000-2004,2009 - Stig Erik Sandoe
 
 |#
 
@@ -34,9 +25,7 @@ ADD_DESC: This file just contains simple init and loading of the game
 
 (defvar *current-dir* (namestring (%get-default-directory)))
 
-;;(defvar *variant-to-load* :contraband)
 (defvar *variant-to-load* :vanilla)
-;;(defvar *variant-to-load* :both)
 
 ;; add features we need
 (eval-when (:execute :load-toplevel :compile-toplevel)
@@ -127,8 +116,6 @@ ADD_DESC: This file just contains simple init and loading of the game
 	(asdf::*compile-file-failure-behaviour* :ignore)
 	(asdf::*compile-file-warnings-behaviour* :ignore)
 	(var *variant-to-load*)
-	;;(var :vanilla)
-	;;(var :both)
 	)
 
     #+(or ecl)
@@ -144,12 +131,17 @@ ADD_DESC: This file just contains simple init and loading of the game
     
     (load "langband-engine.asd")
 
-    (when (or (eq var :contraband) (eq var :both))
+    (when (or (eq var :evomyth) (eq var :all))
+      (load "modules/dialogue/dialogue.asd")
+      (load "variants/evomyth/evomyth.asd")
+      (asdf:oos 'asdf:load-op :evomyth))
+    
+    (when (or (eq var :contraband) (eq var :all))
       (load "modules/dialogue/dialogue.asd")
       (load "variants/contraband/contraband.asd")
       (asdf:oos 'asdf:load-op :contraband))
     
-    (when (or (eq var :vanilla) (eq var :both))
+    (when (or (eq var :vanilla) (eq var :all))
       (load "variants/vanilla/langband-vanilla.asd")
       #-ecl
       (asdf:oos 'asdf:load-op :langband-vanilla)
