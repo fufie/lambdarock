@@ -41,55 +41,55 @@ DESC: ffi/ffi-defs.lisp - the foreign declarations that [L] uses
 	    )
     :only-when 'use-callback-from-c)
 
-#+use-sound
+
 (def-foreign-function ("lbui_init_sound_system" c-init-sound-system&)
     :returns 'int
-    :args '((int size)))
+    :args '((int size))
+    :only-when 'sound-support)
 
-#+use-sound
 (def-foreign-function ("lbui_activate_sound_system" c-activate-sound-system&)
     :returns 'int
-    :args nil)
+    :args nil
+    :only-when 'sound-support)
 
-#+use-sound
 (def-foreign-function ("lbui_get_sound_status" c-get-sound-status)
-    :returns 'int)
+    :returns 'int
+    :only-when 'sound-support)
 
-#+use-sound
 (def-foreign-function ("lbui_load_sound_effect" c-load-sound-effect&)
     :returns 'int
     :args '((cptr fname)
-	    (int idx)))
+	    (int idx))
+    :only-when 'sound-support)
 
-#+use-sound
 (def-foreign-function ("lbui_play_sound_effect" c-play-sound-effect)
     :returns 'int
     :args '((int idx)
 	    (short channel)
-	    (short loops)))
+	    (short loops))
+    :only-when 'sound-support)
 
-#+use-sound
 (def-foreign-function ("lbui_halt_sound_effects" c-halt-sound-effects)
     :returns 'int
-    :args '((short channel)))
+    :args '((short channel))
+    :only-when 'sound-support)
 
-#+use-sound
 (def-foreign-function ("lbui_load_music_file" c-load-music-file&)
     :returns 'int
     :args '((cptr fname)
-	    (int idx)))
+	    (int idx))
+    :only-when 'sound-support)
 
-#+use-sound
 (def-foreign-function ("lbui_play_music_file" c-play-music-file)
     :returns 'int
     :args '((int idx)
-	    (short loops)))
+	    (short loops))
+    :only-when 'sound-support)
 
-#+use-sound
 (def-foreign-function ("lbui_halt_music" c-halt-music)
     :returns 'int
-    :args nil)
-
+    :args nil
+    :only-when 'sound-support)
 
 (def-foreign-function ("lbui_load_gfx_image" load-gfx-image&)
     :returns 'int

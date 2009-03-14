@@ -41,6 +41,69 @@
     :calling-convention :stdcall :module :lang-ffi)
 
 
+#+sound-support
+(fli:define-foreign-function (c-init-sound-system& "lbui_init_sound_system")
+    ((size :int))
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
+#+sound-support
+(fli:define-foreign-function (c-activate-sound-system& "lbui_activate_sound_system")
+    nil
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
+#+sound-support
+(fli:define-foreign-function (c-get-sound-status "lbui_get_sound_status")
+    nil
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
+#+sound-support
+(fli:define-foreign-function (c-load-sound-effect& "lbui_load_sound_effect")
+    ((fname (:reference-pass :ef-mb-string)) (idx :int))
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
+#+sound-support
+(fli:define-foreign-function (c-play-sound-effect "lbui_play_sound_effect")
+    ((idx :int) (channel :short) (loops :short))
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
+#+sound-support
+(fli:define-foreign-function (c-halt-sound-effects "lbui_halt_sound_effects")
+    ((channel :short))
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
+#+sound-support
+(fli:define-foreign-function (c-load-music-file& "lbui_load_music_file")
+    ((fname (:reference-pass :ef-mb-string)) (idx :int))
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
+#+sound-support
+(fli:define-foreign-function (c-play-music-file "lbui_play_music_file")
+    ((idx :int) (loops :short))
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
+#+sound-support
+(fli:define-foreign-function (c-halt-music "lbui_halt_music")
+    nil
+    :result-type :int :language :c 
+    :calling-convention :stdcall :module :lang-ffi)
+
+
 #+image-support
 (fli:define-foreign-function (load-gfx-image& "lbui_load_gfx_image")
     ((fname (:reference-pass :ef-mb-string)) (idx :int) (transcolour :unsigned))
@@ -205,7 +268,10 @@
 (eval-when (:execute :load-toplevel :compile-toplevel)
   (export
    '(c_current_ui c-listen-for-event c-init-c-side& c-cleanup-c-side&
-     c-set-lisp-system! c-set-lisp-callback! load-gfx-image& c-load-texture&
+     c-set-lisp-system! c-set-lisp-callback! c-init-sound-system&
+     c-activate-sound-system& c-get-sound-status c-load-sound-effect&
+     c-play-sound-effect c-halt-sound-effects c-load-music-file&
+     c-play-music-file c-halt-music load-gfx-image& c-load-texture&
      c-get-image-width c-get-image-height c-init-frame-system& c-add-frame!
      c-add-frame-coords! c-add-frame-tileinfo! c-add-frame-fontinfo!
      c-add-frame-gfxinfo! c-add-frame-bg! c-has_frame c-get-frame-columns

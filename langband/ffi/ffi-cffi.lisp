@@ -26,6 +26,48 @@
  (name cptr) (ptr :pointer) )
 
 
+#+sound-support
+(cffi:defcfun ("lbui_init_sound_system" c-init-sound-system& :library :lbui :calling-convention :stdcall) :int
+ (size :int) )
+
+
+#+sound-support
+(cffi:defcfun ("lbui_activate_sound_system" c-activate-sound-system& :library :lbui :calling-convention :stdcall) :int)
+
+
+#+sound-support
+(cffi:defcfun ("lbui_get_sound_status" c-get-sound-status :library :lbui :calling-convention :stdcall) :int)
+
+
+#+sound-support
+(cffi:defcfun ("lbui_load_sound_effect" c-load-sound-effect& :library :lbui :calling-convention :stdcall) :int
+ (fname cptr) (idx :int) )
+
+
+#+sound-support
+(cffi:defcfun ("lbui_play_sound_effect" c-play-sound-effect :library :lbui :calling-convention :stdcall) :int
+ (idx :int) (channel :short) (loops :short) )
+
+
+#+sound-support
+(cffi:defcfun ("lbui_halt_sound_effects" c-halt-sound-effects :library :lbui :calling-convention :stdcall) :int
+ (channel :short) )
+
+
+#+sound-support
+(cffi:defcfun ("lbui_load_music_file" c-load-music-file& :library :lbui :calling-convention :stdcall) :int
+ (fname cptr) (idx :int) )
+
+
+#+sound-support
+(cffi:defcfun ("lbui_play_music_file" c-play-music-file :library :lbui :calling-convention :stdcall) :int
+ (idx :int) (loops :short) )
+
+
+#+sound-support
+(cffi:defcfun ("lbui_halt_music" c-halt-music :library :lbui :calling-convention :stdcall) :int)
+
+
 #+image-support
 (cffi:defcfun ("lbui_load_gfx_image" load-gfx-image& :library :lbui :calling-convention :stdcall) :int
  (fname cptr) (idx :int) (transcolour :unsigned-long) )
@@ -123,7 +165,10 @@
 (eval-when (:execute :load-toplevel :compile-toplevel)
   (export
    '(c_current_ui c-listen-for-event c-init-c-side& c-cleanup-c-side&
-     c-set-lisp-system! c-set-lisp-callback! load-gfx-image& c-load-texture&
+     c-set-lisp-system! c-set-lisp-callback! c-init-sound-system&
+     c-activate-sound-system& c-get-sound-status c-load-sound-effect&
+     c-play-sound-effect c-halt-sound-effects c-load-music-file&
+     c-play-music-file c-halt-music load-gfx-image& c-load-texture&
      c-get-image-width c-get-image-height c-init-frame-system& c-add-frame!
      c-add-frame-coords! c-add-frame-tileinfo! c-add-frame-fontinfo!
      c-add-frame-gfxinfo! c-add-frame-bg! c-has_frame c-get-frame-columns

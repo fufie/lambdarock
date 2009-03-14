@@ -31,16 +31,63 @@
   (ccl::external-call "_lbui_set_lisp_callback" :address name827 :address ptr :void)))
 
 
+#+sound-support
+(defun c-init-sound-system& (size)
+  (ccl::external-call "_lbui_init_sound_system" :signed-fullword size :signed-fullword))
+
+
+#+sound-support
+(defun c-activate-sound-system& nil
+  (ccl::external-call "_lbui_activate_sound_system" :signed-fullword))
+
+
+#+sound-support
+(defun c-get-sound-status nil
+  (ccl::external-call "_lbui_get_sound_status" :signed-fullword))
+
+
+#+sound-support
+(defun c-load-sound-effect& (fname idx)
+ (ccl::with-cstr (fname828 fname)
+  (ccl::external-call "_lbui_load_sound_effect" :address fname828 :signed-fullword idx :signed-fullword)))
+
+
+#+sound-support
+(defun c-play-sound-effect (idx channel loops)
+  (ccl::external-call "_lbui_play_sound_effect" :signed-fullword idx :signed-halfword channel :signed-halfword loops :signed-fullword))
+
+
+#+sound-support
+(defun c-halt-sound-effects (channel)
+  (ccl::external-call "_lbui_halt_sound_effects" :signed-halfword channel :signed-fullword))
+
+
+#+sound-support
+(defun c-load-music-file& (fname idx)
+ (ccl::with-cstr (fname829 fname)
+  (ccl::external-call "_lbui_load_music_file" :address fname829 :signed-fullword idx :signed-fullword)))
+
+
+#+sound-support
+(defun c-play-music-file (idx loops)
+  (ccl::external-call "_lbui_play_music_file" :signed-fullword idx :signed-halfword loops :signed-fullword))
+
+
+#+sound-support
+(defun c-halt-music nil
+  (ccl::external-call "_lbui_halt_music" :signed-fullword))
+
+
 #+image-support
 (defun load-gfx-image& (fname idx transcolour)
- (ccl::with-cstr (fname828 fname)
-  (ccl::external-call "_lbui_load_gfx_image" :address fname828 :signed-fullword idx :unsigned-fullword transcolour :signed-fullword)))
+ (ccl::with-cstr (fname830 fname)
+  (ccl::external-call "_lbui_load_gfx_image" :address fname830 :signed-fullword idx :unsigned-fullword transcolour :signed-fullword)))
 
 
 #+image-support
 (defun c-load-texture& (idx fname twid thgt alpha)
- (ccl::with-cstr (fname829 fname)
-  (ccl::external-call "_lbui_load_texture" :signed-fullword idx :address fname829 :signed-fullword twid :signed-fullword thgt :unsigned-fullword alpha :signed-fullword)))
+ (ccl::with-cstr (fname831 fname)
+  (ccl::external-call "_lbui_load_texture" :signed-fullword idx :address fname831 :signed-fullword twid :signed-fullword thgt :unsigned-fullword alpha :signed-fullword)))
 
 
 #+image-support
@@ -56,8 +103,8 @@
   (ccl::external-call "_lbui_init_frame_system" :signed-fullword act-size :signed-fullword pre-size :signed-fullword))
 
 (defun c-add-frame! (key name)
- (ccl::with-cstr (name830 name)
-  (ccl::external-call "_lbui_add_frame" :signed-fullword key :address name830 :signed-fullword)))
+ (ccl::with-cstr (name832 name)
+  (ccl::external-call "_lbui_add_frame" :signed-fullword key :address name832 :signed-fullword)))
 
 (defun c-add-frame-coords! (key x y w h)
   (ccl::external-call "_lbui_add_frame_coords" :signed-fullword key :signed-fullword x :signed-fullword y :signed-fullword w :signed-fullword h :signed-fullword))
@@ -66,8 +113,8 @@
   (ccl::external-call "_lbui_add_frame_tileinfo" :signed-fullword key :signed-fullword tw :signed-fullword th :signed-fullword))
 
 (defun c-add-frame-fontinfo! (key font ptsize style)
- (ccl::with-cstr (font831 font)
-  (ccl::external-call "_lbui_add_frame_fontinfo" :signed-fullword key :address font831 :signed-fullword ptsize :signed-fullword style :signed-fullword)))
+ (ccl::with-cstr (font833 font)
+  (ccl::external-call "_lbui_add_frame_fontinfo" :signed-fullword key :address font833 :signed-fullword ptsize :signed-fullword style :signed-fullword)))
 
 (defun c-add-frame-gfxinfo! (key use-tiles)
   (ccl::external-call "_lbui_add_frame_gfxinfo" :signed-fullword key :signed-fullword use-tiles :signed-fullword))
@@ -115,8 +162,8 @@
   (ccl::external-call "_lbui_recalculate_frame_placements" :signed-fullword arg :signed-fullword))
 
 (defun c-install-font-in-frame! (key font ptsize style)
- (ccl::with-cstr (font832 font)
-  (ccl::external-call "_lbui_install_font_in_frame" :signed-fullword key :address font832 :signed-fullword ptsize :signed-fullword style :signed-fullword)))
+ (ccl::with-cstr (font834 font)
+  (ccl::external-call "_lbui_install_font_in_frame" :signed-fullword key :address font834 :signed-fullword ptsize :signed-fullword style :signed-fullword)))
 
 (defun c-get-internal-time nil
   (ccl::external-call "_lbui_get_internal_time" :unsigned-fullword))
@@ -131,14 +178,17 @@
   (ccl::external-call "_lbui_set_idx_intvalue" :signed-fullword idx :signed-fullword value :signed-fullword))
 
 (defun c-set-idx-stringvalue (idx value)
- (ccl::with-cstr (value833 value)
-  (ccl::external-call "_lbui_set_idx_stringvalue" :signed-fullword idx :address value833 :signed-fullword)))
+ (ccl::with-cstr (value835 value)
+  (ccl::external-call "_lbui_set_idx_stringvalue" :signed-fullword idx :address value835 :signed-fullword)))
 
 
 (eval-when (:execute :load-toplevel :compile-toplevel)
   (export
    '(c_current_ui c-listen-for-event c-init-c-side& c-cleanup-c-side&
-     c-set-lisp-system! c-set-lisp-callback! load-gfx-image& c-load-texture&
+     c-set-lisp-system! c-set-lisp-callback! c-init-sound-system&
+     c-activate-sound-system& c-get-sound-status c-load-sound-effect&
+     c-play-sound-effect c-halt-sound-effects c-load-music-file&
+     c-play-music-file c-halt-music load-gfx-image& c-load-texture&
      c-get-image-width c-get-image-height c-init-frame-system& c-add-frame!
      c-add-frame-coords! c-add-frame-tileinfo! c-add-frame-fontinfo!
      c-add-frame-gfxinfo! c-add-frame-bg! c-has_frame c-get-frame-columns
