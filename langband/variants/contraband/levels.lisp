@@ -69,11 +69,10 @@ the Free Software Foundation; either version 2 of the License, or
 
 (defmethod generate-level! ((variant contraband) (level con/town) player)
   (let ((dungeon nil))
-	
-
-    ;;(warn "Reading map")
+    
+    (warn "Reading map")
     (setf dungeon  (read-map variant "variants/contraband/maps/towns.lmap"))
-    ;;(warn "read map")
+    (warn "read map")
     (setf dungeon (treat-map dungeon)) ;; inefficient
     
     (setf (level.dungeon level) dungeon)
@@ -332,8 +331,7 @@ the Free Software Foundation; either version 2 of the License, or
 			      (setf (gethash idx used-indexes)
 				    (make-instance 'floor-type :id (floor.id point) :flags (floor.flags point)
 						   :text-sym (text-sym point)
-						   :gfx-sym (logior (tile-file 41)
-								    (tile-number idx))))
+						   :gfx-sym (tile-paint-value 41 idx)))
 			      (setf found (gethash idx used-indexes)))
 			    
 			    (setf (coord.floor (aref table i j)) found)

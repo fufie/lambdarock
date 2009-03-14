@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/contraband/variant.lisp - code related to variant object
-Copyright (c) 2003 - Stig Erik Sandø
+Copyright (c) 2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -397,7 +397,7 @@ legends and all travelers between the Kingdom and the Empire pass these two town
 	  for row = (mod i 2)
 	  do
 	  (clear-coord win col row)
-	  (setf (window-coord win +background+ col row) (logior (tile-file 44) (tile-number i)))
+	  (setf (window-coord win +background+ col row) (tile-paint-value 44 i))
 	  )))
 
 (defconstant +attitude-jihad+   -100)

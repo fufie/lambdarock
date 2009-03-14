@@ -50,12 +50,12 @@ him with whatever he needs to get out of town and past the bridge.")
 	   (:dest "mereo-letter-to-tepesco"))
   
   (:option (:test (has-object? player "sealed-letter-to-tepesco"))
-	   (:text "I have an urgent letter for you." (player.name player))
+	   (:text "I have an urgent letter for you.")
 	   (:perform (adjust-attitude! npc +attchange-pleased+))
 	   (:dest "consul-tepesco-letter"))
   
   (:option (:test (has-object? player "opened-letter-to-tepesco"))
-	   (:text "I have an urgent letter for you." (player.name player))
+	   (:text "I have an urgent letter for you.")
 	   (:perform (adjust-attitude! npc +attchange-offended+))
 	   (:dest "consul-tepesco-letter"))
 

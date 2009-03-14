@@ -3,11 +3,11 @@
 #|
 
 DESC: variants/contraband/player.lisp - code dealing with player object
-Copyright (c) 2003 - Stig Erik Sandø
+Copyright (c) 2003 - Stig Erik Sandoe
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you can redistribute it and/or modify ;
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
+the Free Software Foundation; either version 2 of the License, or ;
 (at your option) any later version.
 
 |#
@@ -370,8 +370,8 @@ can be assigned later." :end-col 43)
       (put-coloured-line! +term-blue+ "<signature>" 8 33)
       (put-coloured-line! +term-umber+ "Duke Larethian, Minister of the Foreign Office" 8 34))
 
-    (pause-at-line! (1- (get-last-console-line)) :msg "[Press any key to destroy letter and continue]"
-		    :attr +term-green+)
+    (pause-last-line! :msg "[Press any key to destroy letter and continue]"
+		      :attr +term-green+)
     ;;(pause-last-line! :attr +term-green+)
 
     (texture-background! win "" -1)
@@ -381,7 +381,7 @@ can be assigned later." :end-col 43)
   ;;(%print-imagelist)
   
   ;; find letter-quest, add to player, activate quest
-  ;;(warn "Nuevo playeras")
+  (warn "Nuevo playeras")
   (cond ((is-copian? player)
 	 (dolist (i '("deliver-letter-to-junifer" "deliver-letter-to-ulydes"))
 	   (let ((quest (find-quest variant i)))
@@ -398,7 +398,7 @@ can be assigned later." :end-col 43)
   ;; hacks to help test stuff
   ;;(add-to-inventory player (get-new-object "filled-out-export-forms"))
   (set-flag "test-robbery")
-  
+  (warn "oof")
   player)
 
 (defmethod roll-hitpoints-for-new-level ((variant contraband) (player player))
