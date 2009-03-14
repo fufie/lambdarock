@@ -65,6 +65,7 @@ the Free Software Foundation; either version 2 of the License, or
 	   #:ai-strategy
 	   #:alloc-entry
 	   #:animation
+	   #:armour-rating
 	   #:attack
 	   #:attack-type
 	   

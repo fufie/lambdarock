@@ -84,7 +84,7 @@ ADD_DESC: This file just contains simple init and loading of the game
   #+(or ecl cormanlisp) "tools/asdf.lisp"
   #-(or ecl cormanlisp) "tools/asdf")
 
-#+ecl
+#+(or ecl sbcl)
 (require 'asdf)
 
 #+use-asdf

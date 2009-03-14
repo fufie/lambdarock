@@ -143,6 +143,9 @@ returned results."))
 (defgeneric finish-quest (variant quest quest-taker)
   (:documentation "Cleanup actions for the quest."))
 
+(defgeneric print-armour-class (variant player setting)
+  (:documentation "Prints armour class in left frame."))
+
 ;;; define relevant object-types for contraband
 
 (define-object-type weapon :key <weapon>)

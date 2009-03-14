@@ -34,6 +34,8 @@
 
 (define-key-operation 'cycle-water
     #'(lambda (dungeon player)
+	(declare (ignore dungeon player))
+
 	))
 
 ;; just for testing

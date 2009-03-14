@@ -121,7 +121,7 @@ the Free Software Foundation; either version 2 of the License, or
   
 (define-key-operation 'show-character
     #'(lambda (dungeon player)
-	(flush-messages! t)
+	(flush-messages! :forced t)
 	(with-full-frame ()
 	  (texture-background! +full-frame+ "textures/plainbook.png" -1)
 	  (clear-window *cur-win*)
@@ -399,7 +399,7 @@ the Free Software Foundation; either version 2 of the License, or
 (define-key-operation 'swap-map
     #'(lambda (dungeon player)
 	(when (eq (get-system-type) 'sdl)
-	  (switch-map-mode dungeon player))))
+	  (switch-map-mode *variant* dungeon player))))
 
 (define-key-operation 'play-music
     #'(lambda (dungeon player)

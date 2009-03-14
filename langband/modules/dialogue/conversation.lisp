@@ -171,6 +171,7 @@ the Free Software Foundation; either version 2 of the License, or
 		   (text->color-list-text
 		    (get-node-text node cparam)
 		    :normal-color +term-l-blue+))
+    (declare (ignore col-offset))
   (let* ((row (+ 2 row-offset))
 	 (picture '(engine-gfx "people/male-hobbit-rogue.png"))
 	 (npc-name "Unknown person")
@@ -211,6 +212,7 @@ the Free Software Foundation; either version 2 of the License, or
 	    (print-text! 6 row +term-l-green+
 				   (text->color-list-text
 				    text :normal-color +term-l-green+))
+	  (declare (ignorable dummy-col))
 	  (setf row (1+ dummy-row)))))
 
     ;; print prompt
@@ -309,6 +311,7 @@ the Free Software Foundation; either version 2 of the License, or
 	  )))
 
 (defun wizard-start-conversation (dungeon player)
+  (declare (ignore dungeon))
   (let* ((id (get-string-input "Conversation ID: " :max-length 50))
 	 (node (gethash id *conversations*)))
 	(when node

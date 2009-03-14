@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/contraband/creatures.lisp - code dealing with non-player creatures
-Copyright (c) 2003 - Stig Erik Sandø
+Copyright (c) 2003 - Stig Erik Sandoe
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -129,11 +129,11 @@ the Free Software Foundation; either version 2 of the License, or
    (top-right    :initform '() :accessor strategy.top-right)
    (bottom-left  :initform '() :accessor strategy.bottom-left)
    (bottom-right :initform '() :accessor strategy.bottom-right)
-
    ))
 
 
 (defmethod execute-strategy ((strategy guard) (mon active-monster) dungeon &key action force)
+  (declare (ignorable action force))
 
   (let ((mx (location-x mon))
 	(my (location-y mon))

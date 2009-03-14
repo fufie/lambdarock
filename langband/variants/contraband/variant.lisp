@@ -241,9 +241,9 @@ the rest of the game is init'ed."
 			  (tile-wid (window.tile-width window)))
 		      ;; two button-sets
 		      (cond ((> x (- wid tile-wid)) ;; last tile
-			     (switch-inventory-view))
+			     (switch-inventory-view variant player))
 			    ((> x (- wid (* 2 tile-wid))) ;; second last tile 
-			     (switch-map-mode *dungeon* *player*)))
+			     (switch-map-mode variant dungeon player)))
 		      )))
 		 ;; runes
 		 (*showing-runes*

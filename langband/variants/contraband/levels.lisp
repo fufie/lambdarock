@@ -5,9 +5,9 @@
 DESC: variants/contraband/creatures.lisp - code dealing with various levels
 Copyright (c) 2003 - Stig Erik Sandoe
 
-This program is free software; you can redistribute it and/or modify
+This program is free software; you can redistribute it and/or modify ; ;
 it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
+the Free Software Foundation; either version 2 of the License, or ; ;
 (at your option) any later version.
 
 |#
@@ -151,29 +151,28 @@ the Free Software Foundation; either version 2 of the License, or
 
 (defun illuminate-town! (dungeon player time-of-day)
   "Illuminates the town according to the time-of-day."
-  (declare (ignore player))
   (warn "illuminating")
-    (with-dungeon (dungeon (coord x y))
-      (declare (ignore x y))
-      (let* ((feat (coord.floor coord))
-	     (flags (floor.flags feat)))
+  (with-dungeon (dungeon (coord x y))
+    (declare (ignore x y))
+    (let* ((feat (coord.floor coord))
+	   (flags (floor.flags feat)))
 	     
-	;; slightly interesting grids
-	(cond ((not (bit-flag-set? flags +floor-flag-floor+)) ;; non floors actually
-	       (bit-flag-add! (coord.flags coord) #.(logior +cave-glow+ +cave-mark+)))
-	      ;; day-time
-	      ((eq time-of-day 'day)
-	       (bit-flag-add! (coord.flags coord) +cave-glow+))
-	      ;; at night
-	      (t
-	       (bit-flag-remove! (coord.flags coord) +cave-glow+))
-	      ))
-      ;; skip doorways yet
-      )
+      ;; slightly interesting grids
+      (cond ((not (bit-flag-set? flags +floor-flag-floor+)) ;; non floors actually
+	     (bit-flag-add! (coord.flags coord) #.(logior +cave-glow+ +cave-mark+)))
+	    ;; day-time
+	    ((eq time-of-day 'day)
+	     (bit-flag-add! (coord.flags coord) +cave-glow+))
+	    ;; at night
+	    (t
+	     (bit-flag-remove! (coord.flags coord) +cave-glow+))
+	    ))
+    ;; skip doorways yet
+    )
 
-    (ask-for-update! player '[forget-view])
-    (ask-for-update! player '[update-view])
-    (ask-for-redraw! player '[map])
+  (ask-for-update! player '[forget-view])
+  (ask-for-update! player '[update-view])
+  (ask-for-redraw! player '[map])
 
 
   )
@@ -360,6 +359,7 @@ the Free Software Foundation; either version 2 of the License, or
   (clear-window *map-frame*)
   (let ((evt (make-coord-event "exit-warehouse"
 			       #'(lambda (dun x y)
+				   (declare (ignore dun x y))
 				   (setf (player.leaving? *player*) :town))
 			       nil)))
     (setf (get-coord-trigger (level.dungeon level) 7 5) evt

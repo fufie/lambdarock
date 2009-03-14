@@ -171,6 +171,7 @@ the Free Software Foundation; either version 2 of the License, or
 
 (defmethod advance-quest ((variant contraband) (quest quest) quest-taker &key from to giver)
 
+  (declare (ignorable from to))
   ;;(warn "Advancing ~s" quest)
   ;;(warn "step ~s ~s ~s ~s" (quest.step quest) (quest.steps quest) (quest.state quest) (quest.id quest))
 
