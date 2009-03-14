@@ -87,9 +87,8 @@ call appropriately high-level init in correct order."
 	(wanted-height -1))
     
     (unwind-protect
-	 (let* ((hide-warnings (or #+win32 t
-				   #+langband-release t
-				   (string-equal ui "gcu")))
+	 (let* ((hide-warnings (or #+win32 nil
+				   #+langband-release t))
 		
 		(cl:*error-output* (if hide-warnings
 				       alternative-errors
