@@ -33,7 +33,6 @@ the Free Software Foundation; either version 2 of the License, or
   (eq (gender.symbol (player.gender creature)) '<male>))
 
 (defmethod is-female? ((creature player))
-  (warn "Compare ~s ~s ~s" (player.gender creature) (gender.symbol (player.gender creature)) '<female>)
   (eq (gender.symbol (player.gender creature)) '<female>))
 
 
