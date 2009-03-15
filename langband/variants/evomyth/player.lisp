@@ -130,6 +130,8 @@ Modififes the passed player object THE-PLAYER.  This is a long function."
 		(setf (gethash (evo/skill.slot s-obj) (player.skills player)) (second i)))))))
       )
 
+    (interactive-skillpoint-distribution variant player settings)
+    
     (clear-window +full-frame+)
     (refresh-window +full-frame+)
     
@@ -145,9 +147,9 @@ Modififes the passed player object THE-PLAYER.  This is a long function."
 	 (points-to-allocate 20)
 	 (left-side 15)
 	 ;;(right-side 50)
-	 ;;(left-col 22)
+	 (left-col 22)
 	 (right-col 57)
-	 ;;(row 4)
+	 (srow 4)
 	 ;;(split 30)
 	 (split 0)
 	 )
@@ -199,7 +201,7 @@ can be assigned later." :end-col 43)
 	    when x do
 	    (progn
 	      (setf (aref objs i) (list x (if left left-col right-col)
-					(if left (+ row i) (+ row i (- split)))))))
+					(if left (+ srow i) (+ srow i (- split)))))))
 
 
       (dotimes (i (length objs))
@@ -222,8 +224,14 @@ can be assigned later." :end-col 43)
 	       (#\+ (when (plusp points-to-allocate)
 		      (incf (aref score-diffs current))
 		      (decf points-to-allocate)))
+	       (#\6 (when (plusp points-to-allocate)
+		      (incf (aref score-diffs current))
+		      (decf points-to-allocate)))
 	     
 	       (#\- (when (plusp (aref score-diffs current))
+		      (decf (aref score-diffs current))
+		      (incf points-to-allocate)))
+	       (#\4 (when (plusp (aref score-diffs current))
 		      (decf (aref score-diffs current))
 		      (incf points-to-allocate)))
 	     
