@@ -11,6 +11,15 @@ Copyright (c) 2009 - Stig Erik Sandoe
 
 (define-racial-ability "nutrition" "Nutrition"
   :key '<nutrition>)  
+(define-racial-ability "sight" "Sight"
+  :key '<sight>)
+(define-racial-ability "hands" "Hands"
+  :key '<hands>)
+(define-racial-ability "skin" "Skin"
+  :key '<skin>)
+
+
+
 
 (define-racial-ability "carnivore" "Carnivore"
   :type '<nutrition>
@@ -41,8 +50,6 @@ Copyright (c) 2009 - Stig Erik Sandoe
   :hidden t
   :levels nil)
  
-(define-racial-ability "sight" "Sight"
-  :key '<sight>)
 
 (define-racial-ability "detail-vision" "Detailed vision"
   :type '<sight>
