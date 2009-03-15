@@ -79,7 +79,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
                    (*player* player))
                (evo/place-person id x y))))
 
-      (place-person (if (is-female? player) "grandpa" "grandma") 12 12))
+      (place-person (if (is-female? player) "grandma" "grandpa") 12 12))
     
     level))
 

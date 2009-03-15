@@ -29,6 +29,14 @@ the Free Software Foundation; either version 2 of the License, or
 (defmethod is-sleeping? ((variant variant) (creature player))
   nil)
 
+(defmethod is-male? ((creature player))
+  (eq (gender.symbol (player.gender creature)) '<male>))
+
+(defmethod is-female? ((creature player))
+  (warn "Compare ~s ~s ~s" (player.gender creature) (gender.symbol (player.gender creature)) '<female>)
+  (eq (gender.symbol (player.gender creature)) '<female>))
+
+
 (defun make-old-player-info (variant)
   "creates and returns a freshly init'ed OLD-PLAYER-INFO object."
   (let ((old (make-instance 'old-player-info)))

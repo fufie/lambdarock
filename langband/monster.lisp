@@ -617,25 +617,23 @@ the *VARIANT* object so it has to be properly initialised."
   (warn "Special ability ~s not implemented" ability)
   t)
 
-(defun is-male? (creature)
-  "Is the creature male, if so return T."
-  (etypecase creature
-      (active-monster
-       (is-male? (amon.kind creature)))
-      (player
-       (eq (gender.symbol (player.gender creature)) '<male>))
-      (monster-kind
-       (eq (monster.gender creature) '<male>))))
+(defmethod is-male? (creature)
+  nil)
 
-(defun is-female? (creature)
-  "Is the creature female, if so return T."
-  (etypecase creature
-      (active-monster
-       (is-female? (amon.kind creature)))
-      (player
-       (eq (gender.symbol (player.gender creature)) '<female>))
-      (monster-kind
-       (eq (monster.gender creature) '<female>))))
+(defmethod is-male? ((creature active-monster))
+  (is-male? (amon.kind creature)))
+
+(defmethod is-male? ((creature monster-kind))
+  (eq (monster.gender creature) '<male>))
+
+(defmethod is-female? (creature)
+  nil)
+
+(defmethod is-female? ((creature active-monster))
+  (is-female? (amon.kind creature)))
+
+(defmethod is-female? ((creature monster-kind))
+  (eq (monster.gender creature) '<female>))
 
 (defmethod get-resists ((obj active-monster))
   (get-resists (amon.kind obj)))

@@ -240,6 +240,12 @@ also using version number."))
 (defgeneric breeders-in-dungeon (dungeon)
   (:documentation "Returns number of breeders in given dungeon."))
 
+(defgeneric is-male? (creature)
+  (:documentation "Returns true if the creature is a male."))
+
+(defgeneric is-female? (creature)
+  (:documentation "Returns true if the creature is female."))
+
 ;;; === End creature
 
 
