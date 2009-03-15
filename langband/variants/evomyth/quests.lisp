@@ -105,10 +105,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     (when (functionp (evo/coord-event-trigger ev))
       (funcall (evo/coord-event-trigger ev) variant (evo/coord-event-quest ev) player)))
 
+  #||
   (let* ((win (aref *windows* +charinfo-frame+))
 	 (row (- (window.height win) 2)))
     (output-string! win 0 row +term-l-blue+ "        ")
     (output-string! win 0 row +term-l-blue+ (format nil "~3d,~3d" (location-x player) (location-y player) )))
+  ||#
     
   
   player)
@@ -249,8 +251,3 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 (defun get-new-object (id)
   (check-type id string)
   (create-aobj-from-id id))
-
-;;(trace init-quest)
-;;(trace finish-quest)
-;;(trace advance-quest)
-;;(trace next-subquest)
