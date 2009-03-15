@@ -73,7 +73,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   "Interactive questioning to select the basics of the character.
 Modififes the passed player object THE-PLAYER.  This is a long function."
 
-  (let* (;;(info-col (setting-lookup settings "info-x"))
+  (let* ( ;;(info-col (setting-lookup settings "info-x"))
 	 (info-row (setting-lookup settings "info-y"))
 	 (instr-col (setting-lookup settings "instr-x"))
 	 (instr-row (setting-lookup settings "instr-y"))
@@ -221,17 +221,11 @@ can be assigned later." :end-col 43)
 	     (case key-input
 	       (#\8 (decf current))
 	       (#\2 (incf current))
-	       (#\+ (when (plusp points-to-allocate)
+	       ((#\+ #\6) (when (plusp points-to-allocate)
 		      (incf (aref score-diffs current))
 		      (decf points-to-allocate)))
-	       (#\6 (when (plusp points-to-allocate)
-		      (incf (aref score-diffs current))
-		      (decf points-to-allocate)))
-	     
-	       (#\- (when (plusp (aref score-diffs current))
-		      (decf (aref score-diffs current))
-		      (incf points-to-allocate)))
-	       (#\4 (when (plusp (aref score-diffs current))
+
+	       ((#\- #\4)(when (plusp (aref score-diffs current))
 		      (decf (aref score-diffs current))
 		      (incf points-to-allocate)))
 	     

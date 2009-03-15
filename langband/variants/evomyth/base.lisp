@@ -20,13 +20,6 @@ Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
    (gold-table     :initarg :gold-table
 		   :initform nil
 		   :accessor variant.gold-table)
-   (spells         :initarg :spells
-		   :initform (make-hash-table :test #'equal)
-		   :accessor variant.spells)
-
-   (spellbooks     :initarg :spellbooks
-		   :initform (make-hash-table :test #'equal)
-		   :accessor variant.spellbooks)
 
    ;; this length should be calculated accurately to allow for iteration
    (skills :initform (make-array 30 :initial-element nil)

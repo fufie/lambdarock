@@ -71,21 +71,21 @@ the rest of the game is init'ed."
   "Does post-initialisation of the game with variant tweaking."
 
   (setf (get-setting var-obj :basic-frame-printing)
-	(get-settings-obj "con-basic-frame"))
+	(get-settings-obj "evo-basic-frame"))
   
   (cond ((eq (get-system-type) 'sdl)
 	 (setf (get-setting var-obj :birth)
-	       (get-settings-obj "sdl-con-birth-settings"))
+	       (get-settings-obj "sdl-evo-birth-settings"))
 
 	 (setf (get-setting var-obj :char-display)
-	       (get-settings-obj "sdl-con-chardisplay"))
+	       (get-settings-obj "sdl-evo-chardisplay"))
 
 	 )
 	
 	;; otherwise go for basic stuff
 	(t
 	 (setf (get-setting var-obj :birth)
-	       (get-settings-obj "con-birth-settings"))
+	       (get-settings-obj "evo-birth-settings"))
 
 	 (setf (get-setting var-obj :char-display)
 	       (get-settings-obj "chardisplay-settings"))
@@ -136,29 +136,7 @@ the rest of the game is init'ed."
     (register-slot-order& var-obj equip-order))
   )
 
-(defvar *showing-runes* nil)
 (defvar *current-arrow* 0)
-
-;; flaky
-(defun rune-select (col row)
-  (let ((num (+ row (* 2 col)))
-	(win (aref *windows* *map-frame*)))
-    (warn "Got number ~s and letter ~s" num  (code-char (+ 65 num)))
-    (setf (window-coord win +foreground+ 4 (+ 2 *current-arrow*)) (tile-paint-value 44 num))
-    (paint-coord win 4 (+ 2 *current-arrow*))
-    ))
-
-(defun display-rune-arrow (win col idx)
-  (let ((indent 2))
-    (clear-coord win col (+ indent *current-arrow*))
-    (paint-coord win col (+ indent *current-arrow*))
-    (setf (window-coord win +foreground+ col (+ indent idx)) (tile-paint-value 46 1))
-    (paint-coord win col (+ indent idx))
-    (setf *current-arrow* idx)
-
-    ;;(warn "disp")
-    ;;(flush-coords win col 2 (1+ col) 13)
-    ))
 
 (defmethod handle-mouse-click ((variant evomyth) window button x y)
 
@@ -168,39 +146,16 @@ the rest of the game is init'ed."
   
     (cond ((= num-id +inv-frame+)
 	   ;; handle normal case
-	   (cond ((not *showing-runes*)
-		  (when (eq button :left)
-		    (let ((wid (window.pixel-width window))
-			  (tile-wid (window.tile-width window)))
-		      ;; two button-sets
-		      (cond ((> x (- wid tile-wid)) ;; last tile
-			     (switch-inventory-view variant player))
-			    ((> x (- wid (* 2 tile-wid))) ;; second last tile 
-			     (switch-map-mode variant dungeon player)))
-		      )))
-		 ;; runes
-		 (*showing-runes*
-		  (when (eq button :left)
-		    (let* ((tile-wid (window.tile-width window))
-			   (tile-hgt (window.tile-height window))
-			   (which-x (int-/ x tile-wid))
-			   (which-y (if (< y tile-hgt) 0 1)))
-		      (rune-select which-x which-y))))
-		 ))
 
-	  ((and *showing-runes*
-		(= num-id *map-frame*)
-		(eq button :left))
-	   (let* ((loc-x (int-/ x (window.tile-width window)))
-		  (loc-y (int-/ y (window.tile-height window))))
-
-	     (when (and (= loc-x 2) ;; hit a key.. maybe
-			(>= loc-y 2)
-			(< loc-y 12))
-	       (warn "Hit F~d" (1+ (- loc-y 2)))
-	       (display-rune-arrow (aref *windows* *map-frame*) 0 (- loc-y 2))
+	   (when (eq button :left)
+	     (let ((wid (window.pixel-width window))
+		   (tile-wid (window.tile-width window)))
+	       ;; two button-sets
+	       (cond ((> x (- wid tile-wid)) ;; last tile
+		      (switch-inventory-view variant player))
+		     ((> x (- wid (* 2 tile-wid))) ;; second last tile 
+		      (switch-map-mode variant dungeon player)))
 	       )))
-
 	  
 	  ((and (= num-id *map-frame*)
 		(eq button :right))
@@ -254,19 +209,6 @@ the rest of the game is init'ed."
     (setf (gobj-table.alloc-table o-table)
 	  (funcall alloc-table-creator variant (gobj-table.obj-table-by-lvl o-table)))
     ))
-
-(defun %print-runes (win)
-  (let ((rune-num 25)
-	;;(frame-wid (get-frame-width +inv-frame+))
-	)
-    ;; ugly thing to test runes, remove later"
-    (loop for i from 0 below rune-num
-	  for col = (int-/ i 2)
-	  for row = (mod i 2)
-	  do
-	  (clear-coord win col row)
-	  (setf (window-coord win +background+ col row) (tile-paint-value 44 i))
-	  )))
 
 (defconstant +attitude-jihad+   -100)
 (defconstant +attitude-hated+    -75)

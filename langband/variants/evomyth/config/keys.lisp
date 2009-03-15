@@ -44,7 +44,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandø
 ;;(define-keypress *angband-keys* :global #\> 'go-downstairs)
 ;;(define-keypress *angband-keys* :global #\< 'go-upstairs)
 (define-keypress *angband-keys* :global #\* 'select-target)
-;;(define-keypress *angband-keys* :global #\% 'show-rune-keys)
 
 ;; these can die later..
 ;;(define-keypress *angband-keys* :global #\A 'print-mapper)
@@ -82,16 +81,3 @@ Copyright (c) 2003, 2009 - Stig Erik Sandø
 (define-keypress *angband-keys* :global '(shift #\9) 'run-up-right)
 
 (define-keypress *angband-keys* :display #\Q 'show-quests)
-#||
-;; then those keys used for display
-(define-keypress *angband-keys* :display #\C 'print-attack-table)
-(define-keypress *angband-keys* :display #\M 'print-misc)
-(define-keypress *angband-keys* :display #\R 'print-resists)
-||#
-
-#||
-(define-keypress *angband-keys* :global #\k 'move-up)
-(define-keypress *angband-keys* :global #\l 'move-right)
-(define-keypress *angband-keys* :global #\j 'move-down)
-(define-keypress *angband-keys* :global #\h 'move-left)
-||#

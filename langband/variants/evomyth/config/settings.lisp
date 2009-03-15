@@ -9,7 +9,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandø
 
 (in-package :org.langband.evomyth)
 
-(define-settings '("con-basic-frame" "basic-frame-locations")
+(define-settings '("evo-basic-frame" "basic-frame-locations")
     "max-mana" '(18 . 0)
     "cur-mana" '(19 . 0)
     
@@ -18,10 +18,10 @@ Copyright (c) 2003, 2009 - Stig Erik Sandø
     "stun"   '(22 . 0))
 
 
-(define-settings '("con-birth-settings" "birth-settings")
+(define-settings '("evo-birth-settings" "birth-settings")
     )
 
-(define-settings '("sdl-con-birth-settings" "con-birth-settings")
+(define-settings '("sdl-evo-birth-settings" "evo-birth-settings")
     "instr-x" 15
     "instr-y" 3
     "instr-attr" +term-blue+
@@ -45,9 +45,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandø
     "altern-attr" +term-umber+
     "altern-sattr" +term-l-red+
     "note-colour" +term-white+
+    "background" '(engine-gfx "textures/plainbook.png")
+    "background-width"  800
+    "background-height" 600    
     )
 
-(define-settings '("sdl-con-chardisplay" "chardisplay-settings")
+(define-settings '("sdl-evo-chardisplay" "chardisplay-settings")
     "title-x" 15
     "title-y" 10
     "title-attr" +term-blue+
@@ -66,5 +69,8 @@ Copyright (c) 2003, 2009 - Stig Erik Sandø
     "skills-x" 53
     "combat-x" 53
     "combat-y" 20
+    "background" '(engine-gfx "textures/plainbook.png")
+    "background-width"  800
+    "background-height" 600
     )
 
