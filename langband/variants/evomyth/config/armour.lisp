@@ -375,6 +375,18 @@ boots are 10%
   :the-kind '<body-armour>
   :armour-rating +ar-cloth+)
 
+(define-object-kind "fur-vest" "fur vest~"
+  :numeric-id 2302
+  :gfx-sym (tile-paint-value +tilefile-armour+ 38)
+  :text-sym (text-paint-value +term-l-umber+ #\()
+  :weight 80
+  :cost 18
+  :power-lvl 2
+  :sort-value 2302
+  :skill '<light>
+  :bulk +ab-leather+
+  :the-kind '<body-armour>
+  :armour-rating +ar-leather+)
 
 ;;; == legwear
 
@@ -516,58 +528,3 @@ boots are 10%
   :bulk +ab-steel+
   :the-kind '<gloves>
   :armour-rating 5)
-
-;;; == shields
-
-(define-object-kind "small-leather-shield" "& small leather shield~"
-  :numeric-id 2700
-  :gfx-sym (tile-paint-value +tilefile-armour+ 90)
-  :text-sym (text-paint-value +term-l-umber+ #\))
-  :weight 50
-  :cost 30
-  :power-lvl 2
-  :sort-value 2700
-  :skill '<shield>
-  :bulk 3
-  :the-kind '<shield>
-  :armour-rating 2)
-
-(define-object-kind "large-leather-shield" "& large leather shield~"
-  :numeric-id 2701
-  :gfx-sym (tile-paint-value +tilefile-armour+ 29)
-  :text-sym (text-paint-value +term-l-umber+ #\))
-  :weight 100
-  :cost 120
-  :power-lvl 5
-  :sort-value 2701
-  :skill '<shield>
-  :bulk 8
-  :the-kind '<shield>
-  :armour-rating 4)
-
-(define-object-kind "small-metal-shield" "& small metal shield~"
-  :numeric-id 2702
-  :gfx-sym (tile-paint-value +tilefile-armour+ 93)
-  :text-sym (text-paint-value +term-slate+ #\))
-  :weight 65
-  :cost 50
-  :power-lvl 7
-  :sort-value 2702
-  :skill '<shield>
-  :bulk 6
-  :the-kind '<shield>
-  :armour-rating 3)
-
-(define-object-kind "large-metal-shield" "& large metal shield~"
-  :numeric-id 2703
-  :gfx-sym (tile-paint-value +tilefile-armour+ 89)
-  :text-sym (text-paint-value +term-slate+ #\))
-  :weight 120
-  :cost 200
-  :power-lvl 12
-  :sort-value 2703
-  :skill '<shield>
-  :bulk 10
-  :the-kind '<shield>
-  :armour-rating 5)
-

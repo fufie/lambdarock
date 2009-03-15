@@ -137,6 +137,10 @@ returned results."))
 (define-object-type melee-weapon :is weapon)
 (define-object-type blade :key <blade> :is melee-weapon)
 
+(define-object-type ranged-weapon :is weapon)
+(define-object-type bow :key <bow> :is ranged-weapon)
+
+
 (define-object-type armour :key <armour>
 	      :kind-slots ((armour-skill  :accessor object.armour-skill  :initform '<light>)
 			   (armour-bulk   :accessor object.armour-bulk   :initform 0))

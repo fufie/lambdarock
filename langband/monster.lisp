@@ -3,16 +3,7 @@
 #||
 
 DESC: monster.lisp - monster-code
-Copyright (c) 2000-2004 - Stig Erik Sandoe
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-----
-
-ADD_DESC: The code which deals with critters you can meet in the dungeon.
+Copyright (c) 2000-2004, 2009 - Stig Erik Sandoe
 
 ||#
 
@@ -632,7 +623,7 @@ the *VARIANT* object so it has to be properly initialised."
       (active-monster
        (is-male? (amon.kind creature)))
       (player
-       (eq (player.gender creature) '<male>))
+       (eq (gender.symbol (player.gender creature)) '<male>))
       (monster-kind
        (eq (monster.gender creature) '<male>))))
 
@@ -642,7 +633,7 @@ the *VARIANT* object so it has to be properly initialised."
       (active-monster
        (is-female? (amon.kind creature)))
       (player
-       (eq (player.gender creature) '<female>))
+       (eq (gender.symbol (player.gender creature)) '<female>))
       (monster-kind
        (eq (monster.gender creature) '<female>))))
 

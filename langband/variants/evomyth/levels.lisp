@@ -72,6 +72,14 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
       (unless (positive-integer? py)
 	(setf py 7))
       (place-player! dungeon player px py))
+
+    (flet ((place-person (id x y)
+             (let ((*variant* variant)
+                   (*dungeon* dungeon)
+                   (*player* player))
+               (evo/place-person id x y))))
+
+      (place-person (if (is-female? player) "grandpa" "grandma") 12 12))
     
     level))
 

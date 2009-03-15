@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/evomyth/config/effects.lisp - definition of magic effects
-Copyright (c) 2000-2002, 2009 - Stig Erik Sandø
+Copyright (c) 2000-2002, 2009 - Stig Erik Sandoe
 
 |#
 

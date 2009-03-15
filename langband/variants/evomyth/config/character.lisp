@@ -1,4 +1,11 @@
+;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.evomyth -*-
 
+#|
+
+DESC: variants/evomyth/config/character.lisp - character settings
+Copyright (c) 2009 - Stig Erik Sandoe
+
+|#
 
 (in-package :org.langband.evomyth)
 
@@ -31,11 +38,14 @@
 	    "Spy" "Spy" "Spy" "James Bond")
   
   :starting-equipment '((obj :id "short-bow")
-			(obj :id "dagger")
+			(obj :id "stone-dagger")
+			(obj :id "fur-cap")
 			(obj :id "fur-vest")
+			(obj :id "fur-boots")
+			(obj :id "arrow" :amount 20)
 			)
 
-  ;; total points 150
+  ;; total points 95
   :skills '((<leatherwork> 10)
 	    (<monster-lore> 15)
 	    (<object-lore> 5)

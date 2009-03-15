@@ -50,7 +50,9 @@ the rest of the game is init'ed."
     (initialise-objects& var-obj :file "config/objects")
     (initialise-objects& var-obj :file "config/armour")
     (initialise-objects& var-obj :file "config/weapons")
+    (initialise-monsters& var-obj :file "config/family")
 
+    (load-variant-data& var-obj "people/grandpa")
     )
   
   ;; more hackish
@@ -117,8 +119,8 @@ the rest of the game is init'ed."
   "Initialises values dealing with the equipment (sorting, worn slots)."
 
   (let ((equip-order '(
-		       (eq.lefthand    "Left Hand"              (active-object/melee-weapon active-object/shield))
-		       (eq.righthand   "Right Hand"             (active-object/melee-weapon active-object/shield))
+		       (eq.lefthand    "Left Hand"              (active-object/melee-weapon active-object/ranged-weapon active-object/shield))
+		       (eq.righthand   "Right Hand"             (active-object/melee-weapon active-object/ranged-weapon active-object/shield))
 		       (eq.l-ring      "On left index finger"   active-object/ring)
 		       (eq.r-ring      "On right index finger"  active-object/ring)
 		       (eq.neck        "Around neck"            active-object/neckwear)

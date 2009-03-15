@@ -296,7 +296,7 @@ Copyright (c) 2002-2003 - Knut Arild Erstad
 	  ((or (not will-talk-test) ;; all ok
 	       (funcall will-talk-test player npc)) ;; safeguard
 	   (let ((conv (lookup-conversation-id dungeon player npc)))
-	     ;;(warn "Got conv ~s for id ~s" conv npc)
+	     (warn "Got conv ~s for id ~s" conv npc)
 	     (if (typep conv 'conversation-node)
 		 (with-dialogue ()
 		   (activate-conversation conv player npc))
