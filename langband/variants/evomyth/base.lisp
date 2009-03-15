@@ -77,19 +77,9 @@ Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
   cost)
   
 
-(defclass evo/town (themed-level)
-  ((id     :initform "town-level")
-   (symbol :initform 'town-level)
-   (stores        :initarg :stores     :initform nil  :accessor level.stores)
-   (num-stores    :initarg :num-stores :initform 8    :accessor level.num-stores)
-   (home-num      :initarg :home-num   :initform 7    :accessor level.home-num))
-
-  (:documentation "Evomyth has a special (two) town-level with
-stores and special behaviour.  The class is used for dispatching."))
-
-(defclass warehouse-level (themed-level)
-  ((id :initform "warehouse")
-   (symbol :initform 'warehouse)
+(defclass evo/valley (themed-level)
+  ((id :initform "valley")
+   (symbol :initform 'valley)
    ))
 
 

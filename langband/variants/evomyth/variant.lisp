@@ -90,9 +90,9 @@ the rest of the game is init'ed."
 
 	 ))
   
-  (register-level-builder! "town-level"
+  (register-level-builder! "valley"
 			   (get-late-bind-function 'org.langband.evomyth
-						   'create-bare-town-level-obj))
+						   'create-bare-valley-level-obj))
   
   
   var-obj)

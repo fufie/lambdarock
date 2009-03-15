@@ -9,21 +9,17 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (in-package :org.langband.evomyth)
 
-(defmethod level-ready? ((level warehouse-level))
+(defmethod level-ready? ((level evo/valley))
   (when (level.dungeon level)
     t))
 
-(defmethod level-ready? ((level evo/town))
-  (when (level.dungeon level)
-    t))
+(defun create-bare-valley-level-obj ()
+  "Returns a bare valley-level."
+  (make-instance 'evo/valley :depth 0 :rating 0))
 
-(defun create-bare-town-level-obj ()
-  "Returns a bare town-level."
-  (make-instance 'evo/town :depth 0 :rating 0))
-
-(defun make-town-level-obj (variant player)
+(defun make-valley-level-obj (variant player)
   (declare (ignore variant player))
-  (funcall (get-level-builder "town-level")))
+  (funcall (get-level-builder "valley")))
 
 
 (defmethod create-appropriate-level ((variant evomyth) old-level player depth)
@@ -33,13 +29,9 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (let ((level nil)
 	(where-to (player.leaving? player)))
 
-    (cond ((eq where-to :warehouse)
-	   ;; ultra hack
-	   (setf (fill-pointer org.langband.engine::*array-view*) 0)
-	   (setf (fill-pointer org.langband.engine::*temp-view*) 0)
-	   (setf level (make-instance 'warehouse-level :depth 0 :rating 0)))
+    (cond 
 	  (t
-	   (setf level (make-town-level-obj variant player))))
+	   (setf level (make-valley-level-obj variant player))))
 
     (warn "level for ~s is ~s" where-to level)
     
@@ -62,11 +54,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	(warn "Unable to find person/monster ~s" id))
     person))
 
-(defmethod generate-level! ((variant evomyth) (level evo/town) player)
+
+(defmethod generate-level! ((variant evomyth) (level evo/valley) player)
   (let ((dungeon nil))
     
     (warn "Reading map")
-    (setf dungeon  (read-map variant "variants/evomyth/maps/towns.lmap"))
+    (setf dungeon  (read-map variant "variants/evomyth/maps/valley.lmap"))
     (warn "read map")
     (setf dungeon (treat-map dungeon)) ;; inefficient
     
@@ -82,6 +75,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     
     level))
 
+
 (defmethod print-depth ((variant evomyth) (level level) setting)
   "prints current depth somewhere"
   (declare (ignorable setting))
@@ -89,7 +83,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     (let ((column (- (get-frame-width +misc-frame+) 8))) ;;(setting-lookup setting "depth")))
       (put-coloured-line! +term-l-blue+ (format nil "~d ft" (* 50 (level.depth level))) column 0))))
 
-(defmethod activate-object :after ((level evo/town) &key)
+(defmethod activate-object :after ((level evo/valley) &key)
   (let* ((dungeon (level.dungeon level))
 	 (player *player*)
 	 ;;(var-obj *variant*)
@@ -288,32 +282,3 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 		      ))
 		))
     dungeon))
-
-(defmethod generate-level! ((variant evomyth) (level warehouse-level) player)
-  (let ((dungeon nil)
-	(x 6)
-	(y 5))
-
-    ;;(warn "Reading map")
-    (setf dungeon  (read-map variant "variants/evomyth/maps/warehouse.lmap"))
-    ;;(warn "read map")
-    ;;(setf dungeon (treat-map dungeon)) ;; inefficient
-    
-    (setf (level.dungeon level) dungeon)
-
-    (place-player! dungeon player x y)
-
-    level))
-
-(defmethod activate-object :after ((level warehouse-level) &key)
-  (clear-window *map-frame*)
-  (let ((evt (make-coord-event "exit-warehouse"
-			       #'(lambda (dun x y)
-				   (declare (ignore dun x y))
-				   (setf (player.leaving? *player*) :town))
-			       nil)))
-    (setf (get-coord-trigger (level.dungeon level) 7 5) evt
-	  (get-coord-trigger (level.dungeon level) 7 6) evt))
-
-  (illuminate-town! (level.dungeon level) *player* 'day))
-
