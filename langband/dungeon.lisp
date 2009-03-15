@@ -135,6 +135,11 @@ Calls FUN with THREE arguments: the dungeon, the new x, the new y"
 (defun create-dungeon (width height &key its-depth) 
   "Creates and returns a dungeon of specified size"
 
+  (when (< +max-dungeon-width+ width)
+    (error "To large width for dungeon"))
+  (when (< +max-dungeon-height+ height)
+    (error "To large height for dungeon"))
+  
 ;;  (warn "Creating dungeon of size [~s ~s]" width height)
   
   (let ((d (make-dungeon :height height :width width)))
