@@ -34,22 +34,22 @@ and he will inform you of your duties.")
   (:text "What is your business?")
 
   (:option (:test (has-object? player "sealed-letter-to-junifer"))
-	   (:text "I have an urgent letter to Imperial Mereo Junifer." (player.name player))
+	   (:text "I have an urgent letter to Imperial Mereo Junifer.")
 	   (:perform (adjust-attitude! npc +attchange-annoyed+))
 	   (:dest "mereo-junifer-letter"))
   
   (:option (:test (has-object? player "sealed-letter-to-junifer"))
-	   (:text "I have a letter to General Junifer." (player.name player))
+	   (:text "I have a letter to General Junifer.")
 	   (:dest "mereo-junifer-letter"))
   
   (:option (:test (has-object? player "opened-letter-to-junifer"))
-	   (:text "I have a letter to General Junifer." (player.name player))
+	   (:text "I have a letter to General Junifer.")
 	   (:perform (adjust-attitude! npc +attchange-offended+))
 	   (:dest "mereo-junifer-letter"))
 
   (:option (:test (or (has-object? player "sealed-letter-to-tepesco")
 		      (has-object? player "opened-letter-to-tepesco")))
-	   (:text "I have an urgent letter for Consul Tepesco, do you want it?" (player.name player))
+	   (:text "I have an urgent letter for Consul Tepesco, do you want it?")
 	   (:perform (adjust-attitude! npc +attchange-pleased+))
 	   (:dest "consul-tepesco-letter"))
 

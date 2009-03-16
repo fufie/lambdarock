@@ -11,4 +11,5 @@ DESC: variants/contraband/package.lisp - package def for contraband
 (defpackage :org.langband.contraband
   (:nicknames :lb-contra :contra :lbc)
   (:use :common-lisp :org.langband.engine
-	:org.langband.dialogue))
+	:org.langband.dialogue
+	:org.langband.quest))

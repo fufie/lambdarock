@@ -183,9 +183,9 @@ Modififes the passed player object THE-PLAYER.  This is a long function."
 	 (points-to-allocate 20)
 	 (left-side 15)
 	 ;;(right-side 50)
-	 ;;(left-col 22)
+	 (left-col 22)
 	 (right-col 57)
-	 ;;(row 4)
+	 (srow 4)
 	 ;;(split 30)
 	 (split 0)
 	 )
@@ -237,7 +237,7 @@ can be assigned later." :end-col 43)
 	    when x do
 	    (progn
 	      (setf (aref objs i) (list x (if left left-col right-col)
-					(if left (+ row i) (+ row i (- split)))))))
+					(if left (+ srow i) (+ srow i (- split)))))))
 
 
       (dotimes (i (length objs))
@@ -379,13 +379,13 @@ can be assigned later." :end-col 43)
   (warn "Nuevo playeras")
   (cond ((is-copian? player)
 	 (dolist (i '("deliver-letter-to-junifer" "deliver-letter-to-ulydes"))
-	   (let ((quest (find-quest variant i)))
-	     (init-quest variant quest nil player))))
+	   (let ((quest (quest:find-quest variant i)))
+	     (quest:init-quest variant quest nil player))))
 	
 	((is-atrocitan? player)
 	 (dolist (i '("deliver-letter-to-tepesco"))
-	   (let ((quest (find-quest variant i)))
-	     (init-quest variant quest nil player)))
+	   (let ((quest (quest:find-quest variant i)))
+	     (quest:init-quest variant quest nil player)))
 	 (add-to-inventory player (get-new-object "facts-machine")))
 	 
 	(t (error "Uknown nationality.")))

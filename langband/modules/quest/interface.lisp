@@ -69,19 +69,19 @@ Copyright (c) 2009 - Stig Erik Sandoe
                ,@body)))
     `(function ,def)))
 
-
 (defgeneric quest-available? (variant quest quest-giver quest-taker)
-  (:documentation "Is a quest avaialble?"))
+  (:documentation "Checks if a quest can be taken by (ie 'is available for') the quest-taker."))
 
-(defgeneric quest-status (variant quest taker)
-  (:documentation "What is the status of a certain quest"))
-
+(defgeneric quest-status (variant quest quest-taker)
+  (:documentation "Returns the status of the quest.. :active, :not-started, :success, :failure being some possible
+returned results."))
+  
 (defgeneric init-quest (variant quest quest-giver quest-taker)
-  (:documentation "Initialise a new quest."))
+  (:documentation "Initialisation of the quest, which does the init of all settings."))
 
-(defgeneric advance-quest (variant quest taker &key to from giver)
-  (:documentation "Move the quest to the next step"))
+(defgeneric advance-quest (variant quest quest-taker &key from to giver)
+  (:documentation "Advances a quest to the next step, which might be the end."))
 
 (defgeneric finish-quest (variant quest quest-taker)
-  (:documentation "Finish up a certain quest."))
+  (:documentation "Cleanup actions for the quest."))
 

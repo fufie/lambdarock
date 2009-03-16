@@ -8,6 +8,7 @@
 
 
 (defun %visit-warehouse (dungeon x y)
+  (declare (ignorable dungeon x y))
   (let ((player *player*))
     (set-flag "last-town-px" (location-x player))
     (set-flag "last-town-py" (location-y player))

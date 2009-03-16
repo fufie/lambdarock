@@ -468,3 +468,51 @@ to variant obj."
 (defun make-floor-container (dungeon loc-x loc-y)
   "Returns a container for floor-objects."
   (make-instance 'items-on-floor :dungeon dungeon :loc-x loc-x :loc-y loc-y))
+
+;;; ---------------------------------
+;;; Are these duplicates of existing code?
+
+(defun has-gold>= (creature amount)
+  "Checks if the creature has gold/florentins more than or equal to amount."
+  (check-type creature player)
+  (>= (player.gold creature) amount))
+
+(defun has-object? (creature obj)
+  "Checks if the creature has the given object."
+  ;; handle '(object "id") case
+  (when (and (consp obj) (eq (car obj) 'object))
+    (setf obj (second obj)))
+  
+  (check-type creature player)
+  (check-type obj string)
+  (let ((objs (items.objs (aobj.contains (get-creature-inventory creature)))))
+    (loop for i from 0
+	  for x across objs
+	  do
+	  (when (typep x 'active-object)
+	    (when (equal obj (get-id (aobj.kind x)))
+	      (return-from has-object? i)))))
+  
+  nil)
+
+(defun add-to-inventory (creature object &key identified)
+  (check-type creature player)
+  (let* ((backpack (get-creature-inventory creature))
+	 (inventory (aobj.contains backpack)))
+    (when identified
+      (learn-about-object! creature object :aware)
+      (learn-about-object! creature object :known))
+    ;; should do error-checking
+    (item-table-add! inventory object)
+    (update-inventory-row *variant* creature)
+    object))
+
+(defun remove-from-inventory (creature key)
+  (check-type creature player)
+  (let ((pos (has-object? creature key)))
+    (when pos
+      (item-table-remove! (aobj.contains (get-creature-inventory creature)) pos))))
+
+(defun get-new-object (id)
+  (check-type id string)
+  (create-aobj-from-id id))

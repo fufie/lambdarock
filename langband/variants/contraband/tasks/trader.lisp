@@ -70,6 +70,7 @@
     (setf (strategy.destinations strategy)
 	  (nconc (strategy.destinations strategy)
 		 (list (list 80 80 #'(lambda (p d m s)
+				       (declare (ignorable d m s))
 				       (format-message! "Avi: We're safely at the bridge ~A." (player.name p))
 				       (print-message! "Avi: Do you have the export forms still?"))))))
         
@@ -87,6 +88,7 @@
     (setf (strategy.destinations strategy)
 	  (nconc (strategy.destinations strategy)
 		 (list (list 100 80 #'(lambda (p dungeon mon s)
+					(declare (ignorable p s))
 					(remove-monster-from-dungeon! dungeon mon))
 			     )))))
   

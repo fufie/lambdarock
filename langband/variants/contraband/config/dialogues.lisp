@@ -53,7 +53,7 @@ export tax of 10 florentins for such a large shipment, and 3 florentins for proc
 			   (:text "Here's 16 florentins.")
 			   (:cond ((attitude>= npc +attitude-friendly+)
 				   (:perform (modify-gold! player 16)
-					     (remove-from-inventory quest-taker '(object "filled-out-export-forms"))
+					     (remove-from-inventory player '(object "filled-out-export-forms"))
 					     (add-to-inventory player (get-new-object "signed-export-forms"))
 					     (ask-for-update! player '[bonuses]))
 				   (:text "Ok, fair enough, since it's you.")

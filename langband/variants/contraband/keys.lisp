@@ -331,7 +331,7 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
     #'(lambda (dungeon player)
 	(declare (ignore dungeon))
 	(let ((var *variant*))
-	  (print-quests var player (get-setting var :quests-display)))
+	  (quest:print-quests var player (get-setting var :quests-display)))
 	))
 
 

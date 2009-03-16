@@ -57,6 +57,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:active-object
 	   #:active-room
 	   #:active-trap
+	   #:add-to-inventory
 	   #:ai-strategy
 	   #:alloc-entry
 	   #:animation
@@ -84,7 +85,10 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 
 	   #:game-obj-table
 	   #:gender
+	   #:get-new-object
 
+	   #:has-gold>=
+	   #:has-object?
 	   #:help-topic
 	   #:house
 	   #:hs-entry
@@ -129,6 +133,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:primitive-melee-attacker
 	   
 	   #:random-level
+	   #:remove-from-inventory
 	   #:room-type
 
 	   #:saveblock

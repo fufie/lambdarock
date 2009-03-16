@@ -18,6 +18,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
     :version "0.1.4"
     :components ((:file "package")
 		 (:file "interface" :depends-on ("package"))
-		 (:file "implementation" :depends-on ("interface")))
+		 (:file "implementation" :depends-on ("interface"))
+		 (:file "print" :depends-on ("interface")))
     :depends-on (langband-engine))
 

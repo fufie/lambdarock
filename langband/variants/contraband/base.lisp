@@ -121,22 +121,6 @@ stores and special behaviour.  The class is used for dispatching."))
    (desc :initarg :desc :reader problem.desc)))
 
 (defgeneric get-melee-weapon (creature))
-  
-(defgeneric quest-available? (variant quest quest-giver quest-taker)
-  (:documentation "Checks if a quest can be taken by (ie 'is available for') the quest-taker."))
-
-(defgeneric quest-status (variant quest quest-taker)
-  (:documentation "Returns the status of the quest.. :active, :not-started, :success, :failure being some possible
-returned results."))
-  
-(defgeneric init-quest (variant quest quest-giver quest-taker)
-  (:documentation "Initialisation of the quest, which does the init of all settings."))
-
-(defgeneric advance-quest (variant quest quest-taker &key from to giver)
-  (:documentation "Advances a quest to the next step, which might be the end."))
-
-(defgeneric finish-quest (variant quest quest-taker)
-  (:documentation "Cleanup actions for the quest."))
 
 (defgeneric print-armour-class (variant player setting)
   (:documentation "Prints armour class in left frame."))

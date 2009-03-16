@@ -54,8 +54,9 @@ the rest of the game is init'ed."
 
 
     ;; hack, done after objects and monsters are ok'ed.. maybe move to :after
-    (load-variant-data& var-obj "tasks/leave-valley")
-    (load-variant-data& var-obj "tasks/find-partner")
+    (let ((quest:*variant-class* 'evomyth))
+      (load-variant-data& var-obj "tasks/leave-valley")
+      (load-variant-data& var-obj "tasks/find-partner"))
     
     (load-variant-data& var-obj "people/grandpa")
     )

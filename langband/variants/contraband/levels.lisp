@@ -9,6 +9,17 @@ Copyright (c) 2003 - Stig Erik Sandoe
 
 (in-package :org.langband.contraband)
 
+
+(defmethod on-move-to-coord ((variant contraband) (player player) x y)
+
+  ;; bad consing
+  (when-bind (ev (gethash (cons x y) quest:*coord-events*))
+    ;;(warn "found coord event ~s" ev)
+    (when (functionp (quest:coord-event-trigger ev))
+      (funcall (quest:coord-event-trigger ev) variant (quest:coord-event-quest ev) player)))
+  
+  player)
+
 (defmethod level-ready? ((level warehouse-level))
   (when (level.dungeon level)
     t))

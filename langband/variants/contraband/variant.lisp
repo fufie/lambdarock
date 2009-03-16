@@ -101,10 +101,11 @@ the rest of the game is init'ed."
     (initialise-objects& var-obj :file "config/weapons")
 
     ;; hack, done after objects and monsters are ok'ed.. maybe move to :after
-    (load-variant-data& var-obj "tasks/letters")
-    (load-variant-data& var-obj "tasks/dress")
-    (load-variant-data& var-obj "tasks/trader")
-    (load-variant-data& var-obj "tasks/robbery")
+    (let ((quest:*variant-class* 'contraband))
+      (load-variant-data& var-obj "tasks/letters")
+      (load-variant-data& var-obj "tasks/dress")
+      (load-variant-data& var-obj "tasks/trader")
+      (load-variant-data& var-obj "tasks/robbery"))
     
     (load-variant-data& var-obj "people/junifer")
     (load-variant-data& var-obj "people/perpetro")
