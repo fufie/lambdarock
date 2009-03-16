@@ -75,24 +75,24 @@ static graf_tiles *screen_tiles = NULL;
 
 /* color data copied straight from main-xxx.c */
 SDL_Color sdl_colour_data[16] =
-{
-/* 0 */	{0, 0, 0, 0}, 
-{4, 4, 4, 0}, 
-{2, 2, 2, 0}, 
-{4, 2, 0, 0}, 
-{3, 0, 0, 0}, 
-/* 5 */	{0, 2, 1, 0}, 
-{0, 0, 4, 0}, 
-{2, 1, 0, 0}, 
-{1, 1, 1, 0}, 
-{3, 3, 3, 0}, 
-/* 10 */{4, 0, 4, 0}, 
-{4, 4, 0, 0}, 
-{4, 0, 0, 0}, 
-{0, 4, 0, 0}, 
-{0, 4, 4, 0}, 
-{3, 2, 1, 0}
-};
+    {
+        /* 0 */	{0, 0, 0, 0}, 
+        {4, 4, 4, 0}, 
+        {2, 2, 2, 0}, 
+        {4, 2, 0, 0}, 
+        {3, 0, 0, 0}, 
+        /* 5 */	{0, 2, 1, 0}, 
+        {0, 0, 4, 0}, 
+        {2, 1, 0, 0}, 
+        {1, 1, 1, 0}, 
+        {3, 3, 3, 0}, 
+        /* 10 */{4, 0, 4, 0}, 
+        {4, 4, 0, 0}, 
+        {4, 0, 0, 0}, 
+        {0, 4, 0, 0}, 
+        {0, 4, 4, 0}, 
+        {3, 2, 1, 0}
+    };
 
 void
 sdl_UpdateRect(SDL_Surface *screen, Sint32 x, Sint32 y, Sint32 w, Sint32 h) {
@@ -774,11 +774,11 @@ sdl_complex_blit(short win_num, short x, short y, unsigned int img, int flags) {
         //DBGPUT("4. Char = %c, attr = %d\n", thechar, attr);
 		
         /*    
-         if (thechar != '#' && thechar != '.') {
-         DBGPUT("Writing '%c' (%d) char and %u attr to %d,%d (%d,%d,%d,%d -> %d,%d,%d,%d) %d\n",
-         thechar, thechar, attr, x, y, sr.x, sr.y, sr.w, sr.h, dr.x, dr.y, dr.w, dr.h, flags);
-         }
-         */
+              if (thechar != '#' && thechar != '.') {
+              DBGPUT("Writing '%c' (%d) char and %u attr to %d,%d (%d,%d,%d,%d -> %d,%d,%d,%d) %d\n",
+              thechar, thechar, attr, x, y, sr.x, sr.y, sr.w, sr.h, dr.x, dr.y, dr.w, dr.h, flags);
+              }
+        */
 		
     }
     

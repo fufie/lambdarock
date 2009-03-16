@@ -1,11 +1,11 @@
 ;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.engine -*-
 
-#||
+#|
 
 DESC: global.lisp - globally available functions/methods
 Copyright (c) 2000-2004, 2009 - Stig Erik Sandoe
 
-||#
+|#
 
 (in-package :org.langband.engine)
 

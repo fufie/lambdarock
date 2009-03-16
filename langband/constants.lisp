@@ -5,15 +5,6 @@
 DESC: constants.lisp - constants for the game code
 Copyright (c) 2000-2004 - Stig Erik Sandoe
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-----
-
-ADD_DESC: This file contains the constants in the game.  should be small.
-
 |#
 
 (in-package :org.langband.engine)
