@@ -23,18 +23,18 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	  (dummy-col 9))
       (loop for x being the hash-values of (variant.quests var-obj)
 	    do
-	    (when (and (eq (quest.state x) :active)
-		       (not (quest.parent x)))
-	      (put-coloured-str! title-attr (quest.title x) title-col (incf row))
+	    (when (and (eq (quest:quest.state x) :active)
+		       (not (quest:quest.parent x)))
+	      (put-coloured-str! title-attr (quest:quest.title x) title-col (incf row))
 	      (multiple-value-setq (dummy-col row)
-		(print-text! title-col (incf row) +term-green+ (quest.desc x) :end-col 45))
+		(print-text! title-col (incf row) +term-green+ (quest:quest.desc x) :end-col 45))
 
-	      (when (stringp (quest.step x))
-		(when-bind (q (find-quest var-obj (quest.step x)))
-		  (when (eq (quest.state q) :active)
-		    (put-coloured-str! title-attr (quest.title q) (+ 2 title-col) (incf row))
+	      (when (stringp (quest:quest.step x))
+		(when-bind (q (quest:find-quest var-obj (quest:quest.step x)))
+		  (when (eq (quest:quest.state q) :active)
+		    (put-coloured-str! title-attr (quest:quest.title q) (+ 2 title-col) (incf row))
 		    (multiple-value-setq (dummy-col row)
-		      (print-text! (+ 2 title-col) (incf row) +term-green+ (quest.desc q) :end-col 45))
+		      (print-text! (+ 2 title-col) (incf row) +term-green+ (quest:quest.desc q) :end-col 45))
 
 		    )))
 
@@ -107,10 +107,10 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 
 
-(defmethod print-object ((inst quest) stream)
+(defmethod print-object ((inst quest:quest) stream)
   (print-unreadable-object
    (inst stream :identity t)
    (format stream "~:(~a~) [~a ~a]" (lbsys/class-name inst)
-           (quest.id inst) (quest.state inst))
+           (quest:quest.id inst) (quest:quest.state inst))
    inst))
 

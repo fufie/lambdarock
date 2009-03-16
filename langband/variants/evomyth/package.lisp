@@ -11,4 +11,5 @@ DESC: variants/evomyth/package.lisp - package def for evomyth
 (defpackage :org.langband.evomyth
   (:nicknames :lb-evo :evo :lbc)
   (:use :common-lisp :org.langband.engine
-	:org.langband.dialogue))
+	:org.langband.dialogue
+	:org.langband.quest))

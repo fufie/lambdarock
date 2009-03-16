@@ -3,12 +3,7 @@
 #|
 
 DESC: variants/contraband/contraband.asd - system-def for contraband
-Copyright (c) 2002 - Stig Erik Sandø
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+Copyright (c) 2002 - Stig Erik Sandoe
 
 |#
 
@@ -35,17 +30,16 @@ the Free Software Foundation; either version 2 of the License, or
 		 (:file "levels" :depends-on ("variant"))
 		 (:file "creatures" :depends-on ("variant"))
 		 (:file "objects" :depends-on ("variant"))
-		 (:file "quests" :depends-on ("variant"))
-		 (:file "player" :depends-on ("creatures" "quests"))
+		 (:file "player" :depends-on ("creatures"))
 		 ;;(:file "spells" :depends-on ("variant"))
 		 (:file "magic" :depends-on ("variant"))
 		 (:file "combat" :depends-on ("variant"))
-		 (:file "print" :depends-on ("quests" "combat"))
+		 (:file "print" :depends-on ("combat"))
 		 (:file "keys" :depends-on ("print"))
 		 (:file "wizard" :depends-on ("keys"))
 		 
 		 )
-    :depends-on (langband-engine lbmodule-dialogue))
+    :depends-on (langband-engine lbmodule-dialogue lbmodule-quest))
 
 #-enough-support-for-langband
 (warn "Contraband has not been tested with '~a ~a', skips compilation."

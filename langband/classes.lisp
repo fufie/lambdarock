@@ -3,12 +3,7 @@
 #||
 
 DESC: classes.lisp - The major classes and structs for langband
-Copyright (c) 2002-2004 - Stig Erik Sandoe
-
-This program is free software, you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version.
+Copyright (c) 2002-2004, 2009 - Stig Erik Sandoe
 
 ||#
 
@@ -187,7 +182,10 @@ for display, num-version for active-use. u16b should be enough.")
 
    (images :accessor variant.images
 	   :initform nil
-	   :documentation "An array of relevant images to a variant.") 
+	   :documentation "An array of relevant images to a variant.")
+   
+   (quests :accessor variant.quests
+	   :initform nil)
 	   
    ;; this one is crucial, with lowercase string-keys it stores information that
    ;; is easy to check and save/load

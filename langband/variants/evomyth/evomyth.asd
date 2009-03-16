@@ -30,16 +30,16 @@ Copyright (c) 2009 - Stig Erik Sandø
 		 (:file "levels" :depends-on ("variant"))
 		 (:file "creatures" :depends-on ("variant"))
 		 (:file "objects" :depends-on ("variant"))
-		 (:file "quests" :depends-on ("variant"))
-		 (:file "player" :depends-on ("creatures" "quests"))
+		 (:file "player" :depends-on ("creatures"))
 		 (:file "abilities" :depends-on ("variant"))
 		 (:file "combat" :depends-on ("variant"))
-		 (:file "print" :depends-on ("quests" "combat"))
-		 (:file "keys" :depends-on ("print"))
+		 (:file "attitude" :depends-on ("variant"))
+		 (:file "print" :depends-on ("combat"))
+		 (:file "keys" :depends-on ("print" "attitude"))
 		 (:file "wizard" :depends-on ("keys"))
 		 
 		 )
-    :depends-on (langband-engine lbmodule-dialogue))
+    :depends-on (langband-engine lbmodule-dialogue lbmodule-quest))
 
 #-enough-support-for-langband
 (warn "Evomyth has not been tested with '~a ~a', skips compilation."

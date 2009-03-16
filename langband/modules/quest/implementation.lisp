@@ -1,19 +1,13 @@
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.evomyth -*-
+;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.quest -*-
 
 #|
 
-DESC: variants/evomyth/quests.lisp - code to handle quests
-Copyright (c) 2003, 2009 - Stig Erik Sandoe
+DESC: modules/quest/quests.lisp - code to handle quests
+Copyright (c) 2009 - Stig Erik Sandoe
 
 |#
 
-(in-package :org.langband.evomyth)
-
-(defstruct evo/coord-event
-  x
-  y
-  quest
-  trigger)
+(in-package :org.langband.quest)
 
 (defun %make-init-method (quest-name init)
   (let ((var-arg (first (second init)))
@@ -21,27 +15,11 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	(giver (third (second init)))
 	(taker (fourth (second init))))
 
-    `(defmethod init-quest ((,var-arg evomyth) (,quest-arg ,quest-name) ,giver ,taker)
+    (when (eq *variant-class* nil)
+      (error "You need to bind *variant-class* before using DEFQUEST."))
+
+    `(defmethod init-quest ((,var-arg ,*variant-class*) (,quest-arg ,quest-name) ,giver ,taker)
       ,@(cddr init))))
-
-;;(trace %make-init-method)
-
-(defmacro defquest (classname superclass &key id title desc steps init)
-  (declare (ignorable superclass steps))
-
-  (let ((init-fun (when init (%make-init-method classname init))))
-  ;; fix superclass later
-  `(eval-when (:execute :load-toplevel :compile-toplevel)
-    (defclass ,classname (quest)
-      ((id :initform ,id)
-       (title :initform ,title)
-       (desc :initform ,desc)
-       (steps :initform ,steps)
-       ))
-
-    ,init-fun
-    
-    (register-quest& ,id ',classname))))
 
 (defun register-quest& (id name)
   ;;(warn "Registering quest ~s ~s" id name)
@@ -60,7 +38,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     (when (eq (car condition) 'on-move-to-coord)
       (let ((x (second condition))
 	    (y (third condition)))
-	(setf (gethash (cons x y) *coord-events*) (make-evo/coord-event :quest quest :x x :y y :trigger event)))))
+	(setf (gethash (cons x y) *coord-events*) (make-coord-event :quest quest :x x :y y :trigger event)))))
 	
   
   (warn "Adding event for ~s" condition)
@@ -88,63 +66,16 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   "Checks if the creature has gold/florentins more than or equal to amount."
   (check-type creature player)
   (>= (player.gold creature) amount))
-  
 
-(defmacro quest-event (arguments &body body)
-  (assert (= (length arguments) 3))
-  (let ((def `(lambda ,arguments
-               (declare (ignorable ,@arguments))
-               ,@body)))
-    `(function ,def)))
-
-(defmethod on-move-to-coord ((variant evomyth) (player player) x y)
-
-  ;; bad consing
-  (when-bind (ev (gethash (cons x y) *coord-events*))
-    ;;(warn "found coord event ~s" ev)
-    (when (functionp (evo/coord-event-trigger ev))
-      (funcall (evo/coord-event-trigger ev) variant (evo/coord-event-quest ev) player)))
-
-  #||
-  (let* ((win (aref *windows* +charinfo-frame+))
-	 (row (- (window.height win) 2)))
-    (output-string! win 0 row +term-l-blue+ "        ")
-    (output-string! win 0 row +term-l-blue+ (format nil "~3d,~3d" (location-x player) (location-y player) )))
-  ||#
-    
-  
-  player)
-
-(defmethod quest-available? ((variant evomyth) quest quest-giver quest-taker)
+(defmethod quest-available? ((variant variant) quest quest-giver quest-taker)
   (declare (ignorable quest quest-giver quest-taker))
   nil)
 
-(defmethod quest-status ((variant evomyth) quest taker)
+(defmethod quest-status ((variant variant) quest taker)
   (declare (ignorable taker))
   (quest.state quest))
 
-#||
-(defmethod advance-quest ((variant evomyth) quest taker)
-  (declare (ignorable taker))
-  quest)
-||#
-
-(defmethod advance-quest ((variant evomyth) (quest string) taker &key to from giver)
-  (declare (ignorable taker))
-
-  (when-bind (qobj (find-quest variant quest))
-    (advance-quest variant qobj taker :to to :from from :giver giver))
-  
-  quest)
-
-(defmethod finish-quest ((variant evomyth) (quest quest) quest-taker)
-  ;;(warn "Finish ~s" quest)
-  (setf (quest.state quest) :finished)
-  
-  quest)
-
-
-(defmethod init-quest ((variant evomyth) (quest quest) quest-giver quest-taker)
+(defmethod init-quest ((variant variant) (quest quest) quest-giver quest-taker)
 
   ;;(warn "Init ~s" quest)
   (setf (quest.state quest) :active
@@ -166,7 +97,16 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   
   quest)
 
-(defmethod advance-quest ((variant evomyth) (quest quest) quest-taker &key from to giver)
+
+(defmethod advance-quest ((variant variant) (quest string) taker &key to from giver)
+  (declare (ignorable taker))
+
+  (when-bind (qobj (find-quest variant quest))
+    (advance-quest variant qobj taker :to to :from from :giver giver))
+  
+  quest)
+
+(defmethod advance-quest ((variant variant) (quest quest) quest-taker &key from to giver)
 
   (declare (ignorable from to))
   ;;(warn "Advancing ~s" quest)
@@ -205,6 +145,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
     quest)))
 
+
+(defmethod finish-quest ((variant variant) (quest quest) quest-taker)
+  ;;(warn "Finish ~s" quest)
+  (setf (quest.state quest) :finished)
+  
+  quest)
 
 (defun doing-quest? (creature id)
   "Returns T if the creature is doing named quest."

@@ -52,6 +52,11 @@ the rest of the game is init'ed."
     (initialise-objects& var-obj :file "config/weapons")
     (initialise-monsters& var-obj :file "config/family")
 
+
+    ;; hack, done after objects and monsters are ok'ed.. maybe move to :after
+    (load-variant-data& var-obj "tasks/leave-valley")
+    (load-variant-data& var-obj "tasks/find-partner")
+    
     (load-variant-data& var-obj "people/grandpa")
     )
   
@@ -96,7 +101,6 @@ the rest of the game is init'ed."
 			   (get-late-bind-function 'org.langband.evomyth
 						   'create-bare-valley-level-obj))
   
-  
   var-obj)
 
 
@@ -118,20 +122,20 @@ the rest of the game is init'ed."
 (defun evo/init-eq-system (var-obj)
   "Initialises values dealing with the equipment (sorting, worn slots)."
 
-  (let ((equip-order '(
-		       (eq.lefthand    "Left Hand"              (active-object/melee-weapon active-object/ranged-weapon active-object/shield))
-		       (eq.righthand   "Right Hand"             (active-object/melee-weapon active-object/ranged-weapon active-object/shield))
-		       (eq.l-ring      "On left index finger"   active-object/ring)
-		       (eq.r-ring      "On right index finger"  active-object/ring)
-		       (eq.neck        "Around neck"            active-object/neckwear)
-		       (eq.head        "On head"                active-object/headgear) ;; 15%
-		       (eq.armour      "On body"                active-object/body-armour) ;; 50%
-		       (eq.cloak       "About body"             active-object/cloak) ;; bonus armour
-		       (eq.hands       "On hands"               active-object/gloves) ;; 5%
-		       (eq.legs        "On legs"                active-object/legwear) ;; 20%
-		       (eq.feet        "On feet"                active-object/boots) ;; 10%
-		       (eq.backpack    "On back"                active-object/container t)
-		       )))
+  (let ((equip-order
+	 '((eq.lefthand    "Left Hand"              (active-object/melee-weapon active-object/ranged-weapon active-object/shield))
+	   (eq.righthand   "Right Hand"             (active-object/melee-weapon active-object/ranged-weapon active-object/shield))
+	   (eq.l-ring      "On left index finger"   active-object/ring)
+	   (eq.r-ring      "On right index finger"  active-object/ring)
+	   (eq.neck        "Around neck"            active-object/neckwear)
+	   (eq.head        "On head"                active-object/headgear) ;; 15%
+	   (eq.armour      "On body"                active-object/body-armour) ;; 50%
+	   (eq.cloak       "About body"             active-object/cloak) ;; bonus armour
+	   (eq.hands       "On hands"               active-object/gloves) ;; 5%
+	   (eq.legs        "On legs"                active-object/legwear) ;; 20%
+	   (eq.feet        "On feet"                active-object/boots) ;; 10%
+	   (eq.backpack    "On back"                active-object/container t)
+	   )))
     
     (register-slot-order& var-obj equip-order))
   )

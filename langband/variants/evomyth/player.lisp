@@ -266,6 +266,14 @@ can be assigned later." :end-col 43)
 (defmethod on-new-player ((variant evomyth) (player player))
   ;; in evomyth we add a quest right away, don't we?
 
+  ;; first quest is to get out of valley
+  ;; second is to find a partner
+  (dolist (i '("leave-valley" "find-partner"))
+    (let ((quest (quest:find-quest variant i)))
+      (if quest
+	  (quest:init-quest variant quest nil player)
+	  (warn "Unable to find quest ~a" i))))
+
   player)
 
 (defmethod roll-hitpoints-for-new-level ((variant evomyth) (player player))

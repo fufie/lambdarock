@@ -133,11 +133,13 @@ Copyright (c) 2000-2004, 2009 - Stig Erik Sandoe
 
     (when (or (eq var :evomyth) (eq var :all))
       (load "modules/dialogue/dialogue.asd")
+      (load "modules/quest/quest.asd")
       (load "variants/evomyth/evomyth.asd")
       (asdf:oos 'asdf:load-op :evomyth))
     
     (when (or (eq var :contraband) (eq var :all))
       (load "modules/dialogue/dialogue.asd")
+      (load "modules/quest/quest.asd")
       (load "variants/contraband/contraband.asd")
       (asdf:oos 'asdf:load-op :contraband))
     

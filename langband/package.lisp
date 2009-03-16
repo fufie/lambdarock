@@ -3,7 +3,7 @@
 #|
 
 DESC: package.lisp - package def for langband
-Copyright (c) 2001-2004 - Stig Erik Sandoe
+Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 
 |#
 
@@ -892,6 +892,7 @@ Copyright (c) 2001-2004 - Stig Erik Sandoe
 	   #:variant.monsters-by-level
 	   #:variant.objects
 	   #:variant.objects-by-level
+	   #:variant.quests
 	   #:variant.races
 	   #:variant.stat-length
 	   #:variant.stats

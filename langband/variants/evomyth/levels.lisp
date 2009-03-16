@@ -9,6 +9,18 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (in-package :org.langband.evomyth)
 
+
+(defmethod on-move-to-coord ((variant evomyth) (player player) x y)
+
+  ;; bad consing
+  (when-bind (ev (gethash (cons x y) quest:*coord-events*))
+    ;;(warn "found coord event ~s" ev)
+    (when (functionp (quest:coord-event-trigger ev))
+      (funcall (quest:coord-event-trigger ev) variant (quest:coord-event-quest ev) player)))
+  
+  player)
+
+
 (defmethod level-ready? ((level evo/valley))
   (when (level.dungeon level)
     t))

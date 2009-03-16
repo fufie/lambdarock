@@ -76,33 +76,6 @@ Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
    ))
 
 
-(defclass quest ()
-  ((id    :accessor quest.id    :initform nil :initarg :id
-	  :documentation "A string id.")
-   (title :accessor quest.title
-	  :initform nil
-	  :initarg :title
-	  :documentation "A title to use when presenting the quest.")
-   (desc  :accessor quest.desc  :initform nil
-	  :documentation "A description of the quest to put on a quest page.")
-   (state :accessor quest.state :initform :not-started
-	  :documentation "what is the current state of the quest?")
-   (step  :accessor quest.step  :initform :init
-	  :documentation "specifies at what step we are at.. :init and :finish being special values.")
-   (steps :accessor quest.steps :initform nil
-	  :documentation "steps within a quest, typically pointers to subquests.")
-   (giver :accessor quest.giver :initform nil
-	  :documentation "Who gave this quest.")
-   (taker :accessor quest.taker :initform nil
-	  :documentation "Who is doing this quest")
-   (parent :accessor quest.parent :initform nil
-	   :documentation "If it is a subquest, PARENT should point to the parent quest.")
-   ))
-
-(define-condition quest-problem (error)
-  ((id   :initarg :id   :reader problem.id)
-   (desc :initarg :desc :reader problem.desc)))
-
 (defgeneric get-melee-weapon (creature))
   
 (defgeneric quest-available? (variant quest quest-giver quest-taker)
