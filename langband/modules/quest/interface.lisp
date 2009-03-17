@@ -39,7 +39,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
   ((id   :initarg :id   :reader problem.id)
    (desc :initarg :desc :reader problem.desc)))
 
-(defstruct coord-event
+(defstruct coord-quest-event
   x
   y
   quest

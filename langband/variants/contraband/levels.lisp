@@ -13,10 +13,10 @@ Copyright (c) 2003 - Stig Erik Sandoe
 (defmethod on-move-to-coord ((variant contraband) (player player) x y)
 
   ;; bad consing
-  (when-bind (ev (gethash (cons x y) quest:*coord-events*))
+  (when-bind (ev (gethash (cons x y) quest:*coord-quest-events*))
     ;;(warn "found coord event ~s" ev)
-    (when (functionp (quest:coord-event-trigger ev))
-      (funcall (quest:coord-event-trigger ev) variant (quest:coord-event-quest ev) player)))
+    (when (functionp (quest:coord-quest-event-trigger ev))
+      (funcall (quest:coord-quest-event-trigger ev) variant (quest:coord-quest-event-quest ev) player)))
   
   player)
 
@@ -363,6 +363,7 @@ Copyright (c) 2003 - Stig Erik Sandoe
 
 (defmethod activate-object :after ((level warehouse-level) &key)
   (clear-window *map-frame*)
+  ;; uses make-coord-event in global.lisp
   (let ((evt (make-coord-event "exit-warehouse"
 			       #'(lambda (dun x y)
 				   (declare (ignore dun x y))

@@ -30,7 +30,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
 
 
 ;; hack hack hack
-(defvar *coord-events* (make-hash-table :test #'equal))
+(defvar *coord-quest-events* (make-hash-table :test #'equal))
 
 (defun add-quest-event (quest condition event)
 
@@ -38,7 +38,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
     (when (eq (car condition) 'on-move-to-coord)
       (let ((x (second condition))
 	    (y (third condition)))
-	(setf (gethash (cons x y) *coord-events*) (make-coord-event :quest quest :x x :y y :trigger event)))))
+	(setf (gethash (cons x y) *coord-quest-events*) (make-coord-quest-event :quest quest :x x :y y :trigger event)))))
 	
   
   (warn "Adding event for ~s" condition)

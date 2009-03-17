@@ -13,10 +13,10 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 (defmethod on-move-to-coord ((variant evomyth) (player player) x y)
 
   ;; bad consing
-  (when-bind (ev (gethash (cons x y) quest:*coord-events*))
+  (when-bind (ev (gethash (cons x y) quest:*coord-quest-events*))
     ;;(warn "found coord event ~s" ev)
-    (when (functionp (quest:coord-event-trigger ev))
-      (funcall (quest:coord-event-trigger ev) variant (quest:coord-event-quest ev) player)))
+    (when (functionp (quest:coord-quest-event-trigger ev))
+      (funcall (quest:coord-quest-event-trigger ev) variant (quest:coord-quest-event-quest ev) player)))
   
   player)
 
@@ -108,6 +108,16 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	 (player *player*)
 	 ;;(var-obj *variant*)
 	 )
+
+    (let ((evt (make-coord-event "left-valley"
+				 #'(lambda (dun x y)
+				     (declare (ignorable dun x y))
+				     (warn "trigger event"))
+				 nil)))
+      (setf (get-coord-trigger (level.dungeon level) 5 5) evt
+	    (get-coord-trigger (level.dungeon level) 5 6) evt))
+    
+    
     (illuminate-town! dungeon player 'day)))
 
 

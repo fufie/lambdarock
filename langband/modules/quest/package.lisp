@@ -12,11 +12,11 @@ DESC: modules/quest/package.lisp - package def for dialogue module
   (:nicknames :lb-quest :quest)
   (:use :common-lisp :org.langband.engine)
   (:export #:*variant-class*
-	   #:make-coord-event
-	   #:coord-event-x
-	   #:coord-event-y
-	   #:coord-event-quest
-	   #:coord-event-trigger
+	   #:make-coord-quest-event
+	   #:coord-quest-event-x
+	   #:coord-quest-event-y
+	   #:coord-quest-event-quest
+	   #:coord-quest-event-trigger
 	   #:quest
 	   #:quest.desc
 	   #:quest.giver
@@ -41,7 +41,7 @@ DESC: modules/quest/package.lisp - package def for dialogue module
 	   #:print-quests
 
 	   ;; may be moved
-	   #:*coord-events*
+	   #:*coord-quest-events*
 	   #:id
 	   #:steps
 	   #:desc
