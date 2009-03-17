@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/evomyth/config/keys.lisp - assignment of keys
-Copyright (c) 2003, 2009 - Stig Erik Sandø
+Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 |#
 

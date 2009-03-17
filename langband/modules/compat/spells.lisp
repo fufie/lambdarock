@@ -5,12 +5,6 @@
 DESC: modules/compat/spells.lisp - reads standard vanilla spell-info
 Copyright (c) 2003 - Stig Erik Sandoe
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-
 |#
 ;; reads lines like B:42:35:35:85:34 from p_class.txt
 

@@ -5,11 +5,6 @@
 DESC: variants/vanilla/config/traps.lisp - trap-types for vanilla variant
 Copyright (c) 2002-2003 - Stig Erik Sandoe
 
-This program is free software  ; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
 |#
 
 (in-package :org.langband.vanilla)

@@ -1,21 +1,11 @@
 ;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.engine -*-
 
-#||
+#|
 
 DESC: object.lisp - code for object-kinds
 Copyright (c) 2000-2004 - Stig Erik Sandoe
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-----
-
-ADD_DESC: The code for object-kinds which is basic and should be widely
-ADD_DESC: available in the game.
-
-||#
+|#
 
 (in-package :org.langband.engine)
 
