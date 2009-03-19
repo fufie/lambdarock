@@ -82,6 +82,7 @@ Copyright (c) 2001-2003 - Stig Erik Sandoe
 			   (:file "sound" :depends-on ("base"))
 			   (:file "window" :depends-on ("classes" "constants"))
 			   (:file "global" :depends-on ("classes" "generics" "base" "constants" "window"))
+			   (:file "event" :depends-on("global"))
 			   (:file "themes" :depends-on ("global"))
 			   (:file "character" :depends-on ("classes" "global"))
 			   (:file "object" :depends-on ("classes" "generics" "global"))

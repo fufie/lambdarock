@@ -28,22 +28,6 @@ Copyright (c) 2009 - Stig Erik Sandoe
 (defun find-quest (variant id)
   (gethash id (variant.quests variant)))
 
-
-;; hack hack hack
-(defvar *coord-quest-events* (make-hash-table :test #'equal))
-
-(defun add-quest-event (quest condition event)
-
-  (when (consp condition)
-    (when (eq (car condition) 'on-move-to-coord)
-      (let ((x (second condition))
-	    (y (third condition)))
-	(setf (gethash (cons x y) *coord-quest-events*) (make-coord-quest-event :quest quest :x x :y y :trigger event)))))
-	
-  
-  (warn "Adding event for ~s" condition)
-  nil)
-
 (defmethod quest-available? ((variant variant) quest quest-giver quest-taker)
   (declare (ignorable quest quest-giver quest-taker))
   nil)
@@ -86,8 +70,8 @@ Copyright (c) 2009 - Stig Erik Sandoe
 (defmethod advance-quest ((variant variant) (quest quest) quest-taker &key from to giver)
 
   (declare (ignorable from to))
-  ;;(warn "Advancing ~s" quest)
-  ;;(warn "step ~s ~s ~s ~s" (quest.step quest) (quest.steps quest) (quest.state quest) (quest.id quest))
+  (warn "Advancing ~s" quest)
+  (warn "step ~s ~s ~s ~s" (quest.step quest) (quest.steps quest) (quest.state quest) (quest.id quest))
 
   (let ((cur-step (quest.step quest)))
 
@@ -100,31 +84,31 @@ Copyright (c) 2009 - Stig Erik Sandoe
 	       (signal-condition 'quest-problem :id (quest.id quest)
 				 :desc "Unable to find current subquest during advance"))))
 
-    (let ((next (next-subquest quest cur-step)))
-      (warn "Next from ~s is ~s" cur-step next)
-      (when next
-	(let ((nextq (find-quest variant next)))
-	  (cond ((typep nextq 'quest)
-		 (setf (quest.parent nextq) quest)
-		 (init-quest variant nextq (if giver giver (quest.giver quest))
-			     quest-taker)
-		 (setf (quest.step quest) next))
-		(t
-		 (signal-condition 'quest-problem :id (quest.id quest)
-				   :desc (format nil "Can't find quest: ~a" next))))))
+      (let ((next (next-subquest quest cur-step)))
+	(warn "Next from ~s is ~s" cur-step next)
+	(when next
+	  (let ((nextq (find-quest variant next)))
+	    (cond ((typep nextq 'quest)
+		   (setf (quest.parent nextq) quest)
+		   (init-quest variant nextq (if giver giver (quest.giver quest))
+			       quest-taker)
+		   (setf (quest.step quest) next))
+		  (t
+		   (signal-condition 'quest-problem :id (quest.id quest)
+				     :desc (format nil "Can't find quest: ~a" next))))))
       
-      (unless next
-	(setf cur-step nil)))
+	(unless next
+	  (setf cur-step nil))))
 
     (unless cur-step
       ;; time to finish this quest
       (finish-quest variant quest quest-taker))
 
-    quest)))
+    quest))
 
 
 (defmethod finish-quest ((variant variant) (quest quest) quest-taker)
-  ;;(warn "Finish ~s" quest)
+  (warn "Finish ~s" quest)
   (setf (quest.state quest) :finished)
   
   quest)
@@ -152,3 +136,15 @@ Copyright (c) 2009 - Stig Erik Sandoe
 	  (return-from next-subquest (second x))))
   nil)
 
+#||
+(defun add-quest-event (quest condition event)
+  
+  (when (consp condition)
+    (when (eq (car condition) 'on-move-to-coord)
+      (let ((x (second condition))
+	    (y (third condition)))
+	(setf (gethash (cons x y) *coord-quest-events*) (make-coord-quest-event :quest quest :x x :y y :trigger event)))))
+  
+  (warn "Adding event for ~s" condition)
+  nil)
+||#

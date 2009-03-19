@@ -9,18 +9,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (in-package :org.langband.evomyth)
 
-
-(defmethod on-move-to-coord ((variant evomyth) (player player) x y)
-
-  ;; bad consing
-  (when-bind (ev (gethash (cons x y) quest:*coord-quest-events*))
-    ;;(warn "found coord event ~s" ev)
-    (when (functionp (quest:coord-quest-event-trigger ev))
-      (funcall (quest:coord-quest-event-trigger ev) variant (quest:coord-quest-event-quest ev) player)))
-  
-  player)
-
-
 (defmethod level-ready? ((level evo/valley))
   (when (level.dungeon level)
     t))
@@ -109,13 +97,19 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	 ;;(var-obj *variant*)
 	 )
 
+
     (let ((evt (make-coord-event "left-valley"
 				 #'(lambda (dun x y)
 				     (declare (ignorable dun x y))
-				     (warn "trigger event"))
+				     (when (doing-quest? *player* "leave-valley")
+				       (warn "We are doing the leave-valley quest")
+				       (let* ((var-obj *variant*))
+					 (advance-quest var-obj "leave-valley" *player*))))
+
 				 nil)))
       (setf (get-coord-trigger (level.dungeon level) 5 5) evt
 	    (get-coord-trigger (level.dungeon level) 5 6) evt))
+
     
     
     (illuminate-town! dungeon player 'day)))

@@ -39,11 +39,6 @@ Copyright (c) 2009 - Stig Erik Sandoe
   ((id   :initarg :id   :reader problem.id)
    (desc :initarg :desc :reader problem.desc)))
 
-(defstruct coord-quest-event
-  x
-  y
-  quest
-  trigger)
 
 (defmacro defquest (classname superclass &key id title desc steps init)
   (declare (ignorable superclass steps))

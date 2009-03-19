@@ -580,6 +580,8 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:learn-about-object!
 	   #:level.depth
 	   #:level.dungeon
+	   #:level.id
+	   #:level.symbol
 	   #:level-ready?
 	   #:light-spot!
 	   #:load-binary-array
@@ -961,6 +963,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:objects-by-level
 	   #:picture
 	   #:power-lvl
+	   #:quests
 	   #:resists
 	   #:sdl
 	   #:shift

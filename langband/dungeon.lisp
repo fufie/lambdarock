@@ -907,7 +907,6 @@ to have the player in there."
 	(return-from get-coord-trigger i))))
   nil)
 
-;;(trace get-coord-trigger)
 
 (defun (setf get-coord-trigger) (val dungeon x y)
   "Adds a trigger to the given dungeon."

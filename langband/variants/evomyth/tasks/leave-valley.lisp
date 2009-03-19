@@ -14,6 +14,12 @@ Copyright (c) 2009 - Stig Erik Sandoe
   :title "Leave the Valley"
   :desc "You need to leave the valley to find a partner.")
 
+(defmethod init-quest ((variant evomyth) (quest leave-the-valley) giver taker)
+  (call-next-method)
+
+  (warn "init quest ~s ~a" *level* (level.id *level*))
+  )
+
 ;; this one is a bit bigger so we'll use a full method
 (defmethod finish-quest ((variant evomyth)
 			 (quest leave-the-valley) quest-taker)
