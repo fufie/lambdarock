@@ -31,7 +31,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 (defmethod produce-active-monster ((variant evomyth) mon-type)
 
   (assert (not (eq mon-type nil)))
-
   
   (let ((the-kind (cond ((symbolp mon-type)
 			 (get-monster-kind variant (symbol-name mon-type)))
@@ -69,6 +68,9 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (when-bind (pic (getf keyword-args :picture))
     (setf (monster.picture m-obj) pic))
 
+  (when-bind (strats (getf keyword-args :strategies))
+    (warn "Strategies is ~s" strats))
+
   m-obj)
 
 
@@ -84,7 +86,9 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     
   ;; initialise all tables
   (let ((object-tables (variant.monsters-by-level var-obj)))
+    (warn "init monsters ~s ~s" file object-tables)
     (maphash #'(lambda (key obj)
+                 (warn "UP ~s ~s" key obj)
 		 (evo/update-gobj-table! var-obj key obj
 					 #'create-alloc-table-monsters))
 	     object-tables)))

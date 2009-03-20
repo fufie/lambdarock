@@ -72,6 +72,7 @@ Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
 
 (defclass evo/valley (themed-level)
   ((id :initform "valley")
+   (depth :initform 3)
    (symbol :initform 'valley)
    ))
 

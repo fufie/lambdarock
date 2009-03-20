@@ -15,7 +15,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (defun create-bare-valley-level-obj ()
   "Returns a bare valley-level."
-  (make-instance 'evo/valley :depth 0 :rating 0))
+  (make-instance 'evo/valley :depth 3 :rating 0))
 
 (defun make-valley-level-obj (variant player)
   (declare (ignore variant player))
@@ -29,14 +29,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (let ((level nil)
 	(where-to (player.leaving? player)))
 
-    (cond 
-	  (t
-	   (setf level (make-valley-level-obj variant player))))
+    (setf level (make-valley-level-obj variant player))
 
-    (warn "level for ~s is ~s" where-to level)
+    (warn "level for ~s is ~s ~s" where-to level (level.depth level))
     
     ;; we set the depth now.
-    (setf (level.depth level) depth)
+    ;;(setf (level.depth level) depth)
 
     (unless (level-ready? level)
       ;; (warn "Generating level ~a" level)
@@ -56,14 +54,19 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 
 (defmethod generate-level! ((variant evomyth) (level evo/valley) player)
-  (let ((dungeon nil))
+  (let ((dungeon nil)
+        (depth-constant (level.depth level))
+        (*level* level))
     
     (warn "Reading map")
     (setf dungeon  (read-map variant "variants/evomyth/maps/valley.lmap"))
     (warn "read map")
     (setf dungeon (treat-map dungeon)) ;; inefficient
     
-    (setf (level.dungeon level) dungeon)
+    (setf (level.dungeon level) dungeon
+          (dungeon.depth dungeon) (level.depth level))
+
+    (warn "DUN depth ~s" (dungeon.depth dungeon))
 
     (let ((px (flag "last-town-px"))
 	  (py (flag "last-town-py")))
@@ -80,8 +83,22 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
                (evo/place-person id x y))))
 
       (place-person (if (is-female? player) "grandma" "grandpa") 12 12))
+
+          ;; we want monsters, but at least 20 away from player
+      (dotimes (i (+ depth-constant 10 (randint 8)))
+	(allocate-monster! variant dungeon player 20 t))
     
     level))
+
+(defmethod get-otype-table ((var-obj evomyth) level)
+  (declare (ignore level))
+  (get-named-gameobj-table var-obj "level" 'objects-by-level))
+
+(defmethod get-mtype-table ((var-obj evomyth) (level evo/valley))
+  (get-named-gameobj-table var-obj level 'monsters-by-level))
+
+(defmethod get-mtype-table ((var-obj evomyth) (level string))
+  (get-named-gameobj-table var-obj level 'monsters-by-level))
 
 
 (defmethod print-depth ((variant evomyth) (level level) setting)
@@ -96,7 +113,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	 (player *player*)
 	 ;;(var-obj *variant*)
 	 )
-
 
     (let ((evt (make-coord-event "left-valley"
 				 #'(lambda (dun x y)
@@ -283,26 +299,66 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	)
 
     (loop for i from 0 below (dungeon.width dungeon)
-	  do
-	  (loop for j from 0 below (dungeon.height dungeon)
-		do
-		(when (and (> i 0) (< i wid)
-			   (> j 0) (< j hgt))
-		  (let ((point (coord.floor (aref table i j))))
+       do
+       (loop for j from 0 below (dungeon.height dungeon)
+          do
+          (when (and (> i 0) (< i wid)
+                     (> j 0) (< j hgt))
+            (let ((point (coord.floor (aref table i j))))
 		    
-		      (%fill-coordmap coordmap table i j)
-		      (let ((idx (%get-map-idx coordmap)))
-			(when (integerp idx)
-			  (let ((found (gethash idx used-indexes)))
-			    (unless found
-			      (setf (gethash idx used-indexes)
-				    (make-instance 'floor-type :id (floor.id point) :flags (floor.flags point)
-						   :text-sym (text-sym point)
-						   :gfx-sym (tile-paint-value 41 idx)))
-			      (setf found (gethash idx used-indexes)))
+              (%fill-coordmap coordmap table i j)
+              (let ((idx (%get-map-idx coordmap)))
+                (when (integerp idx)
+                  (let ((found (gethash idx used-indexes)))
+                    (unless found
+                      (setf (gethash idx used-indexes)
+                            (make-instance 'floor-type :id (floor.id point) :flags (floor.flags point)
+                                           :text-sym (text-sym point)
+                                           :gfx-sym (tile-paint-value 41 idx)))
+                      (setf found (gethash idx used-indexes)))
 			    
-			    (setf (coord.floor (aref table i j)) found)
-			    )))
-		      ))
-		))
+                    (setf (coord.floor (aref table i j)) found)
+                    )))
+              ))
+          ))
     dungeon))
+
+(defun evo/register-levels! (var-obj)
+  "registering the levels this variant will use."
+  
+  (register-level! var-obj "level"
+		   :object-filter
+		   #'(lambda (var-obj obj)
+		       (let* ((table (get-otype-table var-obj "level"))
+			      (id (slot-value obj 'id))
+			      (obj-table (gobj-table.obj-table table)))
+			 (multiple-value-bind (val f-p)
+			     (gethash id obj-table)
+			   (declare (ignore val))
+			   (if f-p
+			     (error "Object-id ~s already exists in system, obviously not a unique id."
+				    id)
+			     (setf (gethash id obj-table) obj))))
+
+			 t))
+
+
+  (register-level! var-obj "valley"
+		   :monster-filter
+		   #'(lambda (var-obj obj)
+		       ;; all below 0
+		       (when (> (slot-value obj 'power-lvl) 0)
+			 (let* ((which-lvl "valley")
+				(table (get-mtype-table var-obj which-lvl))
+				(id (slot-value obj 'id))
+				(mon-table (gobj-table.obj-table table)))
+			   (multiple-value-bind (val f-p)
+			       (gethash id mon-table)
+			     (declare (ignore val))
+			     (if f-p
+				 (error "Monster-id ~s already exist for ~s, not unique id."
+					id which-lvl)
+				 (setf (gethash id mon-table) obj))))
+			 t)))
+  )
+

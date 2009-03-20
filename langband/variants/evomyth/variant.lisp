@@ -29,6 +29,7 @@ the rest of the game is init'ed."
   (pushnew (make-gender :id "female" :symbol '<female> :name "Female" :win-title "Queen")
 	   (variant.genders var-obj) :test #'eql :key #'gender.symbol)
 
+  (evo/register-levels! var-obj)
   
   (let ((*load-verbose* nil))
     (load-variant-data& var-obj "config/defines")
@@ -51,6 +52,7 @@ the rest of the game is init'ed."
     (initialise-objects& var-obj :file "config/armour")
     (initialise-objects& var-obj :file "config/weapons")
     (initialise-monsters& var-obj :file "config/family")
+    (initialise-monsters& var-obj :file "config/animals")
 
 
     ;; hack, done after objects and monsters are ok'ed.. maybe move to :after
@@ -203,13 +205,13 @@ the rest of the game is init'ed."
 (defun evo/update-gobj-table! (variant key o-table alloc-table-creator)
   "Tries to make an allocation table from a table."
   (declare (ignore key))
-;;  (warn "updating on ~a ~a" key o-table)
+  (warn "updating on ~a ~a" key o-table)
   
   (let ((okind-table (gobj-table.obj-table o-table)))
     
     (setf (gobj-table.obj-table-by-lvl o-table)
 	  (convert-obj okind-table :vector :sort-table-p t
-		       :sorted-by-key #'(lambda (x) (slot-value x 'depth))))
+		       :sorted-by-key #'(lambda (x) (slot-value x 'power-lvl))))
     
     (setf (gobj-table.alloc-table o-table)
 	  (funcall alloc-table-creator variant (gobj-table.obj-table-by-lvl o-table)))

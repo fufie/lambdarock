@@ -15,5 +15,6 @@ Copyright (c) 2009 - Stig Erik Sandoe
 
 (defun define-racial-ability (id name &key type description key power-lvl levels hidden)
   "Defines a racial abilitiy"
+  (declare (ignorable id name type description key power-lvl levels hidden))
 
   nil)
