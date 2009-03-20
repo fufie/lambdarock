@@ -192,11 +192,7 @@ Copyright (c) 2000-2004, 2009 - Stig Erik Sandoe
     table))
 
 (defmethod get-mkind-alloc-table ((var-obj variant) (level level))
-  
-  (let* ((o-table (get-mtype-table var-obj level))
-	 (table (gobj-table.alloc-table o-table)))
-    table))
- 
+  (gobj-table.alloc-table (get-mtype-table var-obj level)))
 
 (defmethod get-monster-kind ((variant variant) mon)
   "Returns monster-kind or nil for a variant (not level dependent.  I think this one is quite limited."
