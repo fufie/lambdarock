@@ -37,6 +37,7 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
   "places a single monster MON at (X,Y) in dungeon DUN."
   (declare (ignore player))
 
+  (warn "Monster ~s goes to ~s ~s" mon x y)
   ;; add checks that it is ok to place something at this spot..
   (let ((kind (amon.kind mon)))
     
@@ -89,9 +90,6 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
 		(setf last-x poss-x
 		      last-y poss-y)
 		(return-from placement t)))))
-	      
-	      
-		  
 	    
     t))
 
@@ -126,12 +124,12 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
 	;; fix later
 	(table (get-mkind-alloc-table variant level)))
 
-;;    (warn "M-Table[~a,~a] is ~a" *level* level (length table))
+    ;;(warn "M-Table[~a,~a] is ~a" *level* level (length table))
 
     (loop named counting-area
 	  for a-obj across table
 	  do
-;;	  (warn "Checking ~a" a-obj)
+	  (warn "Checking ~a" a-obj)
 	  (when (> (alloc.depth a-obj) depth)
 	    (return-from counting-area nil))
 	  ;; skip chest-check
@@ -259,7 +257,6 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
 		    
 		    (setf (svref table counter) alloc-obj)
 		    (incf counter))))))
-
 
       (setq table (sort table #'< :key #'alloc.depth))
       
