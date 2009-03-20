@@ -24,34 +24,13 @@ Copyright (c) 2002-2004 - Stig Erik Sandoe
 		 :documentation "destinations is a list of (x y fun) lists, where
 x is the x coord, y is the y coord and fun is an otional trigger function that's called
 with (player dungeon monster strategy).  When a corrdinate has been reached the list for
-the corrdinate is removed.")))
+the coordinate is removed.")))
 
 (defclass tactic-factors ()
   ((offensive :accessor factor.offensive :initform 0)
    (defensive :accessor factor.defensive :initform 0)
    (cost      :accessor factor.cost      :initform 0)
    ))
-
-(defgeneric get-tactical-bid (ai-strategy creature tactic bid-obj)
-  (:documentation "Makes a bid for the given tactic in the bid object."))
-
-
-#||
-(defgeneric get-suggested-priority (ai-strategy creature)
-  (:documentation "Cheap calculation which returns an integer between 0 and 1000
-telling how much it would recommend itself as the strategy to use."))
-
-(defgeneric get-suggested-action (ai-strategy creature)
-  (:documentation "Returns an action for the ai-controller to check and
-possibly modify."))
-||#
-
-(defgeneric execute-strategy (ai-strategy creature dungeon &key action force)
-  (:documentation "Asks the strategy to execute an action for the creature.
-The strategy will find a fitting action if ACTION is NIL, or adapt
-the ACTION argument to the situation.  If FORCE is NIL, the method
-is allowed to return NIL ie give up for the controller to choose another
-strategy."))
 
 
 (defun get-move-direction (src-x src-y dest-x dest-y)

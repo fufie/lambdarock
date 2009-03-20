@@ -639,6 +639,16 @@ the given variant and given level."))
 (defgeneric deliver-damage! (variant source target amount &key note dying-note)
   (:documentation "Delivers AMOUNT damage to the TARGET, and prints either a note or a dying-note."))
 
+(defgeneric get-tactical-bid (ai-strategy creature tactic bid-obj)
+  (:documentation "Makes a bid for the given tactic in the bid object."))
+
+(defgeneric execute-strategy (ai-strategy creature dungeon &key action force)
+  (:documentation "Asks the strategy to execute an action for the creature.
+The strategy will find a fitting action if ACTION is NIL, or adapt
+the ACTION argument to the situation.  If FORCE is NIL, the method
+is allowed to return NIL ie give up for the controller to choose another
+strategy."))
+
 
 ;;; === End misc
 
