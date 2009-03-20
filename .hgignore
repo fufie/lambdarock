@@ -2,6 +2,7 @@ syntax: glob
 
 build
 
+Thumbs.db
 *.pbxuser
 *.mode1v3
 media
