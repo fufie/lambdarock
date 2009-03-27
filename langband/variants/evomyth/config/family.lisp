@@ -14,7 +14,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   :gfx-sym (tile-paint-value 14 10)
   :desc "He's your old grandpa and all you have left."
   :text-sym (text-paint-value +term-red+ #\p)
-  :depth 0
   :rarity 1
   :power-lvl 12
   :hitpoints '(12 . 10)
@@ -35,7 +34,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   :gfx-sym (tile-paint-value 14 3)
   :desc "She's your old grandma and all you have left."
   :text-sym (text-paint-value +term-red+ #\p)
-  :depth 0
   :rarity 1
   :power-lvl 12
   :hitpoints '(12 . 10)

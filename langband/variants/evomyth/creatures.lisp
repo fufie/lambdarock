@@ -65,11 +65,31 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (call-next-method)
 
   ;; add stuff here
-  (when-bind (pic (getf keyword-args :picture))
-    (setf (monster.picture m-obj) pic))
+  (let ((id (get-id m-obj)))
 
-  (when-bind (strats (getf keyword-args :strategies))
-    (warn "Strategies is ~s" strats))
+    (let ((depth (getf keyword-args :power-lvl))
+	  (rarity (getf keyword-args :rarity)))
+
+      (cond ((and depth rarity)
+	     (unless (integerp depth)
+	       (signal-condition 'illegal-monster-data :id id :desc "Non-integer power-lvl argument for monster-kind"))
+	     (unless (integerp rarity)
+	       (signal-condition 'illegal-monster-data :id id :desc "Non-integer rarity argument for monster-kind"))
+	     (unless (non-negative-integer? depth)
+	       (signal-condition 'illegal-monster-data :id id :desc "Negative power-lvl argument for monster-kind"))
+	     (unless (non-negative-integer? rarity)
+	       (signal-condition 'illegal-monster-data :id id :desc "Negative rarity argument for monster-kind"))
+	     (push (cons depth rarity) (alloc-locations m-obj)))
+	    ((and (eq depth nil) (eq depth rarity)))
+	    (t
+	     (signal-condition 'illegal-monster-data :id id
+			       :desc "Unknown power-lvl + rarity argument for monster-kind"))))
+  
+    (when-bind (pic (getf keyword-args :picture))
+	       (setf (monster.picture m-obj) pic))
+
+    (when-bind (strats (getf keyword-args :strategies))
+	       (warn "Strategies is ~s" strats)))
 
   m-obj)
 
@@ -86,9 +106,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     
   ;; initialise all tables
   (let ((object-tables (variant.monsters-by-level var-obj)))
-    (warn "init monsters ~s ~s" file object-tables)
     (maphash #'(lambda (key obj)
-                 (warn "UP ~s ~s" key obj)
 		 (evo/update-gobj-table! var-obj key obj
 					 #'create-alloc-table-monsters))
 	     object-tables)))

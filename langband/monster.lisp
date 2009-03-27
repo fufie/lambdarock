@@ -186,10 +186,7 @@ Copyright (c) 2000-2004, 2009 - Stig Erik Sandoe
   (monster.attacks (amon.kind mon)))
 
 (defmethod get-mkind-table ((var-obj variant) (level level))
-  
-  (let* ((o-table (get-mtype-table var-obj level))
-	 (table (gobj-table.obj-table o-table)))
-    table))
+  (gobj-table.obj-table (get-mtype-table var-obj level)))
 
 (defmethod get-mkind-alloc-table ((var-obj variant) (level level))
   (gobj-table.alloc-table (get-mtype-table var-obj level)))
@@ -683,3 +680,6 @@ the *VARIANT* object so it has to be properly initialised."
 	(setf (current-hp creature) max-hp))
 
       t)))
+
+(defmethod modify-creature-state! (creature state &key add subtract new-value)
+  t)

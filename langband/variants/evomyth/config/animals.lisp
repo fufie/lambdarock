@@ -11,7 +11,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
 
 (define-monster-kind "horned-grazer" "Horned Grazer"
   :numeric-id  2000
-  :gfx-sym (tile-paint-value 19 10)
+  :gfx-sym (tile-paint-value 19 50)
   :desc "A small herbivore that mainly has fresh grass on its diet.  It has very tasty and nutritious meat.  Can be dangerous when threatened, and has a fairly thick hide."
   :text-sym (text-paint-value +term-green+ #\g)
   :depth 0

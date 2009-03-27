@@ -37,7 +37,7 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
   "places a single monster MON at (X,Y) in dungeon DUN."
   (declare (ignore player))
 
-  (warn "Monster ~s goes to ~s ~s" mon x y)
+  ;;(warn "Monster ~s goes to ~s ~s" mon x y)
   ;; add checks that it is ok to place something at this spot..
   (let ((kind (amon.kind mon)))
     
@@ -124,12 +124,9 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
 	;; fix later
 	(table (get-mkind-alloc-table variant level)))
 
-    ;;(warn "M-Table[~a,~a] is ~a" *level* level (length table))
-
     (loop named counting-area
 	  for a-obj across table
 	  do
-	  (warn "Checking ~a" a-obj)
 	  (when (> (alloc.depth a-obj) depth)
 	    (return-from counting-area nil))
 	  ;; skip chest-check
@@ -219,44 +216,47 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
   ;; out level-organisation and number of allocation
   ;; slots
 
+  
   (let* ((org-size (variant.max-depth variant))
 	 (level-org (make-array org-size :initial-element 0))
 	 (alloc-sz 0))
     
     (loop for k-obj across obj-table
-	  do
-	  (dolist (j (slot-value k-obj 'locations))
-	    (unless (= 0 (cdr j))
-	      (incf alloc-sz)
-	      (incf (aref level-org (car j)))
-	      )))
+       do
+       (dolist (j (slot-value k-obj 'locations))
+	 (unless (= 0 (cdr j))
+	   (incf alloc-sz)
+	   (incf (aref level-org (car j)))
+	   )))
 
+    ;;(warn "Create alloc from ~a ~a ~a" obj-table alloc-sz org-size)
+    
     ;; then we sum up in level-org (init2.c)
     (loop for lvl-num from 1 below org-size
-	  do
-	  (setf (aref level-org lvl-num) (+ (aref level-org lvl-num)
-					    (aref level-org (1- lvl-num)))))
+       do
+       (setf (aref level-org lvl-num) (+ (aref level-org lvl-num)
+					 (aref level-org (1- lvl-num)))))
 
     
     (let ((table (make-array alloc-sz))
 	  (counter 0))
       (loop for k-obj across obj-table
-	    for k-idx from 0
-	    do
-	    (dolist (j (slot-value k-obj 'locations))
-	      (let ((chance (cdr j)))
-		(unless (= 0 chance)
-		  (let* ((p (int-/ 100 chance))
-			 (alloc-obj (make-alloc-entry :index k-idx
-						      :obj k-obj
-						      :depth (car j)
-						      :prob1 p
-						      :prob2 p
-						      :prob3 p)))
+	 for k-idx from 0
+	 do
+	 (dolist (j (slot-value k-obj 'locations))
+	   (let ((chance (cdr j)))
+	     (unless (= 0 chance)
+	       (let* ((p (int-/ 100 chance))
+		      (alloc-obj (make-alloc-entry :index k-idx
+						   :obj k-obj
+						   :depth (car j)
+						   :prob1 p
+						   :prob2 p
+						   :prob3 p)))
 			
 		    
-		    (setf (svref table counter) alloc-obj)
-		    (incf counter))))))
+		 (setf (svref table counter) alloc-obj)
+		 (incf counter))))))
 
       (setq table (sort table #'< :key #'alloc.depth))
       

@@ -205,7 +205,7 @@ the rest of the game is init'ed."
 (defun evo/update-gobj-table! (variant key o-table alloc-table-creator)
   "Tries to make an allocation table from a table."
   (declare (ignore key))
-  (warn "updating on ~a ~a" key o-table)
+  ;;(warn "updating on ~a ~a ~a" key o-table alloc-table-creator)
   
   (let ((okind-table (gobj-table.obj-table o-table)))
     

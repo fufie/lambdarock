@@ -31,7 +31,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
     (setf level (make-valley-level-obj variant player))
 
-    (warn "level for ~s is ~s ~s" where-to level (level.depth level))
+    ;;(warn "level for ~s is ~s ~s" where-to level (level.depth level))
     
     ;; we set the depth now.
     ;;(setf (level.depth level) depth)
@@ -178,7 +178,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 		   ((and (grass 4) (bridge 8)) (+ bridge-start 8))
 		   ((and (grass 6) (bridge 8)) (+ bridge-start 10))
 		   
-
 		   ((and (grass 2) (grass 4)) (+ water-start 2))
 		   ((and (grass 8) (grass 4)) (+ water-start 16))
 		   ((and (grass 8) (grass 6)) (+ water-start 7))
@@ -346,7 +345,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (register-level! var-obj "valley"
 		   :monster-filter
 		   #'(lambda (var-obj obj)
-		       ;; all below 0
+		       (warn "Check ~a" obj)
 		       (when (> (slot-value obj 'power-lvl) 0)
 			 (let* ((which-lvl "valley")
 				(table (get-mtype-table var-obj which-lvl))
