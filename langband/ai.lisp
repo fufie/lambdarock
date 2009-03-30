@@ -299,7 +299,7 @@ breeding depending on density."
 		 t))))
 	  (t nil))))
 
-(defun pick-special-ability (strategy mon)
+(defun %pick-special-ability (strategy mon)
   (let ((mon-type (amon.kind mon)))
     ;; check use of special-abilities
     (when-bind (spabs (monster.sp-abilities mon-type))
@@ -359,7 +359,7 @@ breeding depending on density."
 	    (when (or (plusp (factor.offensive (tactic-choice-bid choice)))
 		      (plusp (factor.defensive (tactic-choice-bid choice))))
 
-	      (return-from pick-special-ability choice))))))
+	      (return-from %pick-special-ability choice))))))
     nil))
  
 
@@ -381,7 +381,7 @@ breeding depending on density."
     (%ensure-tactic-chooser)
 
     (unless staggering
-      (when-bind (spab (pick-special-ability strategy mon))
+      (when-bind (spab (%pick-special-ability strategy mon))
 	(when-bind (trigger-retval (trigger-special-ability *variant* mon (tactic-choice-tactic spab) *player* dungeon))
 	  (return-from execute-strategy trigger-retval))))
 
@@ -461,22 +461,9 @@ breeding depending on density."
   (let ((mx (location-x mon))
 	(my (location-y mon))
 	(*strategy* strategy)
-	(temp-attrs (amon.temp-attrs mon))
-	(staggering nil)
+	(staggering (is-staggering? mon))
 	)
 
-    ;; confused monsters stagger about
-    (let ((confusion-attr (gethash '<confusion> temp-attrs)))
-      (cond ((and confusion-attr
-		  (plusp (attr.value confusion-attr)))
-	     (setf staggering t))
-	    ;; some monsters even move randomly
-	    ((when-bind (random-mover (has-ability? mon '<random-mover>))
-	       (let ((how-often (second random-mover)))
-		 (when (< (random 100) (* 100 how-often))
-		   (setf staggering t)))))))
-
-    
     (when-bind (dest (first (strategy.destinations strategy)))
       ;;(warn "try to go ~s" dest)
       (let ((dest-x (first dest))
