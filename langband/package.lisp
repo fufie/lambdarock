@@ -44,6 +44,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:*saveblock*
 	   #:*saveheader*
 	   #:*strategy*
+	   #:*tactic-chooser*
 	   ;;#:*update*
 	   #:*variant*
 	   #:*windows*

@@ -23,7 +23,7 @@ Copyright (c) 2002-2004 - Stig Erik Sandoe
    (destinations :initform '() :accessor strategy.destinations
 		 :documentation "destinations is a list of (x y fun) lists, where
 x is the x coord, y is the y coord and fun is an otional trigger function that's called
-with (player dungeon monster strategy).  When a corrdinate has been reached the list for
+with (player dungeon monster strategy).  When a coordinate has been reached the list for
 the coordinate is removed.")))
 
 (defclass tactic-factors ()
@@ -275,6 +275,30 @@ breeding depending on density."
 (defun legal-tactic-choice? (obj)
   (and obj (tactic-choice-tactic obj)))
 
+(defun %ensure-tactic-chooser ()
+    (unless *tactic-chooser*
+      (setf *tactic-chooser* (make-array +tactic-chooser-length+ :initial-element nil))
+      (loop for i from 0 below +tactic-chooser-length+
+	    do
+	    (setf (svref *tactic-chooser* i)
+		  (make-tactic-choice :tactic nil
+				      :bid (make-instance 'tactic-factors))))))
+  
+
+(defun is-staggering? (creature)
+  ;; confused monsters stagger about
+  (let ((confusion-attr (gethash '<confusion> (amon.temp-attrs creature))))
+    (cond ((and confusion-attr
+		(plusp (attr.value confusion-attr)))
+	   t)
+
+	  ;; some monsters even move randomly
+	  ((when-bind (random-mover (has-ability? mon '<random-mover>))
+	     (let ((how-often (second random-mover)))
+	       (when (< (random 100) (* 100 how-often))
+		 t))))
+	  (t nil))))
+
 
 (defmethod execute-strategy ((strategy primitive-melee-attacker) (mon active-monster) dungeon &key action force)
   (declare (ignorable action force))
@@ -286,31 +310,14 @@ breeding depending on density."
 	(px (location-x *player*))
 	(py (location-y *player*))
 	(player *player*)
-	(staggering nil)
+	(staggering (is-staggering? mon))
 	(moves nil)
 	(use-move nil)
 	(use-turn nil))
 
     (declare (type u16b mx my))
 
-    (unless *tactic-chooser*
-      (setf *tactic-chooser* (make-array +tactic-chooser-length+ :initial-element nil))
-      (loop for i from 0 below +tactic-chooser-length+
-	    do
-	    (setf (svref *tactic-chooser* i)
-		  (make-tactic-choice :tactic nil
-				      :bid (make-instance 'tactic-factors)))))
-    
-    ;; confused monsters stagger about
-    (let ((confusion-attr (gethash '<confusion> temp-attrs)))
-      (cond ((and confusion-attr
-		  (plusp (attr.value confusion-attr)))
-	     (setf staggering t))
-	    ;; some monsters even move randomly
-	    ((when-bind (random-mover (has-ability? mon '<random-mover>))
-	       (let ((how-often (second random-mover)))
-		 (when (< (random 100) (* 100 how-often))
-		   (setf staggering t)))))))
+    (%ensure-textic-chooser)
 
     (unless staggering
       ;; check use of special-abilities
