@@ -637,6 +637,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:monster.power-lvl
 	   #:monster.sp-abilities
 	   #:monster.speed
+	   #:monster.strategies
 	   #:monster.title
 	   #:monster.tried-elm
 	   #:monster.type

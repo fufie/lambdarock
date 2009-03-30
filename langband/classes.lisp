@@ -796,7 +796,9 @@ It's meant to be extended by variants."))
    (vulnerabilities   :accessor get-vulnerabilities :initform 0) ;; bit field
 
    (abilities         :accessor monster.abilities    :initform '())
+   ;; format seems to be (frequency spab spab ...)
    (special-abilities :accessor monster.sp-abilities :initform '())
+   (strategies        :accessor monster.strategies   :initform '())
 
    ;; fix later
    (in-group :accessor monster.in-group :initform nil)

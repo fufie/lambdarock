@@ -293,20 +293,81 @@ breeding depending on density."
 	   t)
 
 	  ;; some monsters even move randomly
-	  ((when-bind (random-mover (has-ability? mon '<random-mover>))
+	  ((when-bind (random-mover (has-ability? creature '<random-mover>))
 	     (let ((how-often (second random-mover)))
 	       (when (< (random 100) (* 100 how-often))
 		 t))))
 	  (t nil))))
 
+(defun pick-special-ability (strategy mon)
+  (let ((mon-type (amon.kind mon)))
+    ;; check use of special-abilities
+    (when-bind (spabs (monster.sp-abilities mon-type))
+      (loop for i from 0 below +tactic-chooser-length+
+	 do (reset-tactic-choice! (svref *tactic-chooser* i)))
+	
+      (loop for i from 0
+	 for j in (cdr spabs)
+	 do
+	 (setf (tactic-choice-tactic (svref *tactic-chooser* i)) j))
+	
+      (block check-spabs
+	;; try is the odds for using a spab
+	(let ((try 0) ;;(random 100))
+	      (choice nil)
+	      (choice-table *tactic-chooser*))
+	  ;; if try is below our frequency we will use a spab
+	  (when (< try (first spabs))
+	    ;;(warn "Use random spab from ~s" (cdr spabs))
+
+	      
+	    ;;#+debug-ai
+	    ;;(loop for x across choice-table
+	    ;;    when x
+	    ;;  do (warn "Tactic for ~s is ~s" (monster.name mon) (tactic-choice-tactic x)))
+
+	    ;; get bids
+	    (loop for x across choice-table
+	       when (legal-tactic-choice? x)
+	       do (get-tactical-bid strategy mon (tactic-choice-tactic x)
+				    (tactic-choice-bid x)))
+
+	      
+	    (loop for x across choice-table
+	       when (legal-tactic-choice? x)
+	       do
+	       (progn
+		 (balance-bid strategy mon (tactic-choice-bid x))
+		 #+debug-ai
+		 (warn "Bid ~s for ~s" x (monster.name mon))))
+
+	    ;; primitive attacker gets most offensive always
+	      
+	    (loop for x across choice-table
+	       when (legal-tactic-choice? x)
+	       do
+	       (cond ((not choice)
+		      (setf choice x))
+		     (t
+		      (when (and (> (factor.offensive (tactic-choice-bid x))
+				    (factor.offensive (tactic-choice-bid choice)))
+				 (setf choice x))))))
+	    ;; when random
+	    ;;(setf choice (rand-elm (cdr spabs)))
+
+	    ;; check if bid is high enough
+	    (when (or (plusp (factor.offensive (tactic-choice-bid choice)))
+		      (plusp (factor.defensive (tactic-choice-bid choice))))
+
+	      (return-from pick-special-ability choice))))))
+    nil))
+ 
 
 (defmethod execute-strategy ((strategy primitive-melee-attacker) (mon active-monster) dungeon &key action force)
   (declare (ignorable action force))
   (let ((mx (location-x mon))
 	(my (location-y mon))
 	(*strategy* strategy)
-	(mon-type (amon.kind mon))
-	(temp-attrs (amon.temp-attrs mon))
 	(px (location-x *player*))
 	(py (location-y *player*))
 	(player *player*)
@@ -317,76 +378,14 @@ breeding depending on density."
 
     (declare (type u16b mx my))
 
-    (%ensure-textic-chooser)
+    (%ensure-tactic-chooser)
 
     (unless staggering
-      ;; check use of special-abilities
-      (when-bind (spabs (monster.sp-abilities mon-type))
-	(loop for i from 0 below +tactic-chooser-length+
-	      do (reset-tactic-choice! (svref *tactic-chooser* i)))
-	
-	(loop for i from 0
-	      for j in (cdr spabs)
-	      do
-	      (setf (tactic-choice-tactic (svref *tactic-chooser* i)) j))
-	
-	(block check-spabs
-	  (let ((try 0) ;;(random 100))
-		(retval nil)
-		(choice nil)
-		(choice-table *tactic-chooser*))
-	    (when (< try (first spabs))
-	      ;;(warn "Use random spab from ~s" (cdr spabs))
+      (when-bind (spab (pick-special-ability strategy mon))
+	(when-bind (trigger-retval (trigger-special-ability *variant* mon (tactic-choice-tactic spab) *player* dungeon))
+	  (return-from execute-strategy trigger-retval))))
 
-	      
-	      ;;#+debug-ai
-	      ;;(loop for x across choice-table
-		;;    when x
-		  ;;  do (warn "Tactic for ~s is ~s" (monster.name mon) (tactic-choice-tactic x)))
-
-	      ;; get bids
-	      (loop for x across choice-table
-		    when (legal-tactic-choice? x)
-		    do (get-tactical-bid strategy mon (tactic-choice-tactic x)
-					 (tactic-choice-bid x)))
-
-	      
-	      (loop for x across choice-table
-		    when (legal-tactic-choice? x)
-		    do
-		    (progn
-		      (balance-bid strategy mon (tactic-choice-bid x))
-		      #+debug-ai
-		      (warn "Bid ~s for ~s" x (monster.name mon))))
-
-	      ;; primitive attacker gets most offensive always
-	      
-	      (loop for x across choice-table
-		    when (legal-tactic-choice? x)
-		    do
-		    (cond ((not choice)
-			   (setf choice x))
-			  (t
-			   (when (and (> (factor.offensive (tactic-choice-bid x))
-					 (factor.offensive (tactic-choice-bid choice)))
-				      (setf choice x))))))
-	      
-	      (assert choice)
-	      
-	      ;; when random
-	      ;;(setf choice (rand-elm (cdr spabs)))
-
-	      ;; check if bid is high enough
-	      (when (or (plusp (factor.offensive (tactic-choice-bid choice)))
-			(plusp (factor.defensive (tactic-choice-bid choice))))
-		(warn "Triggering ~s" choice)
-		(setf retval (trigger-special-ability *variant* mon (tactic-choice-tactic choice) *player* dungeon))
-		(when retval
-		  (return-from execute-strategy retval))
-		)))
-	  )))
-    
-    
+    ;; then we check moves
     (unless staggering
       (setf moves (get-move-direction mx my px py)))
 
