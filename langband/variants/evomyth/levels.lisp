@@ -58,15 +58,15 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
         (depth-constant (level.depth level))
         (*level* level))
     
-    (warn "Reading map")
+    ;;(warn "Reading map")
     (setf dungeon  (read-map variant "variants/evomyth/maps/valley.lmap"))
-    (warn "read map")
+    ;;(warn "read map")
     (setf dungeon (treat-map dungeon)) ;; inefficient
     
     (setf (level.dungeon level) dungeon
           (dungeon.depth dungeon) (level.depth level))
 
-    (warn "DUN depth ~s" (dungeon.depth dungeon))
+    ;;(warn "DUN depth ~s" (dungeon.depth dungeon))
 
     (let ((px (flag "last-town-px"))
 	  (py (flag "last-town-py")))
@@ -134,7 +134,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (defun illuminate-town! (dungeon player time-of-day)
   "Illuminates the town according to the time-of-day."
-  (warn "illuminating")
   (with-dungeon (dungeon (coord x y))
     (declare (ignore x y))
     (let* ((feat (coord.floor coord))
@@ -346,7 +345,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (register-level! var-obj "valley"
 		   :monster-filter
 		   #'(lambda (var-obj obj)
-		       (warn "Check ~a" obj)
 		       (when (> (slot-value obj 'power-lvl) 0)
 			 (let* ((which-lvl "valley")
 				(table (get-mtype-table var-obj which-lvl))

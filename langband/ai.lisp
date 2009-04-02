@@ -22,18 +22,25 @@ Copyright (c) 2002-2004 - Stig Erik Sandoe
     (unless constructor-info
       (error "No constructor-info for strategy: ~a" id))
 
-    (let ((str-class (first constructor-info))
-	  (constructor-args (cdr constructor-info)))
-
-      (setf (gethash key (variant.strategies var-obj))
-	    #'(lambda () (apply 'make-instance str-class :id id :key key constructor-args)))
+    (cond ((consp constructor-info)
+	   (setf (gethash key (variant.strategies var-obj))
+		 #'(lambda () (apply 'make-instance (first constructor-info)
+				     :id id :key key (cdr constructor-info)))))
+	  
+	  ((functionp constructor-info)
+	   (setf (gethash key (variant.strategies var-obj)) constructor-info))
+	  (t
+	   (warn "Fell through define-strategy for ~a" id)))
     
-      key)))
+    key))
 
 (defun get-strategy-constructor (var-obj key)
-  (gethash key (variant.strategies var-obj)))
-  
-  
+  (multiple-value-bind (value present-p)
+      (gethash key (variant.strategies var-obj))
+    (unless present-p
+      (warn "Unable to find strategy for key: ~a" key))
+    value))
+ 
 
 (defclass primitive-melee-attacker (ai-strategy)
   ((id :initform "primitive-melee-attacker")))

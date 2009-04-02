@@ -56,7 +56,7 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
     (incf (get-creature-energy mon) (random 10))
     (lb-ds:pq.put (dungeon.action-queue dungeon) mon (get-creature-energy mon))
 
-    (warn "Place ~a with strategies: ~a" mon (monster.strategies kind))
+    ;;(warn "Place ~a with strategies: ~a -> ~a" mon (monster.strategies kind) (amon.strategies mon))
     
     t))
 

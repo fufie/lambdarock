@@ -54,9 +54,14 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
       (when (find '<npc> (monster.type the-kind))
 	(setf amon-type 'npc))
-    
-      (make-instance amon-type :kind the-kind)
-      )))
+
+      (let ((a-monster (make-instance amon-type :kind the-kind)))
+	;; ensure we always have proper strategies
+	(setf (amon.strategies a-monster) (loop for str in (monster.strategies the-kind)
+					     collect (funcall str)))
+
+	a-monster))))
+
 
   
   
@@ -89,14 +94,10 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
       (setf (monster.picture m-obj) pic))
 
     (when-bind (strats (getf keyword-args :strategies))
-      (warn "Strats is ~a" strats)
-      (setf (monster.strategies m-obj) (loop for str in strats
-					  for constr = (get-strategy-constructor var-obj str)
+      (setf (monster.strategies m-obj) (loop for s in strats
+					  for constr = (get-strategy-constructor var-obj s)
 					  when constr
-					  collect constr))
-      (warn "STR is ~a" (monster.strategies m-obj)))
-
-
+					  collect constr)))
     m-obj))
 
 

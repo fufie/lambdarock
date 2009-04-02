@@ -32,6 +32,7 @@ Copyright (c) 2009 - Stig Erik Sandø
 		 (:file "objects" :depends-on ("variant"))
 		 (:file "player" :depends-on ("creatures"))
 		 (:file "abilities" :depends-on ("variant"))
+		 (:file "strategies" :depends-on ("variant"))
 		 (:file "combat" :depends-on ("variant"))
 		 (:file "attitude" :depends-on ("variant"))
 		 (:file "print" :depends-on ("combat"))
