@@ -303,6 +303,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:define-sound-effect
 	   #:define-store
 	   #:define-store-owner
+	   #:define-strategy
 	   #:define-trap-type
 	   #:define-update-key
 	   #:define-visual-projectile
@@ -470,6 +471,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:get-stat-name-from-num
 	   #:get-stat-obj
 	   #:get-stat-sustains
+	   #:get-strategy-constructor
 	   #:get-string-input
 	   #:get-system-type
 	   #:get-tactical-bid
@@ -854,6 +856,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:store.will-buy
 	   #:strategy.destinations
 	   #:strategy.id
+	   #:strategy.key
 	   #:swap-monsters!
 	   #:switch-inventory-view
 	   #:switch-map-mode

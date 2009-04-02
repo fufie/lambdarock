@@ -82,11 +82,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
                    (*player* player))
                (evo/place-person id x y))))
 
-      (place-person (if (is-female? player) "grandma" "grandpa") 12 12))
+      (place-person (if (is-female? player) "grandma" "grandpa") 12 12)
+      (place-person "horned-grazer" 10 10))
 
-          ;; we want monsters, but at least 20 away from player
-      (dotimes (i (+ depth-constant 10 (randint 8)))
-	(allocate-monster! variant dungeon player 20 t))
+    ;; we want monsters, but at least 20 away from player
+    (dotimes (i (+ depth-constant 10 (randint 8)))
+      (allocate-monster! variant dungeon player 20 t))
     
     level))
 

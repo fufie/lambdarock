@@ -18,10 +18,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
    (bottom-right :initform '() :accessor strategy.bottom-right)
    ))
 
-(defclass avoid-carnivore (ai-strategy)
-  ((id :initform "avoid-carnivore"))
-   
+(defclass avoidance-strategy (ai-strategy)
+  ((id :initform "avoidance")
+   (avoid-diet :initform nil :accessor strategy.avoid-diet)
+   (avoid-type :initform nil :accessor strategy.avoid-type)))
 
+  
 (defmethod execute-strategy ((strategy guard) (mon active-monster) dungeon &key action force)
   (declare (ignorable action force))
 
@@ -175,6 +177,18 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
    (format stream "~:(~S~) [~S ~S]" (lbsys/class-name inst)
            (strategy.id inst)
 	   (strategy.cur-dest inst)
+	   ))
+
+  inst)
+
+(defmethod print-object ((inst avoidance-strategy) stream)
+  (print-unreadable-object
+   (inst stream :identity t)
+   (format stream "~:(~S~) [~S ~S ~S ~S]" (lbsys/class-name inst)
+           (strategy.id inst)
+	   (strategy.key inst)
+	   (strategy.avoid-diet inst)
+	   (strategy.avoid-type inst)
 	   ))
 
   inst)

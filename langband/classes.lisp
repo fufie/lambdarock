@@ -186,6 +186,10 @@ for display, num-version for active-use. u16b should be enough.")
    
    (quests :accessor variant.quests
 	   :initform nil)
+
+   (strategies :accessor variant.strategies
+	       :initform (make-hash-table :test #'eq)
+	       :documentation "Maps a symbol to a constructor-function")
 	   
    ;; this one is crucial, with lowercase string-keys it stores information that
    ;; is easy to check and save/load

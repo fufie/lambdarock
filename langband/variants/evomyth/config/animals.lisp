@@ -26,6 +26,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
   :vision 15
   ;;:attacks '((<hit> :type <hurt> :damage (1 . 10)))
   ;;:treasures '((<drop-chance> 9/10))
-  :strategies '(<avoid-carnivore> <avoid-player> <fight-if-cornered>)
-  :type '(<herbivore>)
+  :strategies '(<avoid-carnivore> <avoid-omnivore> <avoid-player> <fight-if-cornered>)
+  :type '(<mammal>)
+  :diet '<herbivore>
   :gender '<female>)

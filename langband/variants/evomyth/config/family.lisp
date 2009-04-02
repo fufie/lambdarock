@@ -26,6 +26,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   ;;:attacks '((<hit> :type <hurt> :damage (1 . 10)))
   ;;:treasures '((<drop-chance> 9/10))
   :type '(<npc> <unique>)
+  :diet '<omnivore>
   :picture '(variant-gfx "people/perpetro.png")
   :gender '<male>)
 
@@ -46,5 +47,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   ;;:attacks '((<hit> :type <hurt> :damage (1 . 10)))
   ;;:treasures '((<drop-chance> 9/10))
   :type '(<npc> <unique>)
+  :diet '<omnivore>  
   :picture '(variant-gfx "people/perpetro.png")
   :gender '<female>)

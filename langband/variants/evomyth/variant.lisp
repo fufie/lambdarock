@@ -38,6 +38,7 @@ the rest of the game is init'ed."
     (load-variant-data& var-obj "config/character")
     (load-variant-data& var-obj "config/skills")
     (load-variant-data& var-obj "config/abilities")
+    (load-variant-data& var-obj "config/strategies")
     (load-variant-data& var-obj "config/keys")
     )
 

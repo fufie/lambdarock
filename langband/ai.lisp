@@ -11,8 +11,28 @@ Copyright (c) 2002-2004 - Stig Erik Sandoe
 
 (defclass ai-strategy ()
   ((id :initarg :id :initform nil :accessor strategy.id)
+   (key :initarg :key :initform nil :accessor strategy.key)
    (weights :initform '() :accessor strategy.weights)
    ))
+
+(defun define-strategy (id key constructor-info)
+  (let ((var-obj *variant*))
+    (unless var-obj
+      (error "No variant object when defining a strategy: ~a" id))
+    (unless constructor-info
+      (error "No constructor-info for strategy: ~a" id))
+
+    (let ((str-class (first constructor-info))
+	  (constructor-args (cdr constructor-info)))
+
+      (setf (gethash key (variant.strategies var-obj))
+	    #'(lambda () (apply 'make-instance str-class :id id :key key constructor-args)))
+    
+      key)))
+
+(defun get-strategy-constructor (var-obj key)
+  (gethash key (variant.strategies var-obj)))
+  
   
 
 (defclass primitive-melee-attacker (ai-strategy)

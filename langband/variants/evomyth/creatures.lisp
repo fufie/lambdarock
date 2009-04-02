@@ -89,9 +89,15 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
       (setf (monster.picture m-obj) pic))
 
     (when-bind (strats (getf keyword-args :strategies))
-      (warn "Strategies is ~s" strats)))
+      (warn "Strats is ~a" strats)
+      (setf (monster.strategies m-obj) (loop for str in strats
+					  for constr = (get-strategy-constructor var-obj str)
+					  when constr
+					  collect constr))
+      (warn "STR is ~a" (monster.strategies m-obj)))
 
-  m-obj)
+
+    m-obj))
 
 
 (defmethod initialise-monsters& ((var-obj evomyth) &key old-file (file "monsters"))
