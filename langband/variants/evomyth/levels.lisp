@@ -58,15 +58,11 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
         (depth-constant (level.depth level))
         (*level* level))
     
-    ;;(warn "Reading map")
-    (setf dungeon  (read-map variant "variants/evomyth/maps/valley.lmap"))
-    ;;(warn "read map")
+    (setf dungeon (read-map variant "variants/evomyth/maps/valley.lmap"))
     (setf dungeon (treat-map dungeon)) ;; inefficient
     
     (setf (level.dungeon level) dungeon
           (dungeon.depth dungeon) (level.depth level))
-
-    ;;(warn "DUN depth ~s" (dungeon.depth dungeon))
 
     (let ((px (flag "last-town-px"))
 	  (py (flag "last-town-py")))
@@ -83,7 +79,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
                (evo/place-person id x y))))
 
       (place-person (if (is-female? player) "grandma" "grandpa") 12 12)
-      (place-person "wild-hound" 5 5)
+      ;;(place-person "wild-hound" 5 5)
       (place-person "horned-grazer" 10 10))
 
     ;; we want monsters, but at least 20 away from player

@@ -644,6 +644,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:monster.title
 	   #:monster.tried-elm
 	   #:monster.type
+	   #:monster-attack!
 	   #:move-creature-to-depth!
 	   #:move-player!
 

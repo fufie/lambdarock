@@ -274,11 +274,11 @@ Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
       )))
 
 
-(defun cmb-monster-attack! (dungeon player mon the-x the-y)
+(defmethod monster-attack! ((attacker active-monster) target dungeon the-x the-y)
   "The monster attacks the player  at (the-x,the-y)."
-  (dolist (the-attack (monster.attacks mon))
-    (when (and (creature-alive? mon) (creature-alive? player))
-      (attack-target! dungeon mon player the-x the-y the-attack))))
+  (dolist (the-attack (monster.attacks attacker))
+    (when (and (creature-alive? attacker) (creature-alive? target))
+      (attack-target! dungeon attacker target the-x the-y the-attack))))
 
 
 (defmethod missile-hit-creature? (attacker target missile-weapon missile)

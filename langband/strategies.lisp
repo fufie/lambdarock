@@ -78,7 +78,7 @@ the coordinate is removed.")))
 
 	    ;; we have the player next to us.. kill him
 	    (when (and use-move (= nx px) (= ny py))
-	      (cmb-monster-attack! dungeon player mon nx ny)
+	      (monster-attack! mon player dungeon nx ny)
 	      (setf use-turn t
 		    use-move nil))
 

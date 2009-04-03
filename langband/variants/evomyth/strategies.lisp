@@ -57,7 +57,8 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 
 (defmethod allows-move? ((strategy fight-strategy) dungeon nx ny)
-  nil)
+  (declare (ignore dungeon nx ny))
+  t)
 
 (defmethod allows-move? ((strategy avoidance-strategy) dungeon nx ny)
   (when (find '<player> (strategy.avoid-type strategy))
@@ -79,19 +80,26 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   t)
 
 ;; move to engine later
-(defun try-moving-creature (dungeon src-x src-y dest-x dest-y &key (reversed nil) (strategy nil))
-  (let ((moves (get-move-direction src-x src-y dest-x dest-y)))
+(defun try-moving-creature (creature dungeon src-x src-y dest-x dest-y
+			    &key (reversed nil) (strategy nil) (allow-attack nil))
+  (let ((moves (get-move-direction src-x src-y dest-x dest-y))
+	(px (location-x *player*))
+	(py (location-y *player*)))
     (loop named move-attempts
 	  for i from 0 to 4
 	  do
        (let* ((dir (if reversed (opposite-direction (aref moves i)) (aref moves i)))
 	      (nx (+ src-x (aref *ddx* dir)))
 	      (ny (+ src-y (aref *ddy* dir))))
-		
+
+	 ;; if we are allowed to attack, let us check that first
+	 (when (and allow-attack (= nx px) (= ny py))
+	   (monster-attack! creature *player* dungeon nx ny)
+	   (return-from try-moving-creature t))
+		    
 	 (when (and (and strategy (allows-move? strategy dungeon nx ny))
                     (cave-empty-bold? dungeon nx ny)
-		    (not (and (= nx (location-x *player*))
-			      (= ny (location-y *player*)))))
+		    (not (and (= nx px) (= ny py))))
 	   ;;(warn "Dir ~s/~s  -> Going (~s,~s) -> (~s,~s)" (aref moves i) dir src-x src-y nx ny)
 	   (swap-monsters! dungeon *player* src-x src-y nx ny)
 	   (return-from try-moving-creature t))))
@@ -107,11 +115,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	(py (location-y *player*)))
 
     ;; basically we just want to move, but in reverse
-    (when-bind (status (try-moving-creature dungeon mx my px py :reversed t :strategy strategy))
+    (when-bind (status (try-moving-creature mon dungeon mx my px py :reversed t :strategy strategy))
       (return-from execute-strategy t))
     
     (when (< (amon.distance mon) 3)
       ;;(warn "Cornered...")
+      (format-message! "~a feels threatened by your presence." (get-creature-desc mon #x00)) 
       (setf (gethash '<cornered> (amon.temp-attrs mon)) t))
 
     nil))
@@ -124,6 +133,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 (defmethod execute-strategy ((strategy fight-strategy) (mon active-monster) dungeon &key action force)
   (declare (ignorable action force))
 
+  ;; first we need to know if we will fight  
   (let* ((fight-criteria (strategy.when-to-fight strategy))
 	 (fight (eq fight-criteria t)))
 
@@ -136,16 +146,19 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     (unless fight
       (return-from execute-strategy nil)))
     
-  (warn "Execute fight: ~a ~a" (get-id mon) (strategy.when-to-fight strategy))
-  ;; first we need to know if we will fight
-  
+  ;;(warn "Execute fight: ~a ~a" (get-id mon) (strategy.when-to-fight strategy))
+
   (let ((mx (location-x mon))
 	(my (location-y mon))
 	(px (location-x *player*))
 	(py (location-y *player*)))
 
     ;; basically we just want to move, but in reverse
-    (when-bind (status (try-moving-creature dungeon mx my px py :reversed nil :strategy strategy))
+    (when-bind (status (try-moving-creature mon dungeon
+					    mx my px py
+					    :reversed nil
+					    :strategy strategy
+					    :allow-attack t))
       (return-from execute-strategy t))
   
     nil))
