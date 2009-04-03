@@ -111,6 +111,7 @@ Copyright (c) 2001-2003 - Stig Erik Sandoe
 			   (:file "load" :depends-on ("save" "generate"))
 			   (:file "death" :depends-on ("global" "player" "character" "save"))
 			   (:file "ai" :depends-on ("generics" "monster" "project" "util" "actions"))
+			   (:file "strategies" :depends-on ("ai"))
 			   (:file "loop" :depends-on ("classes" "player" "death" "ai" "print" "actions"
 								"view" "util" "adts" "load"
 								"window" "visuals"))

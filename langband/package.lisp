@@ -676,6 +676,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:on-pickup-object
 	   #:on-take-off-object
 	   #:on-wear-object
+	   #:opposite-direction
 	   #:output-string!
 
 	   #:paint-coord

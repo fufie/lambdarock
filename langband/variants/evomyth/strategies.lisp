@@ -23,7 +23,91 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
    (avoid-diet :initform nil :initarg :avoid-diet :accessor strategy.avoid-diet)
    (avoid-type :initform nil :initarg :avoid-type :accessor strategy.avoid-type)))
 
-  
+(defclass fight-strategy (ai-strategy)
+  ((id :initform "fight")
+   (when-to-fight :initform nil :initarg :when-to-fight :accessor strategy.when-to-fight)))
+
+
+(defun try-moving-creature (dungeon src-x src-y dest-x dest-y &optional (reversed nil))
+  (let ((moves (get-move-direction src-x src-y dest-x dest-y)))
+    (loop named move-attempts
+       for i from 0 to 4
+       do
+       (let* ((dir (aref moves i))
+	      (x-dir (aref *ddx* dir))
+	      (y-dir (aref *ddy* dir))
+	      (nx (+ src-x (if reversed (opposite-direction x-dir) x-dir)))
+	      (ny (+ src-y (if reversed (opposite-direction y-dir) y-dir)))
+	      )
+		
+	 (when (and (cave-empty-bold? dungeon nx ny)
+		    (not (and (= nx (location-x *player*))
+			      (= ny (location-y *player*)))))
+	   (warn "Going (~s,~s) -> (~s,~s)" src-x src-y nx ny)
+	   (swap-monsters! dungeon *player* src-x src-y nx ny)
+	   (return-from try-moving-creature t))))
+    nil))
+
+
+
+(defmethod execute-strategy ((strategy avoidance-strategy) (mon active-monster) dungeon &key action force)
+  (declare (ignorable action force))
+  (let ((avoid-type (strategy.avoid-type strategy))
+	(diet-type (strategy.avoid-diet strategy))
+	(mx (location-x mon))
+	(my (location-y mon))
+	(px (location-x *player*))
+	(py (location-y *player*)))
+
+    ;;(warn "Execute ~a ~a ~a" (strategy.id strategy) avoid-type '<player>)
+    (cond ((eql avoid-type '<player>)
+	   (warn "avoid player")
+	   ;; reverse argument is set to true
+	   (when-bind (status (try-moving-creature dungeon mx my px py t))
+	     (return-from execute-strategy t))))
+
+    nil))
+
+(defmethod execute-strategy ((strategy fight-strategy) (mon active-monster) dungeon &key action force)
+  (declare (ignorable action force))
+  ;;(warn "Execute avoid: ~a" strategy)
+  nil)
+
+
+(defmethod print-object ((inst guard) stream)
+  (print-unreadable-object
+   (inst stream :identity t)
+   (format stream "~:(~S~) [~S ~S]" (lbsys/class-name inst)
+           (strategy.id inst)
+	   (strategy.cur-dest inst)
+	   ))
+
+  inst)
+
+(defmethod print-object ((inst avoidance-strategy) stream)
+  (print-unreadable-object
+   (inst stream :identity t)
+   (format stream "~:(~S~) [~S ~S ~S ~S]" (lbsys/class-name inst)
+           (strategy.id inst)
+	   (strategy.key inst)
+	   (strategy.avoid-diet inst)
+	   (strategy.avoid-type inst)
+	   ))
+
+  inst)
+
+(defmethod print-object ((inst fight-strategy) stream)
+  (print-unreadable-object
+   (inst stream :identity t)
+   (format stream "~:(~S~) [~S ~S ~S]" (lbsys/class-name inst)
+           (strategy.id inst)
+	   (strategy.key inst)
+	   (strategy.when-to-fight inst)
+	   ))
+
+  inst)
+
+
 (defmethod execute-strategy ((strategy guard) (mon active-monster) dungeon &key action force)
   (declare (ignorable action force))
 
@@ -91,40 +175,3 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	;; next turn we have a dest!
 
       t)))
-
-(defmethod execute-strategy ((strategy avoidance-strategy) (mon active-monster) dungeon &key action force)
-  (declare (ignorable action force))
-  ;;(warn "Execute avoid: ~a" strategy)
-  nil)
-
-
-(defun make-guard-strategy (tl bl tr br)
-  "Makes a guard-ai for the given coords."
-  (let ((strategy (make-instance 'guard)))
-    (setf (strategy.top-left strategy) tl
-	  (strategy.bottom-left strategy) bl
-	  (strategy.top-right strategy) tr
-	  (strategy.bottom-right strategy) br)
-    strategy))
-
-(defmethod print-object ((inst guard) stream)
-  (print-unreadable-object
-   (inst stream :identity t)
-   (format stream "~:(~S~) [~S ~S]" (lbsys/class-name inst)
-           (strategy.id inst)
-	   (strategy.cur-dest inst)
-	   ))
-
-  inst)
-
-(defmethod print-object ((inst avoidance-strategy) stream)
-  (print-unreadable-object
-   (inst stream :identity t)
-   (format stream "~:(~S~) [~S ~S ~S ~S]" (lbsys/class-name inst)
-           (strategy.id inst)
-	   (strategy.key inst)
-	   (strategy.avoid-diet inst)
-	   (strategy.avoid-type inst)
-	   ))
-
-  inst)
