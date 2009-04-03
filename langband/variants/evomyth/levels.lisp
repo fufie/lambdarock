@@ -83,6 +83,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
                (evo/place-person id x y))))
 
       (place-person (if (is-female? player) "grandma" "grandpa") 12 12)
+      (place-person "wild-hound" 5 5)
       (place-person "horned-grazer" 10 10))
 
     ;; we want monsters, but at least 20 away from player

@@ -27,6 +27,14 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   ((id :initform "fight")
    (when-to-fight :initform nil :initarg :when-to-fight :accessor strategy.when-to-fight)))
 
+(defmethod matches-diet? ((mon active-monster) diet)
+  (cond ((consp diet)
+	 (some #'(lambda (x) (matches-diet? mon x)) diet))
+	((symbolp diet)
+	 (eq (monster.diet (amon.kind mon)) diet))
+	(t
+	 (warn "Fell through (MATCHES-DIET? ~s ~s)" (get-id mon) diet))))
+
 (defmethod shared-initialize :after ((instance avoidance-strategy) slot-names &rest initargs)
   (when-bind (args (strategy.arguments instance))
     (dolist (i args)
@@ -40,7 +48,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (when-bind (args (strategy.arguments instance))
     (dolist (i args)
       (case i
-        (<if-cornered> (push i (strategy.when-to-fight instance)))
+        ((<cornered> <attacked>) (push i (strategy.when-to-fight instance)))
         (otherwise (warn "Don't know how to handle fight strategy argument: ~s" i))))
     (setf (strategy.arguments instance) nil)))
 
@@ -49,10 +57,18 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (when (find '<player> (strategy.avoid-type strategy))
     (let ((px (location-x *player*))
           (py (location-y *player*)))
-      (when (or (< (abs (- nx px)) 2)
-                (< (abs (- ny py)) 2))
-        (warn "Cornered by player...")
+      (when (and (< (abs (- nx px)) 2)
+		 (< (abs (- ny py)) 2))
         (return-from allows-move? nil))))
+  
+  (let ((bad-diet (strategy.avoid-diet strategy)))
+    (dolist (m (dungeon.monsters dungeon))
+      (let ((mx (location-x m))
+	    (my (location-y m)))
+	(when (and (< (abs (- nx mx)) 2)
+		   (< (abs (- ny my)) 2)
+		   (matches-diet? m bad-diet))
+	  (return-from allows-move? nil)))))
   ;; check if the location is close to things we want to avoid
   t)
 
@@ -79,16 +95,14 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (defmethod execute-strategy ((strategy avoidance-strategy) (mon active-monster) dungeon &key action force)
   (declare (ignorable action force))
-  (let ((avoid-type (strategy.avoid-type strategy))
-	(diet-type (strategy.avoid-diet strategy))
-	(mx (location-x mon))
+  (let ((mx (location-x mon))
 	(my (location-y mon))
 	(px (location-x *player*))
 	(py (location-y *player*)))
 
     ;; basically we just want to move, but in reverse
-	   (when-bind (status (try-moving-creature dungeon mx my px py :reversed t :strategy strategy))
-	     (return-from execute-strategy t))
+    (when-bind (status (try-moving-creature dungeon mx my px py :reversed t :strategy strategy))
+      (return-from execute-strategy t))
 
     nil))
 
@@ -102,33 +116,27 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (print-unreadable-object
    (inst stream :identity t)
    (format stream "~:(~S~) [~S ~S]" (lbsys/class-name inst)
-           (strategy.id inst)
-	   (strategy.cur-dest inst)
-	   ))
-
+           (get-id inst)
+	   (strategy.cur-dest inst)))
   inst)
 
 (defmethod print-object ((inst avoidance-strategy) stream)
   (print-unreadable-object
    (inst stream :identity t)
    (format stream "~:(~S~) [~S ~S ~S ~S]" (lbsys/class-name inst)
-           (strategy.id inst)
+           (get-id inst)
 	   (strategy.key inst)
 	   (strategy.avoid-diet inst)
-	   (strategy.avoid-type inst)
-	   ))
-
+	   (strategy.avoid-type inst)))
   inst)
 
 (defmethod print-object ((inst fight-strategy) stream)
   (print-unreadable-object
    (inst stream :identity t)
    (format stream "~:(~S~) [~S ~S ~S]" (lbsys/class-name inst)
-           (strategy.id inst)
+           (get-id inst)
 	   (strategy.key inst)
-	   (strategy.when-to-fight inst)
-	   ))
-
+	   (strategy.when-to-fight inst)))
   inst)
 
 
@@ -138,8 +146,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (let ((mx (location-x mon))
 	(my (location-y mon))
 	(temp-attrs (amon.temp-attrs mon))
-	(staggering nil)
-	)
+	(staggering nil))
 
     ;; confused monsters stagger about
     (let ((confusion-attr (gethash '<confusion> temp-attrs)))

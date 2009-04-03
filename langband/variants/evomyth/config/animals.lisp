@@ -23,8 +23,8 @@ Copyright (c) 2009 - Stig Erik Sandoe
   :abilities '()
   :alertness 250
   :vision 15
-  ;;:attacks '((<hit> :type <hurt> :damage (1 . 10)))
-  :strategies '((<avoid> <carnivore> <omnivore> <player>) (<fight> <if-cornered>))
+  :attacks '((<hit> :type <hurt> :damage (1 . 10)))
+  :strategies '((<avoid> <carnivore> <omnivore> <player>) (<fight> <cornered>))
   :type '(<mammal>)
   :diet '<herbivore>
   :gender '<female>)
@@ -43,8 +43,29 @@ Copyright (c) 2009 - Stig Erik Sandoe
   :abilities '()
   :alertness 150
   :vision 8
-  ;;:attacks '((<hit> :type <hurt> :damage (1 . 10)))
-  :strategies '((<avoid> <carnivore> <omnivore> <player>) (<fight> <if-cornered>))
+  :attacks '((<bite> :type <hurt> :damage (2 . 4)))
+  :strategies '((<avoid> <carnivore> <omnivore> <player>) (<fight> <cornered> <attacked>))
   :type '(<mammal>)
   :diet '<herbivore>
   :gender '<female>)
+
+(define-monster-kind "wild-hound" "Wild Hound"
+  :numeric-id  2002
+  :gfx-sym (tile-paint-value 18 72)
+  :desc "A rough and wild hound, which usually appears in packs.  Can be extremely dangerous in larger packs."
+  :text-sym (text-paint-value +term-umber+ #\C)
+  :depth 0
+  :rarity 1
+  :power-lvl 6
+  :hitpoints '(6 . 6)
+  :armour 30
+  :speed 120
+  :xp 30
+  :abilities '()
+  :alertness 150
+  :vision 30
+  :attacks '((<bite> :type <hurt> :damage (1 . 6)))
+  :strategies '(<fight>)
+  :type '(<mammal>)
+  :diet '<carnivore>
+  :gender '<male>)

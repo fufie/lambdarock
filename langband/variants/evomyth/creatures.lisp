@@ -103,25 +103,16 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
                         (push #'(lambda () (funcall (get-strategy-constructor var-obj (first s)) args)) constrs)))
                    (otherwise
                       (warn "Unhandled strategy ~s" s))))
+		;; just a default strategy
+		((symbolp s)
+		 (push #'(lambda () (funcall (get-strategy-constructor var-obj s) nil)) constrs))
                 (t
                  (warn "Unhandled strategy ~s" s))))
-                            
-        ;;(avoid-match '(<avoid-player> <avoid-omnivore> <avoid-carnivore> <avoid-herbivore>)))
-        
-        ;; let us go through known groups first
-        ;; avoids
-        ;;(let ((avoids (intersection strats avoid-match)))
-                                        ;:(setf strats (set-difference strats avoid-match))
-        ;;(warn "Avoids: ~a" avoids)
-        ;;(setf constrs (get-strategy-constructor var-obj avoids) constrs))
-        
-
-        ;;        (setf constrs (append constrs (loop for s in strats
-        ;;                                            for constr = (get-strategy-constructor var-obj s)
-        ;;                                            when constr
-        ;;                                              collect constr)))
 
         (setf (monster.strategies m-obj) constrs)))
+
+    (when-bind (diet (getf keyword-args :diet))
+      (setf (monster.diet m-obj) diet))
     
     m-obj))
 

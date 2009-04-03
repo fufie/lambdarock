@@ -53,7 +53,10 @@ Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
 
 (defclass evo/monster-kind (monster-kind)
   ((picture :accessor monster.picture
-	    :initform nil)))
+	    :initform nil)
+   (diet :accessor monster.diet
+	 :initform nil)))
+  
 
 (defclass npc (active-monster)
   ((attitude :accessor npc.attitude

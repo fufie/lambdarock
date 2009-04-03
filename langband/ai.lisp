@@ -16,6 +16,9 @@ Copyright (c) 2002-2004 - Stig Erik Sandoe
    (weights :initform '() :accessor strategy.weights)
    ))
 
+(defmethod get-id ((strategy ai-strategy))
+  (strategy.id strategy))
+
 (defun %strategy-constructor (classname id key)
   (lambda (args) (make-instance classname :id id :key key :arguments args)))
   
