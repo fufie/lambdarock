@@ -27,23 +27,20 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   ((id :initform "fight")
    (when-to-fight :initform nil :initarg :when-to-fight :accessor strategy.when-to-fight)))
 
-
+;; move to engine later
 (defun try-moving-creature (dungeon src-x src-y dest-x dest-y &optional (reversed nil))
   (let ((moves (get-move-direction src-x src-y dest-x dest-y)))
     (loop named move-attempts
-       for i from 0 to 4
-       do
-       (let* ((dir (aref moves i))
-	      (x-dir (aref *ddx* dir))
-	      (y-dir (aref *ddy* dir))
-	      (nx (+ src-x (if reversed (opposite-direction x-dir) x-dir)))
-	      (ny (+ src-y (if reversed (opposite-direction y-dir) y-dir)))
-	      )
+	  for i from 0 to 4
+	  do
+       (let* ((dir (if reversed (opposite-direction (aref moves i)) (aref moves i)))
+	      (nx (+ src-x (aref *ddx* dir)))
+	      (ny (+ src-y (aref *ddy* dir))))
 		
 	 (when (and (cave-empty-bold? dungeon nx ny)
 		    (not (and (= nx (location-x *player*))
 			      (= ny (location-y *player*)))))
-	   (warn "Going (~s,~s) -> (~s,~s)" src-x src-y nx ny)
+	   ;;(warn "Dir ~s/~s  -> Going (~s,~s) -> (~s,~s)" (aref moves i) dir src-x src-y nx ny)
 	   (swap-monsters! dungeon *player* src-x src-y nx ny)
 	   (return-from try-moving-creature t))))
     nil))
@@ -61,7 +58,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
     ;;(warn "Execute ~a ~a ~a" (strategy.id strategy) avoid-type '<player>)
     (cond ((eql avoid-type '<player>)
-	   (warn "avoid player")
 	   ;; reverse argument is set to true
 	   (when-bind (status (try-moving-creature dungeon mx my px py t))
 	     (return-from execute-strategy t))))
