@@ -24,7 +24,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
   :alertness 250
   :vision 15
   ;;:attacks '((<hit> :type <hurt> :damage (1 . 10)))
-  :strategies '(<avoid-carnivore> <avoid-omnivore> <avoid-player> <fight-if-cornered>)
+  :strategies '((<avoid> <carnivore> <omnivore> <player>) (<fight> <if-cornered>))
   :type '(<mammal>)
   :diet '<herbivore>
   :gender '<female>)
@@ -44,7 +44,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
   :alertness 150
   :vision 8
   ;;:attacks '((<hit> :type <hurt> :damage (1 . 10)))
-  :strategies '(<avoid-carnivore> <avoid-omnivore> <avoid-player> <fight-if-cornered>)
+  :strategies '((<avoid> <carnivore> <omnivore> <player>) (<fight> <if-cornered>))
   :type '(<mammal>)
   :diet '<herbivore>
   :gender '<female>)

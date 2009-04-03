@@ -27,8 +27,37 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   ((id :initform "fight")
    (when-to-fight :initform nil :initarg :when-to-fight :accessor strategy.when-to-fight)))
 
+(defmethod shared-initialize :after ((instance avoidance-strategy) slot-names &rest initargs)
+  (when-bind (args (strategy.arguments instance))
+    (dolist (i args)
+      (case i
+        (<player> (push i (strategy.avoid-type instance)))
+        ((<omnivore> <carnivore> <herbivore>) (push i (strategy.avoid-diet instance)))
+        (otherwise (warn "Don't know how to handle avoid strategy argument: ~s" i))))
+    (setf (strategy.arguments instance) nil)))
+
+(defmethod shared-initialize :after ((instance fight-strategy) slot-names &rest initargs)
+  (when-bind (args (strategy.arguments instance))
+    (dolist (i args)
+      (case i
+        (<if-cornered> (push i (strategy.when-to-fight instance)))
+        (otherwise (warn "Don't know how to handle fight strategy argument: ~s" i))))
+    (setf (strategy.arguments instance) nil)))
+
+
+(defmethod allows-move? ((strategy avoidance-strategy) dungeon nx ny)
+  (when (find '<player> (strategy.avoid-type strategy))
+    (let ((px (location-x *player*))
+          (py (location-y *player*)))
+      (when (or (< (abs (- nx px)) 2)
+                (< (abs (- ny py)) 2))
+        (warn "Cornered by player...")
+        (return-from allows-move? nil))))
+  ;; check if the location is close to things we want to avoid
+  t)
+
 ;; move to engine later
-(defun try-moving-creature (dungeon src-x src-y dest-x dest-y &optional (reversed nil))
+(defun try-moving-creature (dungeon src-x src-y dest-x dest-y &key (reversed nil) (strategy nil))
   (let ((moves (get-move-direction src-x src-y dest-x dest-y)))
     (loop named move-attempts
 	  for i from 0 to 4
@@ -37,7 +66,8 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	      (nx (+ src-x (aref *ddx* dir)))
 	      (ny (+ src-y (aref *ddy* dir))))
 		
-	 (when (and (cave-empty-bold? dungeon nx ny)
+	 (when (and (and strategy (allows-move? strategy dungeon nx ny))
+                    (cave-empty-bold? dungeon nx ny)
 		    (not (and (= nx (location-x *player*))
 			      (= ny (location-y *player*)))))
 	   ;;(warn "Dir ~s/~s  -> Going (~s,~s) -> (~s,~s)" (aref moves i) dir src-x src-y nx ny)
@@ -56,11 +86,9 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	(px (location-x *player*))
 	(py (location-y *player*)))
 
-    ;;(warn "Execute ~a ~a ~a" (strategy.id strategy) avoid-type '<player>)
-    (cond ((eql avoid-type '<player>)
-	   ;; reverse argument is set to true
-	   (when-bind (status (try-moving-creature dungeon mx my px py t))
-	     (return-from execute-strategy t))))
+    ;; basically we just want to move, but in reverse
+	   (when-bind (status (try-moving-creature dungeon mx my px py :reversed t :strategy strategy))
+	     (return-from execute-strategy t))
 
     nil))
 

@@ -12,9 +12,13 @@ Copyright (c) 2002-2004 - Stig Erik Sandoe
 (defclass ai-strategy ()
   ((id :initarg :id :initform nil :accessor strategy.id)
    (key :initarg :key :initform nil :accessor strategy.key)
+   (arguments :initarg :arguments :initform nil :accessor strategy.arguments)
    (weights :initform '() :accessor strategy.weights)
    ))
 
+(defun %strategy-constructor (classname id key)
+  (lambda (args) (make-instance classname :id id :key key :arguments args)))
+  
 (defun define-strategy (id key constructor-info)
   (let ((var-obj *variant*))
     (unless var-obj
@@ -22,16 +26,18 @@ Copyright (c) 2002-2004 - Stig Erik Sandoe
     (unless constructor-info
       (error "No constructor-info for strategy: ~a" id))
 
-    (cond ((consp constructor-info)
-	   (setf (gethash key (variant.strategies var-obj))
-		 #'(lambda () (apply 'make-instance (first constructor-info)
-				     :id id :key key (cdr constructor-info)))))
+    (cond ((symbolp constructor-info)
+           (setf (gethash key (variant.strategies var-obj)) (%strategy-constructor constructor-info id key)))
+
+          ((consp constructor-info)
+           (error "Doesnt handle consp as constr-info: ~s" constructor-info))
 	  
 	  ((functionp constructor-info)
 	   (setf (gethash key (variant.strategies var-obj)) constructor-info))
+          
 	  (t
 	   (warn "Fell through define-strategy for ~a" id)))
-    
+   
     key))
 
 (defun get-strategy-constructor (var-obj key)

@@ -94,10 +94,35 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
       (setf (monster.picture m-obj) pic))
 
     (when-bind (strats (getf keyword-args :strategies))
-      (setf (monster.strategies m-obj) (loop for s in strats
-					  for constr = (get-strategy-constructor var-obj s)
-					  when constr
-					  collect constr)))
+      (let ((constrs '()))
+        (dolist (s strats)
+          (cond ((consp s)
+                 (case (first s)
+                   ((<avoid> <fight>)
+                      (let ((args (rest s)))
+                        (push #'(lambda () (funcall (get-strategy-constructor var-obj (first s)) args)) constrs)))
+                   (otherwise
+                      (warn "Unhandled strategy ~s" s))))
+                (t
+                 (warn "Unhandled strategy ~s" s))))
+                            
+        ;;(avoid-match '(<avoid-player> <avoid-omnivore> <avoid-carnivore> <avoid-herbivore>)))
+        
+        ;; let us go through known groups first
+        ;; avoids
+        ;;(let ((avoids (intersection strats avoid-match)))
+                                        ;:(setf strats (set-difference strats avoid-match))
+        ;;(warn "Avoids: ~a" avoids)
+        ;;(setf constrs (get-strategy-constructor var-obj avoids) constrs))
+        
+
+        ;;        (setf constrs (append constrs (loop for s in strats
+        ;;                                            for constr = (get-strategy-constructor var-obj s)
+        ;;                                            when constr
+        ;;                                              collect constr)))
+
+        (setf (monster.strategies m-obj) constrs)))
+    
     m-obj))
 
 

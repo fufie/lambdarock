@@ -855,6 +855,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:store-maintenance!
 	   #:store-mass-produce!
 	   #:store.will-buy
+           #:strategy.arguments
 	   #:strategy.destinations
 	   #:strategy.id
 	   #:strategy.key
