@@ -179,6 +179,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:alloc.prob2
 	   #:alloc.prob3
 	   #:allocate-monster!
+	   #:amon.distance
 	   #:amon.kind
 	   #:amon.seen-by-player?
 	   #:amon.strategies

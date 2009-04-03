@@ -25,7 +25,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (defclass fight-strategy (ai-strategy)
   ((id :initform "fight")
-   (when-to-fight :initform nil :initarg :when-to-fight :accessor strategy.when-to-fight)))
+   (when-to-fight :initform t :initarg :when-to-fight :accessor strategy.when-to-fight)))
 
 (defmethod matches-diet? ((mon active-monster) diet)
   (cond ((consp diet)
@@ -36,6 +36,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	 (warn "Fell through (MATCHES-DIET? ~s ~s)" (get-id mon) diet))))
 
 (defmethod shared-initialize :after ((instance avoidance-strategy) slot-names &rest initargs)
+  (declare (ignore initargs))
   (when-bind (args (strategy.arguments instance))
     (dolist (i args)
       (case i
@@ -45,13 +46,18 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     (setf (strategy.arguments instance) nil)))
 
 (defmethod shared-initialize :after ((instance fight-strategy) slot-names &rest initargs)
+  (declare (ignore initargs))
   (when-bind (args (strategy.arguments instance))
+    (setf (strategy.when-to-fight instance) nil)
     (dolist (i args)
       (case i
         ((<cornered> <attacked>) (push i (strategy.when-to-fight instance)))
         (otherwise (warn "Don't know how to handle fight strategy argument: ~s" i))))
     (setf (strategy.arguments instance) nil)))
 
+
+(defmethod allows-move? ((strategy fight-strategy) dungeon nx ny)
+  nil)
 
 (defmethod allows-move? ((strategy avoidance-strategy) dungeon nx ny)
   (when (find '<player> (strategy.avoid-type strategy))
@@ -103,13 +109,46 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     ;; basically we just want to move, but in reverse
     (when-bind (status (try-moving-creature dungeon mx my px py :reversed t :strategy strategy))
       (return-from execute-strategy t))
+    
+    (when (< (amon.distance mon) 3)
+      ;;(warn "Cornered...")
+      (setf (gethash '<cornered> (amon.temp-attrs mon)) t))
 
     nil))
 
+(defun is-cornered? (mon dungeon)
+  ;; hack
+  (gethash '<cornered> (amon.temp-attrs mon)))
+
+
 (defmethod execute-strategy ((strategy fight-strategy) (mon active-monster) dungeon &key action force)
   (declare (ignorable action force))
-  ;;(warn "Execute avoid: ~a" strategy)
-  nil)
+
+  (let* ((fight-criteria (strategy.when-to-fight strategy))
+	 (fight (eq fight-criteria t)))
+
+    (unless fight ;; check stuff
+      (setf fight (and (find '<cornered> fight-criteria) (is-cornered? mon dungeon))))
+
+    (unless fight ;;check more stuff
+      (setf fight (and (find '<attacked> fight-criteria) (< (current-hp mon) (maximum-hp mon)))))
+
+    (unless fight
+      (return-from execute-strategy nil)))
+    
+  (warn "Execute fight: ~a ~a" (get-id mon) (strategy.when-to-fight strategy))
+  ;; first we need to know if we will fight
+  
+  (let ((mx (location-x mon))
+	(my (location-y mon))
+	(px (location-x *player*))
+	(py (location-y *player*)))
+
+    ;; basically we just want to move, but in reverse
+    (when-bind (status (try-moving-creature dungeon mx my px py :reversed nil :strategy strategy))
+      (return-from execute-strategy t))
+  
+    nil))
 
 
 (defmethod print-object ((inst guard) stream)
