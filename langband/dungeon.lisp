@@ -1324,6 +1324,10 @@ ready for full use in the engine yet."
 	      (setf (gethash (floor.id v) real-table) v)))
 	      
       (warn "H ~s W ~s" height width)
+      (when (< height 4)
+	(error "Height needs to be a positive value above 4"))
+      (when (< width 4)
+	(error "Width needs to be a positive value above 4"))
       
       (let ((dungeon (create-dungeon width height)))
 	(loop for i from 0
