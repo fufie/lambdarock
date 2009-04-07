@@ -100,6 +100,7 @@ call appropriately high-level init in correct order."
       
 	   #-(or cmu allegro clisp lispworks sbcl cormanlisp openmcl ecl)
 	   (error "lisp-system ~s unknown for C-side." (lisp-implementation-type))
+	   (warn "Init ~s ~s frames" +max-frames+ +predefined-frames+)
 	   (org.langband.ffi:c-init-frame-system& +max-frames+ +predefined-frames+)
 
 	   ;; let us read what the user prefers
@@ -308,7 +309,7 @@ call appropriately high-level init in correct order."
   ))
 
 
-(defun c (&key (full-screen :default))
+(defun b (&key (full-screen :default))
   (a :gfx t
   :window-width +sdl-minimum-window-width+
   :window-height +sdl-minimum-window-height+
@@ -317,7 +318,7 @@ call appropriately high-level init in correct order."
 (defun d ()
   (a :gfx t :window-width 1024 :window-height 768))
 
-(defun f ()
+(defun c ()
   (a :gfx t :window-width 1280 :window-height 1024 :full-screen nil))
 
 (setf (symbol-function 'cl-user::langband)
