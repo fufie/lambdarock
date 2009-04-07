@@ -3,7 +3,7 @@
 #|
 
 DESC: variants/evomyth/evomyth.asd - system-def for evomyth
-Copyright (c) 2009 - Stig Erik Sandø
+Copyright (c) 2009 - Stig Erik Sandoe
 
 |#
 
