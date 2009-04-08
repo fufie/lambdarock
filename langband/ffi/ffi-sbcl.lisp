@@ -210,7 +210,9 @@
            (x int :in)
            (y int :in)
            (w int :in)
-           (h int :in))
+           (h int :in)
+           (px int :in)
+           (py int :in))
 
 
 (declaim (inline c-add-frame-tileinfo!))

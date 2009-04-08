@@ -94,7 +94,7 @@
  (key :int) (name cptr) )
 
 (cffi:defcfun ("lbui_add_frame_coords" c-add-frame-coords! :library :lbui :calling-convention :stdcall) :int
- (key :int) (x :int) (y :int) (w :int) (h :int) )
+ (key :int) (x :int) (y :int) (w :int) (h :int) (px :int) (py :int) )
 
 (cffi:defcfun ("lbui_add_frame_tileinfo" c-add-frame-tileinfo! :library :lbui :calling-convention :stdcall) :int
  (key :int) (tw :int) (th :int) )

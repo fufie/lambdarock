@@ -143,7 +143,7 @@
     :calling-convention :stdcall :module :lang-ffi)
 
 (fli:define-foreign-function (c-add-frame-coords! "lbui_add_frame_coords")
-    ((key :int) (x :int) (y :int) (w :int) (h :int))
+    ((key :int) (x :int) (y :int) (w :int) (h :int) (px :int) (py :int))
     :result-type :int :language :c 
     :calling-convention :stdcall :module :lang-ffi)
 

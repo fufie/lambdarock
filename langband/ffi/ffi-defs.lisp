@@ -137,7 +137,9 @@ DESC: ffi/ffi-defs.lisp - the foreign declarations that [L] uses
 	    (int x)
 	    (int y)
 	    (int w)
-	    (int h)))
+	    (int h)
+	    (int px)
+	    (int py)))
 
 (def-foreign-function ("lbui_add_frame_tileinfo" c-add-frame-tileinfo!)
     :returns 'int

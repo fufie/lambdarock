@@ -106,8 +106,8 @@
  (ccl::with-cstr (name832 name)
   (ccl::external-call "_lbui_add_frame" :signed-fullword key :address name832 :signed-fullword)))
 
-(defun c-add-frame-coords! (key x y w h)
-  (ccl::external-call "_lbui_add_frame_coords" :signed-fullword key :signed-fullword x :signed-fullword y :signed-fullword w :signed-fullword h :signed-fullword))
+(defun c-add-frame-coords! (key x y w h px py)
+  (ccl::external-call "_lbui_add_frame_coords" :signed-fullword key :signed-fullword x :signed-fullword y :signed-fullword w :signed-fullword h :signed-fullword px :signed-fullword py :signed-fullword))
 
 (defun c-add-frame-tileinfo! (key tw th)
   (ccl::external-call "_lbui_add_frame_tileinfo" :signed-fullword key :signed-fullword tw :signed-fullword th :signed-fullword))

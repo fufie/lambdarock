@@ -119,7 +119,7 @@
    :returning :int)
 
 (ff:def-foreign-call (c-add-frame-coords! "lbui_add_frame_coords")
-   ((key :int) (x :int) (y :int) (w :int) (h :int))
+   ((key :int) (x :int) (y :int) (w :int) (h :int) (px :int) (py :int))
    :returning :int)
 
 (ff:def-foreign-call (c-add-frame-tileinfo! "lbui_add_frame_tileinfo")

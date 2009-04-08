@@ -144,7 +144,7 @@
 
 (ffi:def-call-out c-add-frame-coords! (:name "lbui_add_frame_coords")
    (:language :stdc)
-   (:arguments (key int) (x int) (y int) (w int) (h int) )
+   (:arguments (key int) (x int) (y int) (w int) (h int) (px int) (py int) )
    (:return-type int))
 
 (ffi:def-call-out c-add-frame-tileinfo! (:name "lbui_add_frame_tileinfo")
