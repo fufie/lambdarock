@@ -18,6 +18,7 @@ Copyright (c) 2000-2004 - Stig Erik Sandoe
 	    (when-bind (bgfile (window.backgroundfile win))
 	      (cond ((stringp bgfile)
 		     (incf idx)
+		     ;;(warn "Load texture ~a for window ~a" bgfile (window.id win))
 		     (org.langband.ffi:c-load-texture& idx
 						       (concatenate 'string *engine-data-dir*
 								    "graphics/" bgfile)
@@ -255,9 +256,9 @@ window, relative x and relative y."
 
     (multiple-value-bind (win loc-x loc-y)
 	(%locate-mouse-click-window x y)
-      (handle-mouse-click *variant* win button loc-x loc-y))
-
-      t))
+      (when win
+	(handle-mouse-click *variant* win button loc-x loc-y)
+	t))))
 
 (defvar *poll-time* 0)
 
