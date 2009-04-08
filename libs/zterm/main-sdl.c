@@ -381,8 +381,9 @@ sdl_update_frame_size(LangbandFrame *lf) {
         lf->allowed_height = theWindow->h - lf->yoffset;
     }
     
-    max_col = lf->allowed_width / lf->tile_width;
-    max_row = lf->allowed_height / lf->tile_height;
+    
+    max_col = (lf->allowed_width - 2*lf->xpadding) / lf->tile_width;
+    max_row = (lf->allowed_height - 2*lf->ypadding) / lf->tile_height;
     
     
     //DBGPUT("gah %p %p\n", Term, lf->azt);

@@ -40,6 +40,8 @@ struct LangbandFrame {
     
     int xoffset; // x-offset compared to the main window
     int yoffset; // y-offset compared to the main window
+    int xpadding; // how much to pad horizontally in the window
+    int ypadding; // how much to pad vertically in the window
     int columns; // how many columns in the frame
     int rows;    // how many rows in the frame
     int tile_width; // what is the width of an individual tile
@@ -84,7 +86,7 @@ INTERFACE int lbui_has_frame(int key, FrameType ft);
 
 
 INTERFACE int lbui_add_frame(int key, const char *name);
-INTERFACE int lbui_add_frame_coords(int key, int x, int y, int w, int h);
+INTERFACE int lbui_add_frame_coords(int key, int x, int y, int w, int h, int px, int py);
 INTERFACE int lbui_add_frame_fontinfo(int key, const char *font, int ptsize, int style);
 INTERFACE int lbui_add_frame_tileinfo(int key, int tw, int th);
 INTERFACE int lbui_add_frame_gfxinfo(int key, int use_tiles);

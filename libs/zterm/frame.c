@@ -143,7 +143,7 @@ lbui_add_frame(int key, const char *name) {
 
 
 int
-lbui_add_frame_coords(int key, int x, int y, int w, int h) {
+lbui_add_frame_coords(int key, int x, int y, int w, int h, int px, int py) {
     
     if (!lbui_legal_frame_key_p(key,PREDEFINED)) {
         ERRORMSG("Illegal key %d for frame.\n", key);
@@ -161,6 +161,8 @@ lbui_add_frame_coords(int key, int x, int y, int w, int h) {
         lf->yoffset = y;
         lf->allowed_width = w;
         lf->allowed_height = h;
+        lf->xpadding = px;
+        lf->ypadding = py;
         
         return 0;
     }
