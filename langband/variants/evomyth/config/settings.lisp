@@ -74,3 +74,6 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     "background-height" 600
     )
 
+
+(register-field-order +charinfo-frame+
+		      '(-basic/hitpoints-))

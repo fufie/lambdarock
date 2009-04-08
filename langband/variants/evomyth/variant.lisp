@@ -40,6 +40,7 @@ the rest of the game is init'ed."
     (load-variant-data& var-obj "config/abilities")
     (load-variant-data& var-obj "config/strategies")
     (load-variant-data& var-obj "config/combat")
+    (load-variant-data& var-obj "config/print")
     (load-variant-data& var-obj "config/keys")
     )
 
