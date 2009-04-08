@@ -1508,6 +1508,15 @@ bitfield as everything else.")
    (y-offset :accessor window.y-offset
 	     :initform 0
 	     :documentation "The y-offset in pixels on the underlying display area.")
+
+   (horizontal-padding :accessor window.horizontal-padding
+		       :initform 0
+		       :documentation "How much padding should be inside the window before we put actual content.")
+   
+   (vertical-padding :accessor window.vertical-padding
+		     :initform 0
+		     :documentation "How much padding should be inside the window before we put actual content.")
+
    
    (height     :accessor window.height
 	       :initarg :height

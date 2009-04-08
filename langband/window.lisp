@@ -39,9 +39,7 @@ Copyright (c) 2002-2004 - Stig Erik Sandoe
   (assert (plusp width))
   (assert (plusp height))
   (let ((win (make-instance 'window :id id :num-id num-id :width width :height height)))
-
     (establish-data-in-window win)
- 
     win))
 
 
@@ -74,8 +72,8 @@ to do both ascii info, ascii maps and graphics."
   (declare (type u-fixnum x y))
   (let ((win-num (window.num-id win))
 	(bg (window-coord win +background+ x y))
-	(dx (* (window.tile-width win) x))
-	(dy (* (window.tile-height win) y)))
+	(dx (+ (window.horizontal-padding win) (* (window.tile-width win) x)))
+	(dy (+ (window.vertical-padding win) (* (window.tile-height win) y))))
     (declare (type u32b bg))
     (declare (type fixnum dx dy))
     ;; graphic tiles are simple.. 
@@ -111,6 +109,9 @@ to do both ascii info, ascii maps and graphics."
   (when (integerp win)
     (setf win (aref *windows* win)))
 
+(org.langband.ffi:c-clear-coords! (window.num-id win) 0 0
+				      (1- (window.pixel-width win))
+				      (1- (window.pixel-height win)))  
   (let ((wid (window.width win))
 	(hgt (window.height win))
 	(flag +winflag-delay-paint+))
@@ -122,8 +123,8 @@ to do both ascii info, ascii maps and graphics."
 		(paint-coord win x y flag)))
     
     (org.langband.ffi:c-flush-coords! (window.num-id win) 0 0
-				      (* (window.tile-width win) wid)
-				      (* (window.tile-height win) hgt))
+				      (1- (window.pixel-width win))
+				      (1- (window.pixel-height win)))
     ))
 
 

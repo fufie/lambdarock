@@ -3,7 +3,7 @@
 #|
 
 DESC: themes.lisp - code to handle themes
-Copyright (c) 2003 - Stig Erik Sandoe
+Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 |#
 
@@ -151,7 +151,7 @@ Copyright (c) 2003 - Stig Erik Sandoe
 
   (let ((sub (make-instance 'window :id (car data))))
 
-    (destructuring-bind (&key key x y width height background font tile-width tile-height gfx-tiles? disabled?)
+    (destructuring-bind (&key key x y width height horizontal-padding vertical-padding background font tile-width tile-height gfx-tiles? disabled?)
 	(cdr data)
 
       (cond ((numberp key)
@@ -184,7 +184,7 @@ Copyright (c) 2003 - Stig Erik Sandoe
 	     (let ((val (handle-ui-theme-calculation theme y)))
 	       (setf (window.y-offset sub) val)))
 	    ((window.disabled? sub)
-	     (setf (window.x-offset sub) 0)) ;; dummy
+	     (setf (window.y-offset sub) 0)) ;; dummy
 	    (t
 	     (warn "Can't handle y ~s yet" y)))
 
@@ -192,7 +192,7 @@ Copyright (c) 2003 - Stig Erik Sandoe
 	     (let ((val (handle-ui-theme-calculation theme width)))
 	       (setf (window.pixel-width sub) val)))
 	    ((window.disabled? sub)
-	     (setf (window.x-offset sub) 0)) ;; dummy
+	     (setf (window.pixel-width sub) 0)) ;; dummy
 	    (t
 	     (warn "Can't handle width ~s yet" width)))
 
@@ -200,9 +200,25 @@ Copyright (c) 2003 - Stig Erik Sandoe
 	     (let ((val (handle-ui-theme-calculation theme height)))
 	       (setf (window.pixel-height sub) val)))
 	    ((window.disabled? sub)
-	     (setf (window.x-offset sub) 0)) ;; dummy
+	     (setf (window.pixel-height sub) 0)) ;; dummy
 	    (t
 	     (warn "Can't handle height ~s yet" height)))
+
+      (cond ((or (nonboolsym? horizontal-padding) (integerp horizontal-padding) (consp horizontal-padding))
+	     (let ((val (handle-ui-theme-calculation theme horizontal-padding)))
+	       (setf (window.horizontal-padding sub) val)))
+	    ((window.disabled? sub)
+	     (setf (window.horizontal-padding sub) 0)) ;; dummy
+	    (t
+	     (warn "Can't handle horizontal-padding ~s yet" horizontal-padding)))
+
+      (cond ((or (nonboolsym? vertical-padding) (integerp vertical-padding) (consp vertical-padding))
+	     (let ((val (handle-ui-theme-calculation theme vertical-padding)))
+	       (setf (window.vertical-padding sub) val)))
+	    ((window.disabled? sub)
+	     (setf (window.vertical-padding sub) 0)) ;; dummy
+	    (t
+	     (warn "Can't handle vertical-padding ~s yet" vertical-padding)))
 
       (cond ((eq tile-width nil)
 	     nil)
@@ -260,6 +276,8 @@ Copyright (c) 2003 - Stig Erik Sandoe
     (when (window.disabled? sub)
       (setf (window.x-offset sub) 0
 	    (window.y-offset sub) 0
+	    (window.horizontal-padding sub) 0
+	    (window.vertical-padding sub) 0
 	    (window.pixel-width sub) 0
 	    (window.pixel-height sub) 0))
     
@@ -366,6 +384,10 @@ given as argument."
       (setf (window.pixel-width i) (possible-expand theme (window.pixel-width i))))
     (when (delayed-p (window.pixel-height i))
       (setf (window.pixel-height i) (possible-expand theme (window.pixel-height i))))
+    (when (delayed-p (window.horizontal-padding i))
+      (setf (window.horizontal-padding i) (possible-expand theme (window.horizontal-padding i))))
+    (when (delayed-p (window.vertical-padding i))
+      (setf (window.vertical-padding i) (possible-expand theme (window.vertical-padding i))))
 
 
     (unless (non-negative-integer? (window.x-offset i))
@@ -385,19 +407,23 @@ given as argument."
 	(signal-condition 'illegal-ui-theme-data :id (theme.key theme)
 			  :desc (format nil "pixel-height ~s not legal for ~s" (window.pixel-height i) (window.id i))))
       )
-    #||
-    (warn "Passing ~s ~s ~s ~s ~s" (window.num-id i)
+    
+    (warn "Passing ~s ~s ~s ~s ~s ~s ~s" (window.num-id i)
 	  (window.x-offset i)
 	  (window.y-offset i)
 	  (window.pixel-width i)
-	  (window.pixel-height i))
-    ||#
+	  (window.pixel-height i)
+	  (window.horizontal-padding i)
+	  (window.vertical-padding i))
+    
     
     (org.langband.ffi:c-add-frame-coords! (window.num-id i)
 					  (window.x-offset i)
 					  (window.y-offset i)
 					  (window.pixel-width i)
-					  (window.pixel-height i))
+					  (window.pixel-height i)
+					  (window.horizontal-padding i)
+					  (window.vertical-padding i))
     ))
 
 
@@ -410,7 +436,9 @@ given as argument."
    for i in (theme.windows theme)
 	do
 	(progn
-	  ;;(warn "Installing ~s" i)
+	  ;;(warn "Installing ~s ~s, ~s ~s, ~s, ~s ~s" (window.num-id i) (string-downcase (string (window.id i)))
+	  ;;	(window.tile-width i) (window.tile-height i) (window.gfx-tiles? i) (window.horizontal-padding i) (window.vertical-padding i))
+								   
 	  ;;(describe i)
 	  (org.langband.ffi:c-add-frame! (window.num-id i) (string-downcase (string (window.id i))))
 

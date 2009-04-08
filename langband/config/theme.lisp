@@ -200,57 +200,60 @@
 		 :width window.width
 		 :height window.height
 		 :font "vga8x16.hex"
+		 :background "textures/green.png"
 		 ;;:font "lettergo.ttf"
 		 )
-       
-       ;; disabled
+
+       ;; charinfo is where we print the bloody health
        (charinfo :key +charinfo-frame+
-		 :x 0 :y 12
-		 :disabled? true
-		 ;;:disabled? false
-		 :width (* 12 (var charinfo tile-width)) ;; we need 13 columns
-		 :height (- (var msg y-offset) (var charinfo y-offset) (var infodisp height))
-		 :background "textures/bumpi.png"
+		 :x 0 :y (- window.height (* 2 gfxtiles.height))
+		 :width (* 3 gfxtiles.width)
+		 :height (* 2 gfxtiles.height)
+		 :background "textures/blue.png"
 		 :font ("vga8x16.hex")
 		 ;;:font "lettergo.ttf"
 		 )
-       
+
+       ;; various status symbols
        (infodisp :key +infodisp-frame+
 		 :disabled? false
 		 ;;:x 0 :y (+ (var charinfo y-offset) (var charinfo height))
-		 :x 0
-		 :y (- window.height (* 2 gfxtiles.height))
-		 :height (* 2 gfxtiles.height)
+		 :x 0 :y (- window.height (* 3 gfxtiles.height))
 		 :width (* 3 gfxtiles.width)
+		 :height (* 1 gfxtiles.height)
 		 :font "vga8x16.hex"
 		 :tile-width gfxtiles.width
 		 :tile-height gfxtiles.height
-		 :background "textures/invbg2.png"
+		 :background "textures/orange.png"
 		 :gfx-tiles? true
 		 )
        
        (gfxmap   :key +gfxmap-frame+
 		 :x 0 :y 0
-		 :width window.width
-		 :height (- window.height (* 3 gfxtiles.height))
+		 :horizontal-padding 16
+		 :vertical-padding 16
+		 :width (- window.width 0)
+		 :height (- window.height (* 3 gfxtiles.height) 0)
 		 :tile-width gfxtiles.width
 		 :tile-height gfxtiles.height
+		 :background "textures/mapbg3.png"
 		 :gfx-tiles? true)
 
        (asciimap :key +asciimap-frame+
-		 :x window.width :y 0
-		 :width window.width
+		 :x 60 :y 60
+		 :width (- window.width 120)
 		 :height (- window.height 3)
 		 :font "vga8x16.hex"
+		 :background "textures/orange.png"
 		 :gfx-tiles? false)
 
        
        (msg      :key +message-frame+
-		 :x 0 :y (- window.height (var msg height) (var dialogue height))
-		 :width (- window.width (var infodisp width))
-		 :height (* (var msg tile-height) 2) ;; how many rows?
-		 ;;:background "textures/bumpi.png"
-		 :background "textures/blue.png"
+		 :x (* 3 gfxtiles.width) :y (- window.height (* 2 gfxtiles.height))
+		 :width (- window.width (* 4 gfxtiles.width))
+		 :height (* 2 gfxtiles.height)
+		 :horizontal-padding 16
+		 :background "textures/orange.png"
 		 ;;:background "textures/woodfloor.png"
 		 :font "vga8x16.hex"
 		 ;; other styles are normal and italic
@@ -258,14 +261,15 @@
 		 )
        
        (misc     :key +misc-frame+
-		 :x 0 :y (- window.height (+ (var inventory height) (var misc height)))
-		 :width (- window.width (var tiledfields width))
-		 :height (var misc tile-height)
+		 :x (* 3 gfxtiles.width) :y (- window.height (* 3 gfxtiles.height))
+		 :width (- window.width (* 4 gfxtiles.width))
+		 :height gfxtiles.height
+		 :horizontal-padding 16
 		 ;;:background "textures/bumpi.png"
 		 :background "textures/green.png"
 		 ;;:font #+win32 "vga8x16.hex" #-win32 "lettergo.ttf"
 		 :font "vga8x16.hex"
-		 :disabled? true
+		 :disabled? false
 		 )
 
        (inventory :key +inv-frame+
@@ -302,7 +306,7 @@
 		:tile-width gfxtiles.width
 		:tile-height gfxtiles.height
 		:font ("vga8x16.hex")
-		:background 0 ;; in backgrounds file, only when wid/hgt is like gfxtiles 
+		;;:background 0 ;; in backgrounds file, only when wid/hgt is like gfxtiles 
 		;;:font "lettergo.ttf"
 		:gfx-tiles? true)
        

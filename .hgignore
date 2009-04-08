@@ -33,4 +33,5 @@ lbui.lib
 warnings*txt
 dbgout.txt
 lb-warn*
+*.orig
 
