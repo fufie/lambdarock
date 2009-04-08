@@ -179,10 +179,12 @@ to do both ascii info, ascii maps and graphics."
   "Takes as arguments a WINDOW object (not checked), and tile-numbers for
 X, Y, W and H (not absolute pixels)."
   (let ((tile-wid (window.tile-width win))
-	(tile-hgt (window.tile-height win)))
+	(tile-hgt (window.tile-height win))
+	(xpad (window.horizontal-padding win))
+	(ypad (window.vertical-padding win)))
     (org.langband.ffi:c-flush-coords! (window.num-id win)
-				      (* x tile-wid)
-				      (* y tile-hgt)
+				      (+ xpad (* x tile-wid))
+				      (+ ypad (* y tile-hgt))
 				      (* w tile-wid)
 				      (* h tile-hgt))))
 
