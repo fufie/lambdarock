@@ -226,7 +226,7 @@
 		 :font "vga8x16.hex"
 		 :tile-width gfxtiles.width
 		 :tile-height gfxtiles.height
-		 :background "textures/orange.png"
+		 :background "textures/warning.png"
 		 :gfx-tiles? true
 		 )
        
@@ -252,10 +252,11 @@
        
        (msg      :key +message-frame+
 		 :x (* 3 gfxtiles.width) :y (- window.height (* 2 gfxtiles.height))
-		 :width (- window.width (* 4 gfxtiles.width))
+		 :width (- window.width (* 3 gfxtiles.width))
 		 :height (* 2 gfxtiles.height)
 		 :horizontal-padding 16
-		 :background "textures/orange.png"
+		 :vertical-padding 8
+		 :background "textures/msgarea.png"
 		 ;;:background "textures/woodfloor.png"
 		 :font "vga8x16.hex"
 		 ;; other styles are normal and italic
@@ -264,11 +265,12 @@
        
        (misc     :key +misc-frame+
 		 :x (* 3 gfxtiles.width) :y (- window.height (* 3 gfxtiles.height))
-		 :width (- window.width (* 4 gfxtiles.width))
+		 :width (- window.width (* 3 gfxtiles.width))
 		 :height gfxtiles.height
 		 :horizontal-padding 16
+		 :vertical-padding 8
 		 ;;:background "textures/bumpi.png"
-		 :background "textures/green.png"
+		 :background "textures/inputarea.png"
 		 ;;:font #+win32 "vga8x16.hex" #-win32 "lettergo.ttf"
 		 :font "vga8x16.hex"
 		 :disabled? false
