@@ -48,6 +48,9 @@ Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
                   :accessor variant.legal-effects)
 ;;   (object-effects :initarg :object-effects :initform (make-hash-table :test #'equal)
 ;;		   :accessor variant.object-effects)
+   (ability-groups :initarg :ability-groups
+		   :initform (make-hash-table :test #'equal)
+		   :accessor variant.ability-groups)
 
    ))
 
