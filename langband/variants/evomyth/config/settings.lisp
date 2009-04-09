@@ -23,9 +23,9 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (define-settings '("sdl-evo-birth-settings" "evo-birth-settings")
     "instr-x" 15
-    "instr-y" 3
+    "instr-y" 10
     "instr-attr" +term-blue+
-    "instr-w" 45
+    "instr-w" 120
     "query-x" 15
     "query-y" 24
     "query-reduced" t
@@ -47,7 +47,12 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     "note-colour" +term-white+
     "background" '(engine-gfx "textures/plainbook.png")
     "background-width"  800
-    "background-height" 600    
+    "background-height" 600
+
+  "skill-y" 15
+  "skill-left-x" 22
+  "skill-right-x" 80
+  "skill-column-xpad" 10
     )
 
 (define-settings '("sdl-evo-chardisplay" "chardisplay-settings")
