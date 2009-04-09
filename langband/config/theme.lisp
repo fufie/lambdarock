@@ -209,7 +209,9 @@
 		 :x 0 :y (- window.height (* 2 gfxtiles.height))
 		 :width (* 3 gfxtiles.width)
 		 :height (* 2 gfxtiles.height)
-		 :background "textures/blue.png"
+		 :horizontal-padding 16
+		 :vertical-padding 16
+		 :background "textures/health.png"
 		 :font ("vga8x16.hex")
 		 ;;:font "lettergo.ttf"
 		 )
