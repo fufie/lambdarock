@@ -1,4 +1,4 @@
-;;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.evomyth -*-
+;; -*- Mode: Lisp; Syntax: Common-Lisp; Package: org.langband.evomyth -*-
 
 #|
 
@@ -102,9 +102,10 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 (defmethod print-depth ((variant evomyth) (level level) setting)
   "prints current depth somewhere"
   (declare (ignorable setting))
-  (with-frame (+misc-frame+)
-    (let ((column (- (get-frame-width +misc-frame+) 8))) ;;(setting-lookup setting "depth")))
-      (put-coloured-line! +term-l-blue+ (format nil "~d ft" (* 50 (level.depth level))) column 0))))
+  ;;(with-frame (+misc-frame+)
+  ;;  (let ((column (- (get-frame-width +misc-frame+) 8))) ;;(setting-lookup setting "depth")))
+  ;;    (put-coloured-line! +term-l-blue+ (format nil "~d ft" (* 50 (level.depth level))) column 0)))
+  nil)
 
 (defmethod activate-object :after ((level evo/valley) &key)
   (let* ((dungeon (level.dungeon level))
