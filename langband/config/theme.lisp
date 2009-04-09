@@ -200,7 +200,7 @@
 		 :width window.width
 		 :height window.height
 		 :font "vga8x16.hex"
-		 :background "textures/green.png"
+		 :background "textures/mapbgx.png"
 		 ;;:font "lettergo.ttf"
 		 )
 
@@ -242,11 +242,13 @@
 		 :gfx-tiles? true)
 
        (asciimap :key +asciimap-frame+
-		 :x 60 :y 60
-		 :width (- window.width 120)
-		 :height (- window.height 3)
+		 :x 0 :y 0
+		 :horizontal-padding 16
+		 :vertical-padding 16
+		 :width (- window.width 0)
+		 :height (- window.height (* 3 gfxtiles.height))
 		 :font "vga8x16.hex"
-		 :background "textures/orange.png"
+		 :background "textures/mapbg3.png"
 		 :gfx-tiles? false)
 
        
