@@ -566,7 +566,7 @@ lbui_init_sdl(int win_wid, int win_hgt, int initarguments) {
         }
     }
 	
-    SDL_WM_SetCaption("Langband", "Langband Main Screen");
+    SDL_WM_SetCaption("EvoMyth", "Evomyth Main Screen");
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
     // SDL_ShowCursor(SDL_DISABLE);
     SDL_EnableUNICODE((1 == 1));
