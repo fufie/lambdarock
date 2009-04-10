@@ -100,7 +100,7 @@ call appropriately high-level init in correct order."
       
 	   #-(or cmu allegro clisp lispworks sbcl cormanlisp openmcl ecl)
 	   (error "lisp-system ~s unknown for C-side." (lisp-implementation-type))
-	   (warn "Init ~s ~s frames" +max-frames+ +predefined-frames+)
+	   
 	   (org.langband.ffi:c-init-frame-system& +max-frames+ +predefined-frames+)
 
 	   ;; let us read what the user prefers
@@ -251,16 +251,6 @@ call appropriately high-level init in correct order."
 	(size-ptr  (kernel:get-lisp-obj-address #'%adjust-screen-size))
 	(mouse-ptr (kernel:get-lisp-obj-address #'%mouse-clicked)))
 
-    (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
-    (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr))
-
-  #+sbcl-old
-  (let ((play-ptr  (sb-kernel:get-lisp-obj-address #'play-game&))
-	(size-ptr  (sb-kernel:get-lisp-obj-address #'%adjust-screen-size))
-	(mouse-ptr (sb-kernel:get-lisp-obj-address #'%mouse-clicked)))
-    
-    ;;    (warn "setting callbacks ~d ~d" play-ptr size-ptr)
     (org.langband.ffi:c-set-lisp-callback! "play-game" play-ptr)
     (org.langband.ffi:c-set-lisp-callback! "adjust-size" size-ptr)
     (org.langband.ffi:c-set-lisp-callback! "mouse-clicked" mouse-ptr))
