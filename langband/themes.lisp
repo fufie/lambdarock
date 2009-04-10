@@ -407,7 +407,8 @@ given as argument."
 	(signal-condition 'illegal-ui-theme-data :id (theme.key theme)
 			  :desc (format nil "pixel-height ~s not legal for ~s" (window.pixel-height i) (window.id i))))
       )
-    
+
+    #||
     (warn "Passing ~s ~s ~s ~s ~s ~s ~s" (window.num-id i)
 	  (window.x-offset i)
 	  (window.y-offset i)
@@ -415,6 +416,7 @@ given as argument."
 	  (window.pixel-height i)
 	  (window.horizontal-padding i)
 	  (window.vertical-padding i))
+    ||#
     
     
     (org.langband.ffi:c-add-frame-coords! (window.num-id i)
