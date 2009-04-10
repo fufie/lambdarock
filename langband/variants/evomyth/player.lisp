@@ -23,8 +23,92 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 	   '(engine-gfx "people/female-human-bard.png")))))
 
 (defmethod interactive-creation-of-player ((variant evomyth))
+
+  (let* ((player (produce-player-object variant))
+	 (birth-settings (get-setting variant :birth))
+	 (display-settings (get-setting variant :char-display))
+	 (note-colour (setting-lookup birth-settings "note-colour" +term-white+))
+	 (offset-x 5) ;; offsets when displaying info on the page
+	 (offset-y 5)
+	 (alts '()))
+    
+    (clear-window +full-frame+)
+    (refresh-window +full-frame+)
+
+    (setf (setting-lookup birth-settings   "offset-x") offset-x
+	  (setting-lookup birth-settings   "offset-y") offset-y
+	  (setting-lookup display-settings "offset-x") offset-x
+	  (setting-lookup display-settings "offset-y") offset-y)
+
+    ;; get basics of the character
+    (let ((basics (query-for-character-basics! variant player birth-settings)))
+      (unless basics
+	(return-from interactive-creation-of-player nil)))
+
+    ;; now we should have a race
+    (let ((rand-name (generate-random-name variant player (player.race player))))
+      (when (and rand-name (stringp rand-name))
+	(setf (player.name player) rand-name)))
+
+    (unless (player.name player)
+      (setf (player.name player) "Foo"))
+
+    
+    ;;do rolling
+    (let ((rolling (roll-up-character! variant player)))
+      (unless rolling
+	(return-from interactive-creation-of-player nil)))
+
+    ;; ok.. ask for name and re-roll?
+    (setf alts (make-note-buttons *cur-win*
+				  '((#\c "'c' to change name")
+				    (#\r "'r' to re-roll stats")
+				    (#\Q "'Q' to quit")
+				    (#\Escape "ESC to continue"))
+				  :text-colour note-colour
+				  :button-colour :matte-brown))
+    
+    (block input-loop
+      (loop
+	(load-setting-background variant *cur-win* (get-setting *variant* :char-display))
+	(display-creature variant player)
+       
+	(loop for i in alts do
+	  (buttonify-selectable-ui-object *cur-win* i))
+       
+	(let ((val (select-displayed-alternative alts)))
+	 
+	  (cond ((eql val #\Q)
+		 (quit-game&))
+		;; start over
+		((eql val #\S)
+		 nil)
+		((eql val +escape+)
+		 (return-from input-loop t))
+		((or (eql val #\c) (eql val #\C))
+		 (%get-name-input! player))
+		((or (eql val #\r) (eql val #\R))
+		 (roll-up-character! variant player))
+		(t
+		 nil)))))
+      
+
+    ;; we have a new character ready for prime-time, let's flavour the objects
+    (distribute-flavours! variant)
   
-  (call-next-method))
+    ;; time to give him some equipment
+    (equip-character! variant player birth-settings)
+
+    ;;    (warn "stats are now ~s ~s" (player.base-stats the-player) (ok-object? the-player))
+    ;;    (add-object-to-inventory! the-player (create-aobj-from-kind-num 118))
+
+    (texture-background! +full-frame+ "" -1)
+    (clear-window +full-frame+ -1) ;; clear all layers
+    ;;(warn "going switch");
+    
+    ;;(warn "switched")
+    
+    player))
 
 (defmethod initialise-character-class! ((var-obj evomyth) (my-class character-class) keyword-args)
 
@@ -68,13 +152,70 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     player))
 
 
+(defun %query-for-diet (variant player settings)
+  (block query-block
+    (let* ((offset-x (setting-lookup settings "offset-x"))
+	   (offset-y (setting-lookup settings "offset-y"))
+	   (info-col (+ offset-x (setting-lookup settings "info-x")))
+	   (info-row (+ offset-y (setting-lookup settings "info-y")))
+	   (info-colour (setting-lookup settings "info-attr"))
+	   (quest-row (+ offset-y (setting-lookup settings "query-y")))
+	   (quest-col (+ offset-x (setting-lookup settings "query-x")))
+	   (choice-col (+ offset-x (setting-lookup settings "choice-x")))
+	   (choice-row (+ offset-y (setting-lookup settings "choice-y")))
+	   (choice-colour (setting-lookup settings "choice-attr"))
+	   (choice-tcolour (setting-lookup settings "choice-tattr"))
+	   (mod-value (setting-lookup settings "altern-cols"))
+	   (start-diets (list (get-ability variant '<carnivore>)
+			      (get-ability variant '<herbivore>)))
+	   (alt-len (length start-diets))
+	   (inp nil))
+
+      (print-text! info-col info-row info-colour
+		   "Your diet is essential for deciding overall strategies for survival as species."
+		   :end-col (+ offset-x
+			       (setting-lookup settings "instr-x")
+			       (setting-lookup settings "instr-w")))
+
+      
+
+      (block input-loop
+	(loop
+	 (setf inp (interactive-alt-sel  quest-col quest-row
+					 (mapcar #'ability.name start-diets)
+					 :display-fun #'(lambda (x)
+							  (when (and (numberp x) (>= x 0) (< x alt-len))
+							    (ability.description (elt start-diets x))))
+					 :ask-for "diet"
+					 :settings settings
+					 :mod-value mod-value
+					 ))
+	      
+	 (cond ((eq inp nil)
+		(return-from query-block nil))
+	       
+	       ((and (numberp inp) (<= 0 inp) (< inp alt-len))
+		(warn "CHOSE DIET ~s" (nth inp start-diets))
+		;;(setf (player.race player) (nth inp cur-races))
+		(return-from input-loop nil))
+	       
+	       (t
+		(warn "Unknown return-value from ~a input-loop ~s, must be [0..~s)" "Diet" inp alt-len))
+	       )))
+
+
+      (put-coloured-str! choice-tcolour "Diet" choice-col (+ 1 choice-row))
+      (put-coloured-str! choice-colour "foo" (+ 7 choice-col) (+ 1 choice-row))
+      
+      t)))
+
 (defmethod query-for-character-basics! ((variant evomyth) (player player) settings)
 
   "Interactive questioning to select the basics of the character.
 Modififes the passed player object THE-PLAYER.  This is a long function."
 
   (let* ((offset-x (setting-lookup settings "offset-x"))
-	   (offset-y (setting-lookup settings "offset-y"))
+	 (offset-y (setting-lookup settings "offset-y"))
 	 ;;(info-col (setting-lookup settings "info-x"))
 	 (info-row (+ offset-y (setting-lookup settings "info-y")))
 	 (instr-col (+ offset-x (setting-lookup settings "instr-x")))
@@ -104,7 +245,10 @@ Modififes the passed player object THE-PLAYER.  This is a long function."
       (return-from query-for-character-basics! nil))
     
     (clear-window-from win info-row) ;; clears things
+    (unless (%query-for-diet variant player settings)
+      (return-from query-for-character-basics! nil))
 
+    (clear-window-from win info-row) ;; clears things
     ;; only one possible race now
     (setf (player.race player) (gethash "man" (variant.races variant)))
     ;; only one possible class now
@@ -259,6 +403,8 @@ can be assigned later." :end-col (- right-col column-spacing))
     t))
 
 (defun interactive-ability-distribution (variant player settings)
+  ;;(let ((ability-groups (variant.ability-groups variant)))
+    
   #||
   (let* ((skill-table (variant.skills variant))
 	 (objs (make-array (length skill-table) :initial-element nil))

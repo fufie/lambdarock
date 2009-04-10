@@ -23,9 +23,9 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (define-settings '("sdl-evo-birth-settings" "evo-birth-settings")
     "instr-x" 15
-    "instr-y" 10
+    "instr-y" 3
     "instr-attr" +term-blue+
-    "instr-w" 120
+    "instr-w" 60
     "query-x" 15
     "query-y" 24
     "query-reduced" t
@@ -33,13 +33,13 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     "info-x" 15
     "info-y" 16
     "info-attr" +term-umber+
-    "choice-x" 52
+    "choice-x" 80
     "choice-y" 3
     "choice-tattr" +term-blue+
     "choice-attr" +term-l-red+
-    "text-x" 52
+    "text-x" 80
     "text-y" 7
-    "text-w" 35
+    "text-w" 40
     "text-attr" +term-umber+
     "altern-cols" 2
     "altern-attr" +term-umber+

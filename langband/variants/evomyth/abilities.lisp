@@ -24,6 +24,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
    (description :initarg :description :initform "" :accessor ability.description)
    (power-lvl :initarg :power-lvl :initform 0 :accessor ability.power-lvl)
    (levels :initarg :levels :initform nil :accessor ability.levels)
+   (excludes :initarg :excludes :initform nil :accessor ability.excludes)
    (hidden :initarg :hidden :initform nil :accessor ability.hidden)))
 
 (defun register-ability-group& (variant group)
@@ -42,6 +43,19 @@ Copyright (c) 2009 - Stig Erik Sandoe
 	  (gethash (ability.key ability) table) ability)
     ability))
 
+(defun get-ability (variant key)
+  "Returns an ability object if it exists, or nil"
+  (let ((table (variant.ability-groups variant)))
+    ;; might do values twice ue to double registration
+    (loop for value being the hash-values of table
+	  do (multiple-value-bind (val exists-p)
+		 (gethash key (ability-group.abilities value))
+	       (when exists-p
+		 (return-from get-ability val))))
+    (warn "Unable to find ability ~s" key)
+    nil))
+
+
 (defun define-ability-group(id name key &key hidden)
   "Defines an ability group."
   (let ((obj (make-instance 'evo/ability-group :id id :name name :key key)))
@@ -52,7 +66,7 @@ Copyright (c) 2009 - Stig Erik Sandoe
     (register-ability-group& *variant* obj)
     obj))
 
-(defun define-racial-ability (id name &key group description key power-lvl levels hidden)
+(defun define-racial-ability (id name &key group description key power-lvl levels excludes obsoletes hidden)
   "Defines a racial abilitiy"
 
   (let ((obj (make-instance 'evo/ability :id id :name name)))
@@ -83,6 +97,12 @@ Copyright (c) 2009 - Stig Erik Sandoe
 
     (when levels
       (warn "ABILITY LEVELS not implemented"))
+
+    (when excludes
+      (warn "~s excludes ~s" id excludes))
+
+    (when obsoletes
+      (warn "~s obsoletes ~s" id obsoletes))
 
     (when hidden
       (setf (ability.hidden obj) t))
