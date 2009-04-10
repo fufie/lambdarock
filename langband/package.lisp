@@ -522,6 +522,7 @@ Copyright (c) 2001-2004, 2009 - Stig Erik Sandoe
 	   #:initialise-object-kind!
 	   #:initialise-objects&
 	   #:int-/
+	   #:interactive-alt-sel
 	   #:interactive-creation-of-player
 	   #:interactive-destroy-item!
 	   #:interactive-door-operation!
