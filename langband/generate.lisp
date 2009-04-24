@@ -195,7 +195,12 @@ Copyright (c) 2000-2003 - Stig Erik Sandoe
   (declare (ignore dungeon))
   (let* ((table (variant.traps variant))
 	 (num-traps (hash-table-count table))
-	 (which-trap (random num-traps)))
+	 (which-trap nil))
+
+    (when (= 0 num-traps)
+      (return-from find-random-trap nil))
+
+    (setf which-trap (random num-traps))
     
     (loop for i from 0
 	  for v being the hash-values of table
