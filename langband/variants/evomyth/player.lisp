@@ -86,7 +86,7 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 		((eql val +escape+)
 		 (return-from input-loop t))
 		((or (eql val #\c) (eql val #\C))
-		 (%get-name-input! player))
+		 (lb::%get-name-input! player))
 		((or (eql val #\r) (eql val #\R))
 		 (roll-up-character! variant player))
 		(t
@@ -257,6 +257,7 @@ Modififes the passed player object THE-PLAYER.  This is a long function."
     (clear-window +full-frame+)
     (refresh-window +full-frame+)
 
+    #||
     
     ;; let's figure out the skill-basics
     (let* ((the-class (player.class player))
@@ -277,6 +278,7 @@ Modififes the passed player object THE-PLAYER.  This is a long function."
       )
 
     (interactive-skillpoint-distribution variant player settings)
+    ||#
     
     (clear-window +full-frame+)
     (refresh-window +full-frame+)

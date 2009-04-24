@@ -41,8 +41,8 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 (define-keypress *angband-keys* :global #\T 'start-conversation)
 (define-keypress *angband-keys* :global #\? 'show-help)
 
-;;(define-keypress *angband-keys* :global #\> 'go-downstairs)
-;;(define-keypress *angband-keys* :global #\< 'go-upstairs)
+(define-keypress *angband-keys* :global #\> 'go-downstairs)
+(define-keypress *angband-keys* :global #\< 'go-upstairs)
 (define-keypress *angband-keys* :global #\* 'select-target)
 
 ;; these can die later..

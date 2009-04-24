@@ -79,6 +79,14 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     "background-height" 600
     )
 
+(define-settings '("evomyth-dungeon-settings" "dungeon-settings")
+    "max-width" 198 ;; must not be larger than +max-dungeon-width+
+    "max-height" 66 ;; must not be larger than +max-dungeon-height+
+    ;; ranges
+    "stairs-down" '(10 . 20) ;; (3 4)
+    "stairs-up" '(10 . 20) ;; (1 2)
+    )
+
 
 (register-field-order +charinfo-frame+
 		      '(-basic/hitpoints-))

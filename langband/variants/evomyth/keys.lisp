@@ -145,13 +145,13 @@ Copyright (c) 2000-2003, 2009 - Stig Erik Sandoe
 
 	  )))
 
-#||
+
 (define-key-operation 'go-downstairs
     #'(lambda (dungeon player) (use-stair! dungeon player :down)))
 
 (define-key-operation 'go-upstairs
     #'(lambda (dungeon player) (use-stair! dungeon player :up)))
-||#
+
 
 (define-key-operation 'quit-game
     #'(lambda (dungeon player)

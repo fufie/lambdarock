@@ -9,6 +9,58 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 (in-package :org.langband.evomyth)
 
+(defmethod find-appropriate-room ((variant evomyth)
+				  (level random-level)
+				  player)
+  (declare (ignore player))
+  ;; hack
+  (let* ((some-val (random 100))
+	 (room-id nil)
+	 (fallback-id "simple-room")
+	 (the-room nil))
+
+    ;; might surprise someone
+
+    (setf room-id (cond ((< some-val 15)
+			 "overlapping-room")
+			(t
+			 "simple-room")))
+
+    (setf the-room (get-room room-id))
+
+    
+    (cond (the-room)
+	  (t
+	   (warn "Unable to find the room ~s, trying to use fallback-room ~s" room-id fallback-id)
+	   ;; we must have fallback room available at least
+	   (setf the-room (get-room fallback-id))))
+
+    ;;(warn "have ~s with ~s ~s" the-room (room-type.id the-room) (room-type.parent the-room))
+    
+    (cond ((typep the-room 'room-type)
+	   (funcall (room-type.constructor the-room)
+		    (room-type.id the-room)))
+	  (t
+	   (error "Unable to find room ~s, got ~s" room-id the-room)))
+    ))
+
+(defmethod create-gold ((variant evomyth) (dungeon dungeon) &key originator)
+  nil)
+
+
+(defmethod attempt-multi-creation! ((variant evomyth) (obj active-object) depth)
+  (declare (ignore depth))
+  ;; do nothing, assume 1 as default
+  nil)
+
+#||
+(defmethod attempt-multi-creation! ((variant evomyth) (obj active-object/ammo) depth)
+  (declare (ignore depth))
+;;  (warn "Generating ammo")
+  ;; ammo is always in groups
+  (setf (aobj.number obj) (roll-dice 6 7)))
+||#
+
 (defmethod level-ready? ((level evo/valley))
   (when (level.dungeon level)
     t))
@@ -29,7 +81,21 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
   (let ((level nil)
 	(where-to (player.leaving? player)))
 
-    (setf level (make-valley-level-obj variant player))
+    (unless old-level
+      (setf level (make-valley-level-obj variant player)))
+
+    (when old-level
+      (cond ((equal (level.id old-level) "valley")
+             ;; we always go down from the valley
+             (let ((builder (get-level-builder "random-level")))
+	     (unless builder
+	       (error "Can't find random-level builder"))
+	     (setf level (funcall builder))))
+            (t
+             (let ((builder (get-level-builder "random-level")))
+	     (unless builder
+	       (error "Can't find random-level builder"))
+	     (setf level (funcall builder))))))
 
     ;;(warn "level for ~s is ~s ~s" where-to level (level.depth level))
     
@@ -88,11 +154,17 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
     
     level))
 
+(defmethod generate-level! ((variant evomyth) (level random-level) player)
+  (call-next-method variant level player))
+
 (defmethod get-otype-table ((var-obj evomyth) level)
   (declare (ignore level))
   (get-named-gameobj-table var-obj "level" 'objects-by-level))
 
 (defmethod get-mtype-table ((var-obj evomyth) (level evo/valley))
+  (get-named-gameobj-table var-obj level 'monsters-by-level))
+
+(defmethod get-mtype-table ((var-obj evomyth) (level random-level))
   (get-named-gameobj-table var-obj level 'monsters-by-level))
 
 (defmethod get-mtype-table ((var-obj evomyth) (level string))
@@ -339,6 +411,24 @@ Copyright (c) 2003, 2009 - Stig Erik Sandoe
 
 			 t))
 
+  (register-level! var-obj "random-level"
+		   :monster-filter
+		   #'(lambda (var-obj obj)
+		       ;; all below 0
+		       (when (> (slot-value obj 'power-lvl) 0)
+			 (let* ((which-lvl "random-level")
+				(table (get-mtype-table var-obj which-lvl))
+				(id (slot-value obj 'id))
+				(mon-table (gobj-table.obj-table table)))
+			   (multiple-value-bind (val f-p)
+			       (gethash id mon-table)
+			     (declare (ignore val))
+			     (if f-p
+				 (error "Monster-id ~s already exist for ~s, not unique id."
+					id which-lvl)
+				 (setf (gethash id mon-table) obj))))
+			 t)))
+  
 
   (register-level! var-obj "valley"
 		   :monster-filter

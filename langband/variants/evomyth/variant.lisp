@@ -33,6 +33,7 @@ the rest of the game is init'ed."
   
   (let ((*load-verbose* nil))
     (load-variant-data& var-obj "config/defines")
+    (load-variant-data& var-obj "config/floors")
     (load-variant-data& var-obj "config/rooms")
     (load-variant-data& var-obj "config/settings")
     (load-variant-data& var-obj "config/character")
@@ -84,6 +85,9 @@ the rest of the game is init'ed."
   (setf (get-setting var-obj :basic-frame-printing)
 	(get-settings-obj "evo-basic-frame"))
   
+  (setf (get-setting var-obj :random-level)
+	(get-settings-obj "evomyth-dungeon-settings"))
+  
   (cond ((eq (get-system-type) 'sdl)
 	 (setf (get-setting var-obj :birth)
 	       (get-settings-obj "sdl-evo-birth-settings"))
@@ -106,6 +110,9 @@ the rest of the game is init'ed."
   (register-level-builder! "valley"
 			   (get-late-bind-function 'org.langband.evomyth
 						   'create-bare-valley-level-obj))
+  (register-level-builder! "random-level"
+			   (get-late-bind-function 'org.langband.engine
+						   'make-random-level-obj))
   
   var-obj)
 
