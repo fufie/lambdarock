@@ -412,17 +412,37 @@ can be assigned later." :end-col (- right-col column-spacing))
 	(start-row (setting-lookup settings "skill-y")))
     
     (let ((groups (sort (loop for group-key being the hash-keys of ability-groups
-		       when (stringp group-key)
-			 collecting group-key)
-			#'string-lessp)))
+			      when (stringp group-key)
+				collecting group-key)
+			#'string-lessp))
+	  (current-row 5)
+	  (group-column 15))
+      (flet ((display-group (num colour)
+	       (let* ((group-id  (elt groups num))
+		      (group (gethash group-id ability-groups))
+		      (abilities (ability-group.abilities group)))
+		 
+		 (put-coloured-str! colour (ability-group.name group) group-column (+ 5 current-row))
+		 (incf current-row)
+		 ;; list out the abilities in the group
+		 (loop for ab-key being the hash-keys of abilities
+		       when (stringp ab-key)
+		       do
+		    (progn
+		      (put-coloured-str! colour (ability.id (gethash ab-key abilities)) (+ 5 group-column) (+ 5 current-row))
+		      (incf current-row)))
+		 )))
 
-    (loop for group in groups
-	  for i from 0
-	  do
-       (put-coloured-str! +term-blue+ group (+ 5 10) (+ 5 i))))
+	       
 
-    (pause-last-line!)
-    t))
+	(loop for group in groups
+	      for i from 0
+	      do (display-group i +term-l-blue+))
+       
+
+
+	(pause-last-line!)
+	t))))
 
 
 (defmethod on-new-player ((variant evomyth) (player player))
